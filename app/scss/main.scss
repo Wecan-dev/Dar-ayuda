@@ -1040,21 +1040,36 @@ button:focus {
       letter-spacing: normal;
       color: #000000;
       margin-bottom: 24px;
+      flex-direction: column;
+      display: flex;
     }
 
     input {
       font-size: 14px;
       font-weight: 500;
+      margin-top: 6px;
       font-stretch: normal;
       font-style: normal;
       line-height: normal;
       letter-spacing: normal;
-      text-align: center;
       color: #6d7278;
       padding: 9px 14px 9px 14px;
       border-radius: 19px;
       border: solid 1px #dee2e6;
       background-color: #fdfdfd;
+      position: relative;
+
+      &::before {
+        position: absolute;
+        content: "";
+        background-image: url('../img/user_2.png');
+        background-repeat: no-repeat;
+      }
+    }
+
+    input[type=file] {
+
+      background: none;
     }
   }
 }
