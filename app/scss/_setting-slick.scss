@@ -141,3 +141,150 @@
     }
   }
 }
+
+.about-editorial__carousel {
+
+  .slick-prev,
+  .slick-next {
+    width: 52px;
+    height: 51px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.35);
+    border-radius: 50%;
+    z-index: 2;
+    cursor: pointer;
+    transition: all .5s;
+
+    &:before {
+      width: 10px;
+      height: 18px;
+      object-fit: contain;
+      background-repeat: no-repeat;
+      background-size: contain;
+      position: absolute;
+    }
+
+  }
+
+  .slick-prev {
+
+    top: 55%;
+    left: 31px;
+
+    @include respond-to(md) {
+      left: 5px;
+
+    }
+
+    @include respond-to(sm) {
+      left: 5px;
+
+    }
+
+
+    &:before {
+      color: $white;
+      content: '';
+      z-index: 3;
+      background-image: url('../img/prev.png');
+    }
+
+    &:hover {
+      outline: none;
+      transition: all .5s;
+      background: $black;
+      color: $white;
+    }
+  }
+
+  .slick-next {
+    right: 31px;
+
+    top: 55%;
+
+    @include respond-to(md) {
+      right: 5px;
+
+    }
+
+    @include respond-to(sm) {
+      right: 5px;
+
+    }
+
+    &:before {
+      color: $white;
+      background-image: url('../img/next.png');
+      content: "";
+    }
+
+    &:hover {
+      outline: none;
+      background: $black;
+      color: $white;
+      transition: all .5s;
+
+    }
+  }
+
+  .slick-dots {
+    z-index: 2;
+    display: flex;
+    position: absolute;
+    bottom: 0;
+    right: 53%;
+    width: 0%;
+
+    @include respond-to(md) {
+      left: 45%;
+    }
+
+    @include respond-to(sm) {
+      left: 45%;
+    }
+
+    @include respond-to(xs) {
+      left: 35%;
+    }
+
+    .slick-active {
+      button {
+        &:before {
+          opacity: 1;
+          background-color: #00a451;
+
+          width: 34px;
+          height: 9px;
+          margin: 0;
+        }
+      }
+    }
+
+    li {
+      margin: 0 10px;
+
+      button {
+
+        &:before {
+          background-color: #2e3190;
+          content: '';
+          width: 15px;
+          height: 9px;
+          display: inline-block;
+          border-radius: 5px;
+          opacity: 1;
+
+          cursor: pointer;
+          transition: all 300ms ease;
+        }
+
+        &:hover:before,
+        &:focus:before {
+          color: $dots-color-active;
+        }
+      }
+    }
+  }
+}

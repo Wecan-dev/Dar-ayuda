@@ -181,12 +181,12 @@ $('.main-models__carousel').slick({
 });
 
 
-$('.publications-notice__carousel').slick({
+$('.about-editorial__carousel').slick({
   infinite: true,
   slidesToShow: 3,
-  slidesToScroll: 1,
-  dots: false,
-  arrows: true,
+  slidesToScroll: 3,
+  dots: true,
+  arrows: false,
   responsive: [{
       breakpoint: 1200,
       settings: {
