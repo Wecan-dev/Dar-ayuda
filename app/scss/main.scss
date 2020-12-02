@@ -1133,8 +1133,10 @@ button:focus {
     }
 
     input[type=file] {
-
+      padding: 0;
       background: none;
+      border: none;
+      border-radius: 0;
     }
   }
 }

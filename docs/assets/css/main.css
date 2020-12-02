@@ -1526,7 +1526,10 @@ button:focus {
 }
 
 .main-register form input[type=file] {
+  padding: 0;
   background: none;
+  border: none;
+  border-radius: 0;
 }
 
 .main-search {
