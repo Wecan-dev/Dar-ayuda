@@ -29,6 +29,15 @@
     top: 55%;
     left: 31px;
 
+    @include respond-to(md) {
+      left: 5px;
+
+    }
+
+    @include respond-to(sm) {
+      left: 5px;
+
+    }
 
 
     &:before {
@@ -51,6 +60,15 @@
 
     top: 55%;
 
+    @include respond-to(md) {
+      right: 5px;
+
+    }
+
+    @include respond-to(sm) {
+      right: 5px;
+
+    }
 
     &:before {
       color: $white;

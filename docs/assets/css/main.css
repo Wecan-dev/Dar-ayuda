@@ -260,6 +260,18 @@ body {
   left: 31px;
 }
 
+@media (min-width: 992px) and (max-width: 1199px) {
+  .main-banner__content .slick-prev {
+    left: 5px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  .main-banner__content .slick-prev {
+    left: 5px;
+  }
+}
+
 .main-banner__content .slick-prev:before {
   color: #fff;
   content: '';
@@ -277,6 +289,18 @@ body {
 .main-banner__content .slick-next {
   right: 31px;
   top: 55%;
+}
+
+@media (min-width: 992px) and (max-width: 1199px) {
+  .main-banner__content .slick-next {
+    right: 5px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  .main-banner__content .slick-next {
+    right: 5px;
+  }
 }
 
 .main-banner__content .slick-next:before {
@@ -404,8 +428,8 @@ body :focus {
 
 @media (min-width: 0px) and (max-width: 767px) {
   .padding-top-bottom {
-    padding-top: 20px;
-    padding-bottom: 20px;
+    padding-top: 80px;
+    padding-bottom: 80px;
   }
 }
 
@@ -520,6 +544,13 @@ body :focus {
   line-height: normal;
   letter-spacing: normal;
   color: #ffffff;
+  transition: .3s;
+}
+
+.general-btn__green:hover {
+  color: #03843d;
+  background: #fff;
+  transition: .3s;
 }
 
 .main-general__button {
@@ -910,12 +941,12 @@ button:focus {
   .main-banner .main-banner__text {
     width: 100%;
     padding: 15px;
-    align-items: center;
   }
 }
 
 @media (min-width: 992px) and (max-width: 1199px) {
   .main-banner .main-banner__text {
+    padding-left: 72px;
     padding: 30px;
   }
 }
@@ -924,7 +955,7 @@ button:focus {
   .main-banner .main-banner__text {
     width: 100%;
     padding: 20px;
-    align-items: center;
+    padding-left: 74px;
   }
 }
 
@@ -1079,6 +1110,12 @@ button:focus {
 }
 
 @media (min-width: 0px) and (max-width: 767px) {
+  .main-portfolio__item {
+    width: 100%;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
   .main-portfolio__item {
     width: 100%;
   }
@@ -1322,6 +1359,12 @@ button:focus {
   }
 }
 
+@media (min-width: 768px) and (max-width: 991px) {
+  .main-about .container-grid {
+    gap: 25px;
+  }
+}
+
 .main-about .main-about__dotted {
   position: absolute;
   top: 110px;
@@ -1330,6 +1373,10 @@ button:focus {
   height: 150px;
   object-fit: contain;
   z-index: -1;
+}
+
+.main-about .main-about__img img {
+  width: 100%;
 }
 
 .main-about .main-about__description {
@@ -1358,6 +1405,7 @@ button:focus {
 .main-register .main-register__img img {
   width: 100%;
   object-fit: cover;
+  height: 100%;
 }
 
 .main-register .main-register__text {
@@ -1369,10 +1417,31 @@ button:focus {
   position: relative;
 }
 
+@media (min-width: 0px) and (max-width: 767px) {
+  .main-register .main-register__text {
+    padding: 25px;
+  }
+}
+
 .main-register .main-register__dotted {
   position: absolute;
   top: 19px;
   right: 0;
+}
+
+@media (min-width: 0px) and (max-width: 767px) {
+  .main-register .main-register__dotted {
+    object-fit: contain;
+    top: 0;
+    right: 0;
+    width: 48px;
+  }
+}
+
+@media (min-width: 992px) and (max-width: 1199px) {
+  .main-register .main-register__dotted {
+    display: none;
+  }
 }
 
 .main-register .main-register__dotted--bottom {
@@ -1381,6 +1450,12 @@ button:focus {
   right: initial;
   left: 0;
   bottom: 41px;
+}
+
+@media (min-width: 0px) and (max-width: 767px) {
+  .main-register .main-register__dotted--bottom {
+    bottom: 0;
+  }
 }
 
 .main-register .main-register__title {

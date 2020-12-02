@@ -57,8 +57,8 @@ body {
   padding-bottom: 118px;
 
   @include respond-to(xs) {
-    padding-top: 20px;
-    padding-bottom: 20px;
+    padding-top: 80px;
+    padding-bottom: 80px;
   }
 }
 
@@ -165,7 +165,16 @@ body {
   font-style: normal;
   line-height: normal;
   letter-spacing: normal;
-  color: #ffffff
+  color: #ffffff;
+  transition: .3s;
+
+
+  &:hover {
+    color: #03843d;
+    background: #fff;
+    transition: .3s;
+  }
+
 }
 
 .main-general__button {
@@ -555,19 +564,19 @@ button:focus {
       width: 100%;
       // background: #dcdcdcd9;
       padding: 15px;
-      align-items: center;
+      // align-items: center;
     }
 
     @include respond-to(md) {
-
+      padding-left: 72px;
       padding: 30px;
     }
 
     @include respond-to(sm) {
       width: 100%;
       padding: 20px;
+      padding-left: 74px;
       // background: #dcdcdcd9;
-      align-items: center;
     }
 
     .main-banner__title {
@@ -708,6 +717,10 @@ button:focus {
   border-bottom: 7px solid transparent;
 
   @include respond-to(xs) {
+    width: 100%;
+  }
+
+  @include respond-to(sm) {
     width: 100%;
   }
 
@@ -948,6 +961,10 @@ button:focus {
     @include respond-to(xs) {
       grid-template-columns: 100%;
     }
+
+    @include respond-to(sm) {
+      gap: 25px;
+    }
   }
 
   .main-about__dotted {
@@ -958,6 +975,12 @@ button:focus {
     height: 150px;
     object-fit: contain;
     z-index: -1;
+  }
+
+  .main-about__img {
+    img {
+      width: 100%;
+    }
   }
 
   .main-about__description {
@@ -987,6 +1010,7 @@ button:focus {
     img {
       width: 100%;
       object-fit: cover;
+      height: 100%;
     }
   }
 
@@ -997,12 +1021,27 @@ button:focus {
     padding-left: 129px;
     padding-right: 100px;
     position: relative;
+
+    @include respond-to(xs) {
+      padding: 25px;
+    }
   }
 
   .main-register__dotted {
     position: absolute;
     top: 19px;
     right: 0;
+
+    @include respond-to(xs) {
+      object-fit: contain;
+      top: 0;
+      right: 0;
+      width: 48px;
+    }
+
+    @include respond-to(md) {
+      display: none;
+    }
   }
 
   .main-register__dotted--bottom {
@@ -1011,6 +1050,10 @@ button:focus {
     right: initial;
     left: 0;
     bottom: 41px;
+
+    @include respond-to(xs) {
+      bottom: 0;
+    }
   }
 
   .main-register__title {
