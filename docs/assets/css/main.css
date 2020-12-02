@@ -1485,6 +1485,28 @@ button:focus {
   margin-bottom: 24px;
   flex-direction: column;
   display: flex;
+  position: relative;
+}
+
+.main-register form label:last-child::before {
+  display: none;
+}
+
+.main-register form label:nth-child(3)::before {
+  background-image: url("../img/email.png");
+}
+
+.main-register form label::before {
+  position: absolute;
+  content: "";
+  background-image: url("../img/user_2.png");
+  background-repeat: no-repeat;
+  width: 14px;
+  height: 14px;
+  background-size: contain;
+  bottom: 13px;
+  z-index: 1;
+  left: 16px;
 }
 
 .main-register form input {
@@ -1496,18 +1518,11 @@ button:focus {
   line-height: normal;
   letter-spacing: normal;
   color: #6d7278;
-  padding: 9px 14px 9px 14px;
+  padding: 9px 14px 9px 38px;
   border-radius: 19px;
   border: solid 1px #dee2e6;
   background-color: #fdfdfd;
   position: relative;
-}
-
-.main-register form input::before {
-  position: absolute;
-  content: "";
-  background-image: url("../img/user_2.png");
-  background-repeat: no-repeat;
 }
 
 .main-register form input[type=file] {
