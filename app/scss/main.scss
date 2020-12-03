@@ -388,6 +388,10 @@ button:focus {
   }
 }
 
+.fixed .dropdown-menu {
+  background: #1c3348;
+}
+
 .dropdown-menu {
   text-align: initial;
   background: transparent;
@@ -1054,7 +1058,7 @@ button:focus {
     position: absolute;
     top: initial;
     right: initial;
-    left: 0;
+    left: 5px;
     bottom: 41px;
 
     @include respond-to(xs) {
@@ -1220,9 +1224,9 @@ button:focus {
 
   .about-history__dotted {
     position: absolute;
-    right: 97px;
+    right: 107px;
     z-index: -1;
-    top: 37px;
+    top: 47px;
   }
 
   .container-grid {
@@ -1293,6 +1297,7 @@ button:focus {
 
 .about-politics {
   position: relative;
+  z-index: 0;
 
   .general-title {
     margin-top: 32px;
@@ -1300,9 +1305,9 @@ button:focus {
 
   .about-politics__dotted {
     position: absolute;
-    right: 30px;
+    right: 31px;
     z-index: -1;
-    top: -30px;
+    top: -43px;
   }
 
   .padding-top-bottom {
@@ -1433,7 +1438,7 @@ button:focus {
 .about-editorial {
   .padding-top-bottom {
     padding-top: 0;
-    padding-bottom: 59px;
+    padding-bottom: 48px;
   }
 
   .padding-right-left {
@@ -1621,7 +1626,7 @@ button:focus {
 
   .about-news__dotted {
     position: absolute;
-    left: 0;
+    left: 5px;
     top: -68px;
     width: 59px;
     height: 118px;
@@ -1629,13 +1634,15 @@ button:focus {
 
   .about-news__dotted--right {
     left: initial;
-    right: 0;
+    right: 5px;
     bottom: -68px;
     top: initial;
   }
 }
 
 .interest-general {
+  position: relative;
+
   .padding-top-bottom {
     padding-top: 83px;
     padding-bottom: 80px;
@@ -1657,6 +1664,13 @@ button:focus {
   .interest-general__img {
     margin-bottom: 64px;
     width: 100%;
+  }
+
+  .interest-general__dotted {
+    position: absolute;
+    top: 209px;
+    right: 125px;
+    z-index: -1;
   }
 
   .interest-general__title {
