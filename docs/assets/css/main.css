@@ -2333,6 +2333,208 @@ button:focus {
   margin-bottom: 29px;
 }
 
+.search-general .padding-right-left {
+  padding-left: 128px;
+  padding-right: 108px;
+}
+
+.search-general .search-general__list {
+  border: solid 1px #e1e1e0;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 52px;
+}
+
+.search-general .general-title {
+  margin-bottom: 95px;
+}
+
+.search-general .general-btn__green {
+  padding: 15.5px 34px;
+}
+
+@media (min-width: 0px) and (max-width: 767px) {
+  .search-general .general-btn__green {
+    padding: 15.5px 27px;
+  }
+}
+
+.search-general .search-general__btn {
+  font-size: 14px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  color: #00a451;
+  padding: 9px 51px;
+  border-radius: 10px;
+  border: solid 1px #00a451;
+  transition: .3s;
+  text-align: center;
+  display: block;
+}
+
+@media (min-width: 0px) and (max-width: 767px) {
+  .search-general .search-general__btn {
+    width: 100%;
+  }
+}
+
+.search-general .search-general__btn:hover {
+  box-shadow: 4px 10px 23px 0 rgba(0, 164, 81, 0.28);
+  background-color: #00a451;
+  transition: .3s;
+  color: #fff;
+}
+
+.search-general .search-general__img {
+  margin-right: 25px;
+}
+
+@media (min-width: 0px) and (max-width: 767px) {
+  .search-general .search-general__img {
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
+}
+
+.search-general .search-general__img img {
+  width: 95px;
+  height: 83px;
+  object-fit: cover;
+}
+
+@media (min-width: 0px) and (max-width: 767px) {
+  .search-general .search-general__img img {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.search-general .search-general__title {
+  font-size: 20px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  color: #000000;
+  margin-bottom: 12px;
+}
+
+.search-general ul {
+  list-style: none;
+  padding-left: 0;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  display: flex;
+  width: 80%;
+  margin-bottom: 0;
+}
+
+@media (min-width: 0px) and (max-width: 767px) {
+  .search-general ul {
+    width: 100%;
+    flex-direction: column;
+    justify-content: start;
+    margin-bottom: 20px;
+  }
+}
+
+.search-general ul li {
+  font-size: 14px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  color: #6e7379;
+  margin-bottom: 5px;
+}
+
+.search-general ul img {
+  width: 20px;
+  height: 17px;
+  margin-right: 17px;
+  object-fit: contain;
+}
+
+.search-general__item {
+  padding: 24px 42px 28px 42px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #e1e1e0;
+  border-left: 14px solid transparent;
+  transition: .3s;
+}
+
+@media (min-width: 0px) and (max-width: 767px) {
+  .search-general__item {
+    width: 100%;
+    display: block;
+    padding: 14px;
+    border-left: 4px solid transparent;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  .search-general__item {
+    border-left: 4px solid transparent;
+    padding: 24px;
+  }
+}
+
+.search-general__item:hover {
+  border-left: 14px solid #00a451;
+  transition: .3s;
+}
+
+@media (min-width: 0px) and (max-width: 767px) {
+  .search-general__item:hover {
+    border-left: 4px solid #00a451;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  .search-general__item:hover {
+    border-left: 4px solid #00a451;
+  }
+}
+
+.search-general__item .search-general__text {
+  width: 373px;
+}
+
+@media (min-width: 0px) and (max-width: 767px) {
+  .search-general__item .search-general__text {
+    width: 100%;
+  }
+}
+
+.search-general__item .search-general__body {
+  display: flex;
+  width: 50%;
+}
+
+@media (min-width: 0px) and (max-width: 767px) {
+  .search-general__item .search-general__body {
+    width: 100%;
+    display: block;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  .search-general__item .search-general__body {
+    width: 67%;
+  }
+}
+
+.search-general__item:last-child {
+  border-bottom: none;
+}
+
 .main-powered {
   position: relative;
   padding-top: 19px;
