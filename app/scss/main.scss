@@ -1648,6 +1648,10 @@ button:focus {
 
   .general-title {
     margin-bottom: 94px;
+
+    @include respond-to(xs) {
+      margin-bottom: 30px;
+    }
   }
 
   .interest-general__img {
@@ -1666,6 +1670,10 @@ button:focus {
     padding-bottom: 20px;
     position: relative;
     margin-bottom: 32px;
+
+    @include respond-to(xs) {
+      font-size: 20px;
+    }
 
     span {
       width: 48px;
@@ -1713,6 +1721,10 @@ button:focus {
     align-items: center;
     padding-left: 10px;
     margin-bottom: 28px;
+
+    @include respond-to(xs) {
+      font-size: 15px;
+    }
 
     span {
       position: absolute;

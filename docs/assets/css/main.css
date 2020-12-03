@@ -2200,6 +2200,12 @@ button:focus {
   margin-bottom: 94px;
 }
 
+@media (min-width: 0px) and (max-width: 767px) {
+  .interest-general .general-title {
+    margin-bottom: 30px;
+  }
+}
+
 .interest-general .interest-general__img {
   margin-bottom: 64px;
   width: 100%;
@@ -2216,6 +2222,12 @@ button:focus {
   padding-bottom: 20px;
   position: relative;
   margin-bottom: 32px;
+}
+
+@media (min-width: 0px) and (max-width: 767px) {
+  .interest-general .interest-general__title {
+    font-size: 20px;
+  }
 }
 
 .interest-general .interest-general__title span {
@@ -2263,6 +2275,12 @@ button:focus {
   align-items: center;
   padding-left: 10px;
   margin-bottom: 28px;
+}
+
+@media (min-width: 0px) and (max-width: 767px) {
+  .interest-general .interest-general__subtitle {
+    font-size: 15px;
+  }
 }
 
 .interest-general .interest-general__subtitle span {
