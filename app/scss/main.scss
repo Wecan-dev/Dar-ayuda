@@ -390,10 +390,11 @@ button:focus {
 
 .dropdown-menu {
   text-align: initial;
+  background: transparent;
 
   a {
     text-align: start;
-    color: $green;
+    color: rgba(255, 255, 255, .4);
   }
 }
 
@@ -1336,41 +1337,65 @@ button:focus {
       width: 100%;
     }
   }
+}
 
-  .about-politics__list {
-    list-style: none;
-    padding-left: 0;
-    margin-bottom: 29px;
+.about-politics__list {
+  list-style: none;
+  padding-left: 0;
+  margin-bottom: 29px;
 
-    li {
-      position: relative;
-      padding-left: 24px;
-      display: flex;
-      margin-bottom: 19px;
-      align-items: flex-start;
+  li {
+    position: relative;
+    padding-left: 24px;
+    display: flex;
+    margin-bottom: 19px;
+    align-items: flex-start;
 
-      &:before {
-        content: "";
-        background-image: url('../img/nuestra-empresa/order.png');
-        background-size: contain;
-        background-repeat: no-repeat;
-        width: 15px;
-        height: 11px;
-        position: absolute;
-        left: 0;
-        top: 5px;
-      }
+    &:before {
+      content: "";
+      background-image: url('../img/nuestra-empresa/order.png');
+      background-size: contain;
+      background-repeat: no-repeat;
+      width: 15px;
+      height: 11px;
+      position: absolute;
+      left: 0;
+      top: 5px;
     }
   }
 }
 
-.banne-small {
+.banner-small {
   height: 462px;
   position: relative;
 
   .main-banner__rrss {
     bottom: 35px;
     right: 131px;
+
+    @include respond-to(xs) {
+      bottom: 16px;
+      right: 16px;
+    }
+  }
+
+  @include respond-to(xs) {
+    margin-top: 142px;
+    height: 204px;
+  }
+
+  .banner-small__img {
+    position: absolute;
+    z-index: -1;
+    height: 100%;
+    top: 0;
+
+
+
+    img {
+      width: 100%;
+      height: 100%;
+    }
   }
 
   .banner-small__title {
@@ -1381,10 +1406,14 @@ button:focus {
     line-height: normal;
     letter-spacing: normal;
     color: #ffffff;
+
+    @include respond-to(xs) {
+      font-size: 25px;
+    }
   }
 
   .banner-small__text {
-    position: absolute;
+    // position: absolute;
     padding-left: 130px;
     top: 0;
     display: flex;
@@ -1393,6 +1422,11 @@ button:focus {
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, .73);
+
+    @include respond-to(xs) {
+      padding: 25px;
+      align-items: center;
+    }
   }
 }
 
@@ -1420,6 +1454,15 @@ button:focus {
   margin-right: 15px;
   margin-left: 15px;
 
+  @include respond-to(xs) {
+    margin: 0;
+    height: 100%;
+  }
+
+  @include respond-to(sm) {
+    height: 100%;
+  }
+
   .about-editorial__title {
     font-size: 30px;
     font-weight: 600;
@@ -1429,10 +1472,26 @@ button:focus {
     letter-spacing: normal;
     color: #00a451;
     margin-bottom: 28px;
+
+    @include respond-to(xs) {
+      font-size: 25px;
+      margin-bottom: 14px;
+
+    }
   }
 
   .about-editorial__body {
     padding: 24px 43px 31px 20px;
+
+    @include respond-to(xs) {
+      padding: 20px 15px;
+
+    }
+
+    @include respond-to(sm) {
+      padding: 24px;
+
+    }
   }
 
   .about-editorial__img {
@@ -1446,9 +1505,34 @@ button:focus {
     }
   }
 
+  .general-description {
+    display: -webkit-box;
+    display: -moz-box;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
+    -moz-box-orient: vertical;
+    overflow: hidden;
+
+    @include respond-to(xs) {
+      -webkit-line-clamp: 2;
+    }
+
+    @include respond-to(sm) {
+      -webkit-line-clamp: 3;
+    }
+  }
+
   .about-editorial__meta {
     display: flex;
     margin-top: 23px;
+
+    @include respond-to(xs) {
+      flex-flow: wrap;
+    }
+
+    @include respond-to(sm) {
+      justify-content: space-between;
+    }
 
     a {
       font-size: 14px;
@@ -1461,6 +1545,10 @@ button:focus {
       display: flex;
       align-items: center;
       margin-right: 13px;
+
+      @include respond-to(sm) {
+        margin-right: 0;
+      }
     }
 
     img {
@@ -1476,6 +1564,10 @@ button:focus {
   background-color: rgba(0, 164, 81, .96);
   height: 175px;
   position: relative;
+
+  @include respond-to(xs) {
+    height: 100%;
+  }
 
   h2 {
     font-size: 30px;
@@ -1498,6 +1590,26 @@ button:focus {
     align-items: center;
     padding: 0 248px;
     height: 100%;
+
+    @include respond-to(xs) {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      height: 100%;
+      padding: 23px;
+    }
+
+    @include respond-to(sm) {
+      padding: 20px;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    @include respond-to(md) {
+      padding: 20px;
+      flex-direction: column;
+      justify-content: center;
+    }
   }
 
   .about-news__img {
@@ -1523,6 +1635,98 @@ button:focus {
   }
 }
 
+.interest-general {
+  .padding-top-bottom {
+    padding-top: 83px;
+    padding-bottom: 80px;
+  }
+
+  .padding-right-left {
+    padding-left: 165px;
+    padding-right: 172px;
+  }
+
+  .general-title {
+    margin-bottom: 94px;
+  }
+
+  .interest-general__img {
+    margin-bottom: 64px;
+    width: 100%;
+  }
+
+  .interest-general__title {
+    font-size: 25px;
+    font-weight: 600;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    color: #000000;
+    padding-bottom: 20px;
+    position: relative;
+    margin-bottom: 32px;
+
+    span {
+      width: 48px;
+      height: 4px;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      background-color: #00a451;
+    }
+  }
+
+  .interest-general__description {
+    font-size: 14px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    color: #6e7379;
+    margin-bottom: 20px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding-left: 10px;
+
+    span {
+      position: absolute;
+      width: 5px;
+      left: 0;
+      height: 15px;
+      background-color: #00a451;
+    }
+  }
+
+  .interest-general__subtitle {
+    font-size: 20px;
+    font-weight: 600;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    color: #000000;
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding-left: 10px;
+    margin-bottom: 28px;
+
+    span {
+      position: absolute;
+      left: 0;
+      width: 4px;
+      height: 14px;
+      background: #00a451;
+    }
+  }
+
+  .general-description {
+    margin-bottom: 29px;
+  }
+}
 
 
 

@@ -208,10 +208,9 @@ $('.about-editorial__carousel').slick({
       settings: {
         slidesToShow: 1,
         slidesToScroll: 1,
-        dots: false,
         arrows: false,
-        autoplay: true,
-        autoplaySpeed: 2000,
+        // autoplay: true,
+        // autoplaySpeed: 2000,
       }
     }
   ]
