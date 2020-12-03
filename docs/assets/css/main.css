@@ -1335,7 +1335,7 @@ button:focus {
 
 .main-footer .padding-right-left {
   padding-left: 87px;
-  padding-right: 87px;
+  padding-right: 134px;
 }
 
 .main-footer .padding-top-bottom {
@@ -1344,8 +1344,8 @@ button:focus {
 }
 
 .main-footer .container-grid {
-  grid-template-columns: repeat(4, 1fr);
-  gap: 6rem;
+  grid-template-columns: 1fr 240px 240px 150px;
+  gap: 104px;
 }
 
 @media (min-width: 0px) and (max-width: 767px) {
@@ -1358,6 +1358,13 @@ button:focus {
 @media (min-width: 768px) and (max-width: 991px) {
   .main-footer .container-grid {
     grid-template-columns: 100%;
+  }
+}
+
+@media (min-width: 992px) and (max-width: 1199px) {
+  .main-footer .container-grid {
+    grid-template-columns: 1fr 1fr 1fr auto;
+    gap: 50px;
   }
 }
 
@@ -1502,8 +1509,8 @@ button:focus {
 
 .main-about .main-about__dotted {
   position: absolute;
-  top: 110px;
-  left: 142px;
+  top: 118px;
+  left: 149px;
   width: 150px;
   height: 150px;
   object-fit: contain;
@@ -2195,6 +2202,20 @@ button:focus {
   position: relative;
 }
 
+.interest-general .interest-general__remember {
+  margin-top: 41px;
+  font-size: 14px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  color: #6d7278;
+  padding-left: 10px;
+  border-left: 5px solid #00a451;
+  margin-bottom: 14px;
+}
+
 .interest-general .padding-top-bottom {
   padding-top: 83px;
   padding-bottom: 80px;
@@ -2274,6 +2295,7 @@ button:focus {
   position: absolute;
   width: 5px;
   left: 0;
+  top: 3px;
   height: 15px;
   background-color: #00a451;
 }
