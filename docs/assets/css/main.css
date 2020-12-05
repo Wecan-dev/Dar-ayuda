@@ -2836,6 +2836,81 @@ button:focus {
   object-fit: contain;
 }
 
+.portfolio-general .padding-right-left {
+  padding-left: 214px;
+  padding-right: 209px;
+}
+
+.portfolio-general .padding-top-bottom {
+  padding-bottom: 92px;
+  padding-top: 85px;
+}
+
+.portfolio-general .about-politics__list {
+  margin-bottom: 0;
+}
+
+.portfolio-general .about-politics__list li {
+  margin-bottom: 14px;
+}
+
+.portfolio-general .about-politics__list li:last-child {
+  margin-bottom: 0;
+}
+
+.portfolio-general .container-grid {
+  gap: 97px;
+  grid-template-columns: 206px 1fr;
+  margin-top: 74px;
+}
+
+.portfolio-general .portfolio-general__img {
+  margin-bottom: 31px;
+  width: 100%;
+  object-fit: cover;
+}
+
+.portfolio-general .portfolio-general__content .general-title {
+  font-size: 25px;
+  margin-bottom: 21px;
+}
+
+.portfolio-general .main-portfolio__item {
+  margin-bottom: 65px;
+}
+
+.portfolio-general .general-description {
+  margin-bottom: 27px;
+}
+
+.portfolio-general .portfolio-general__list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 57px;
+}
+
+.portfolio-general .portfolio-general__description {
+  font-size: 14px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  color: #6d7278;
+  padding-left: 22px;
+  position: relative;
+  margin-bottom: 27px;
+}
+
+.portfolio-general .portfolio-general__description span {
+  width: 5px;
+  height: 54px;
+  background-color: #00a451;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
 .main-powered {
   position: relative;
   padding-top: 19px;
