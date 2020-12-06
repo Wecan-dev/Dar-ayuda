@@ -2864,6 +2864,19 @@ button:focus {
   margin-top: 74px;
 }
 
+@media (min-width: 0px) and (max-width: 767px) {
+  .portfolio-general .container-grid {
+    gap: 20px;
+    grid-template-columns: 100%;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  .portfolio-general .container-grid {
+    gap: 30px;
+  }
+}
+
 .portfolio-general .portfolio-general__img {
   margin-bottom: 31px;
   width: 100%;
@@ -2879,6 +2892,12 @@ button:focus {
   margin-bottom: 65px;
 }
 
+@media (min-width: 0px) and (max-width: 767px) {
+  .portfolio-general .main-portfolio__item {
+    margin-bottom: 37px;
+  }
+}
+
 .portfolio-general .general-description {
   margin-bottom: 27px;
 }
@@ -2887,6 +2906,24 @@ button:focus {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 57px;
+}
+
+@media (min-width: 0px) and (max-width: 767px) {
+  .portfolio-general .portfolio-general__list {
+    grid-template-columns: 100%;
+    gap: 20px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  .portfolio-general .portfolio-general__list {
+    grid-template-columns: 100%;
+    gap: 20px;
+  }
+}
+
+.portfolio-general .portfolio-general__list--gap {
+  gap: 32px;
 }
 
 .portfolio-general .portfolio-general__description {

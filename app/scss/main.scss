@@ -2271,6 +2271,15 @@ button:focus {
     gap: 97px;
     grid-template-columns: 206px 1fr;
     margin-top: 74px;
+
+    @include respond-to(xs) {
+      gap: 20px;
+      grid-template-columns: 100%;
+    }
+
+    @include respond-to(sm) {
+      gap: 30px;
+    }
   }
 
   .portfolio-general__img {
@@ -2288,6 +2297,11 @@ button:focus {
 
   .main-portfolio__item {
     margin-bottom: 65px;
+
+    @include respond-to(xs) {
+      margin-bottom: 37px;
+
+    }
   }
 
   .general-description {
@@ -2298,7 +2312,22 @@ button:focus {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 57px;
+
+    @include respond-to(xs) {
+      grid-template-columns: 100%;
+      gap: 20px;
+    }
+
+    @include respond-to(sm) {
+      grid-template-columns: 100%;
+      gap: 20px;
+    }
   }
+
+  .portfolio-general__list--gap {
+    gap: 32px;
+  }
+
 
   .portfolio-general__description {
     font-size: 14px;
@@ -2322,7 +2351,6 @@ button:focus {
     }
   }
 }
-
 
 
 
