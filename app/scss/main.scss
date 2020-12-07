@@ -1020,6 +1020,10 @@ button:focus {
     @include respond-to(xs) {
       grid-template-columns: 100%;
     }
+
+    @include respond-to(sm) {
+      grid-template-columns: 100%;
+    }
   }
 
   .main-register__img {
@@ -1890,10 +1894,10 @@ button:focus {
     }
 
     img {
-      width: 20px;
-      height: 17px;
+      width: 20px !important;
+      height: 17px !important;
       margin-right: 17px;
-      object-fit: contain;
+      object-fit: contain !important;
     }
   }
 }
@@ -2462,7 +2466,6 @@ button:focus {
     @include respond-to(md) {
       grid-template-columns: 300px 1fr;
     }
-
   }
 
   .about-blog__item {
@@ -2649,7 +2652,128 @@ button:focus {
   .interest-general__remember {
     margin-top: 0;
   }
+
+
 }
+
+.search-content {
+  .container-grid {
+    grid-template-columns: 321px 1fr;
+    gap: 63px;
+
+    @include respond-to(xs) {
+      grid-template-columns: 100%;
+    }
+
+    @include respond-to(sm) {
+
+      grid-template-columns: 282px 1fr;
+      gap: 32px;
+    }
+
+  }
+
+  .general-title {
+    margin-bottom: 65px;
+  }
+
+}
+
+.search-single {
+  padding: 18px 35px 37px 37px;
+  border-radius: 10px;
+  border: solid 1px #e1e1e0;
+  height: max-content;
+
+  .search-general__text ul {
+    display: block;
+
+    li {
+      margin-bottom: 17px;
+    }
+
+
+  }
+
+  .search-general__text {
+    margin-bottom: 42px;
+  }
+
+  .search-general__img {
+    display: flex;
+    align-items: center;
+    margin-bottom: 23px;
+
+    @include respond-to(xs) {
+      flex-direction: column;
+      margin-bottom: 0;
+    }
+
+    img {
+      margin-right: 17px;
+
+      @include respond-to(xs) {
+        padding-left: 0;
+        margin-left: 0;
+        margin-bottom: 15px;
+      }
+    }
+  }
+
+  .general-btn__green {
+    margin-top: 35px;
+
+  }
+
+  .search-general__list {
+    .search-general__text {
+      width: 100%;
+    }
+
+    .search-general__item {
+      padding: 11px 24px 11px 31px;
+    }
+
+    ul {
+      width: 100%;
+    }
+
+    .search-general__body {
+      width: 100%;
+      display: block;
+    }
+
+    li {
+      img {
+        margin-right: 6px;
+      }
+    }
+
+    .search-general__img {
+      display: flex;
+      margin-bottom: 7px;
+
+      @include respond-to(xs) {
+        margin-bottom: 0;
+      }
+
+      img {
+        margin-right: 11px;
+
+        @include respond-to(xs) {
+          width: 74px;
+          height: 100%;
+        }
+      }
+    }
+
+    .search-general__title {
+      font-size: 15px;
+
+    }
+  }
+}
+
 
 .main-powered {
   position: relative;
