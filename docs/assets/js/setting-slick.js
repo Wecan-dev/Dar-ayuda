@@ -181,7 +181,7 @@ $('.main-models__carousel').slick({
 });
 
 
-$('.about-editorial__carousel').slick({
+$('.about-blog__carousel').slick({
   infinite: true,
   slidesToShow: 3,
   slidesToScroll: 3,

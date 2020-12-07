@@ -50,7 +50,7 @@
                 %a.dropdown-item{:href => "portafolio-de-servicios-1.html"} Proceso de selección
                 %a.dropdown-item{:href => "portafolio-de-servicios-2.html"} Proceso de contratación
                 %a.dropdown-item{:href => "portafolio-de-servicios-3.html"} Trabajador esencia del servicio
-                %a.dropdown-item{:href => "portafolio-de-servicios-4.html"} Somos sus aliados estratégicos 
+                %a.dropdown-item{:href => "portafolio-de-servicios-4.html"} Somos sus aliados estratégicos                
             %li.nav-item.dropdown
               %a#navbarDropdown.nav-link.dropdown-toggle{"aria-expanded" => "false", "aria-haspopup" => "true", "data-toggle" => "dropdown", :href => "#", :role => "button"}
                 De su interés
@@ -68,64 +68,24 @@
               %a.nav-link.nav-link-p{:href => 'contacto.html',:data-toggle => 'offcanvas' } 
                 Contacto
    
-    %section.banner-small
-      .main-banner__rrss
-        %a{:href=>'', :target=>"_blank"} 
-          %img{:src=>"assets/img/fb_2.png"}/    
-        %a{:href=>'', :target=>"_blank"}
-          %img{:src=>"assets/img/ig_2.png"}/ 
-      %img.banner-small__img{:src=>"assets/img/portafolio/image_2.png" }/
+    %section.banner-small.banner-small--404
+      %img.banner-small__img{:src=>"assets/img/404-image.png" }/
       .banner-small__text
-        %h2.banner-small__title
-          Portafólio de servicios
-    %section.portfolio-general
-      .padding-right-left.padding-top-bottom
-        .general-titlexs.general-titlexs--center
-          Bienvenidos a
-        %h2.general-title.general-title
-          Proceso de contratación
-          %span 
-        %p.general-description.general-description--center
-          No tienes que reinventar las ruedas, ¿verdad? Cuando confía la tarea de lanzar una estrategia para su última campaña de marketing, obtendrá muchos módulos probados que se han entregado consistentemente en diferentes industrias.
-        .container-grid
-          .portfolio-general__sidebar
-            %a.main-portfolio__item{:href=>"portafolio-de-servicios-1.html"}
-              .main-portfolio__img
-                %img{:src=>"assets/img/hand.png" }/
-              .main-portfolio__title 
-                Proceso de selección
-            %a.main-portfolio__item{:href=>"portafolio-de-servicios-2.html"}
-              .main-portfolio__img
-                %img{:src=>"assets/img/deal.png" }/
-              .main-portfolio__title 
-                Proceso de contratación
-            %a.main-portfolio__item{:href=>"portafolio-de-servicios-3.html"}
-              .main-portfolio__img
-                %img{:src=>"assets/img/support.png" }/
-              .main-portfolio__title 
-                Trabajador esencia del servicio
-            %a.main-portfolio__item{:href=>"portafolio-de-servicios-4.html"}
-              .main-portfolio__img
-                %img{:src=>"assets/img/strategy.png" }/
-              .main-portfolio__title 
-                Somos sus aliados estratégicos 
-          .portfolio-general__content
-            %img.portfolio-general__img{:src=>"assets/img/portafolio/image_3.png"}
-            %h2.general-title.general-title--start
-              Objetivo
-              %span 
-            %p.general-description
-              Iniciar y mantener una adecuada relación laboral entre el trabajador y Dar Ayuda Temporal S.A, acordes con los requisitos legales, los de la empresa usuaria y los de la organización.
-            %p.portfolio-general__description
-              Una vez aprobado el candidato a vincular, se procede con la firma de contrato, previa inducción referida a la Organización, a la Empresa usuaria y a las condiciones contractuales; las afiliaciones a todo el Sistema general de Seguridad Social SGSS y la inducción al marco general de Salud ocupacional.
-              %br/
-              %br/
-              Como verdaderos empleadores que somos, DAR AYUDA TEMPORAL S.A. es responsable de todas las prestaciones económicas como son los Salarios, la Seguridad social, la liquidación de prestaciones sociales, Bonificaciones y demás conceptos que la Empresa Usuaria considere.
-              %br/
-              %br/
-              El Contrato de trabajo y la relación laboral están regidos por la Ley 50/90.
-              %span           
-        
+    %section.error-404
+      .padding-top-bottom.padding-right-left
+        %h2.error-404__title
+          LO SENTIMOS
+        %h2.error-404__subtitle
+          no podemos encontrar la página que estás buscando
+        .d-flex.justify-content-center
+          %img{:src=>"assets/img/404.png" }/
+        %p
+          te llevamos de regreso
+        .d-flex.justify-content-center
+          %a.general-btn__green{:href=>'index.html'} Regresar a Inicio
+      
+      
+
     %footer.main-footer
       .padding-right-left.padding-top-bottom
         .container-grid

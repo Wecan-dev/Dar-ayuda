@@ -1441,7 +1441,7 @@ button:focus {
   }
 }
 
-.about-editorial {
+.about-blog {
   .padding-top-bottom {
     padding-top: 0;
     padding-bottom: 48px;
@@ -1452,14 +1452,14 @@ button:focus {
     padding-right: 20px;
   }
 
-  .about-editorial__carousel {
+  .about-blog__carousel {
     padding-bottom: 76px;
     margin-top: 62px;
     margin-bottom: 0 !important;
   }
 }
 
-.about-editorial__item {
+.about-blog__item {
   border: solid 1px #dadada;
   height: 487px;
   margin-right: 15px;
@@ -1474,7 +1474,7 @@ button:focus {
     height: 100%;
   }
 
-  .about-editorial__title {
+  .about-blog__title {
     font-size: 30px;
     font-weight: 600;
     font-stretch: normal;
@@ -1491,7 +1491,7 @@ button:focus {
     }
   }
 
-  .about-editorial__body {
+  .about-blog__body {
     padding: 24px 43px 31px 20px;
 
     @include respond-to(xs) {
@@ -1505,7 +1505,7 @@ button:focus {
     }
   }
 
-  .about-editorial__img {
+  .about-blog__img {
     height: 50%;
     display: block;
 
@@ -1533,7 +1533,7 @@ button:focus {
     }
   }
 
-  .about-editorial__meta {
+  .about-blog__meta {
     display: flex;
     margin-top: 23px;
 
@@ -2352,7 +2352,192 @@ button:focus {
   }
 }
 
+.banner-small--404 {
+  height: 228px;
 
+  @include respond-to(xs) {
+    height: 77px;
+  }
+}
+
+.error-404 {
+  .general-btn__green {
+    padding: 13px 14px;
+  }
+
+  .padding-top-bottom {
+    padding-top: 110px;
+    padding-bottom: 110px;
+  }
+
+
+  .error-404__title {
+    font-size: 36px;
+    font-weight: 500;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    color: #000000;
+    text-transform: uppercase;
+    text-align: center;
+    margin-bottom: 25px;
+
+    @include respond-to(xs) {
+      font-size: 25px;
+    }
+  }
+
+  .error-404__subtitle {
+    font-size: 30px;
+    font-weight: 500;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    color: #000000;
+    text-transform: uppercase;
+    text-align: center;
+    margin-bottom: 62px;
+
+    @include respond-to(xs) {
+      font-size: 20px;
+    }
+  }
+
+  img {
+    margin-bottom: 79px;
+    height: 100%;
+    object-fit: contain;
+
+    @include respond-to(xs) {
+      width: 100%;
+    }
+  }
+
+  p {
+    font-size: 30px;
+    font-weight: 600;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: 2.16px;
+    color: #000000;
+    text-transform: uppercase;
+    text-align: center;
+    margin-bottom: 74px;
+
+    @include respond-to(xs) {
+      font-size: 20px;
+    }
+  }
+}
+
+.blog-all {
+  .padding-top-bottom {
+    padding-top: 85px;
+    padding-bottom: 87px;
+  }
+
+  .padding-right-left {
+    padding-left: 112px;
+    padding-right: 108px;
+  }
+
+  .container-grid {
+    grid-template-columns: 375px 1fr;
+    gap: 65px;
+  }
+
+  .about-blog__item {
+    height: auto;
+    margin-bottom: 39px;
+
+    .about-blog__body {
+      padding: 20px 56px 26px 16px;
+    }
+
+    .about-blog__title {
+      margin-bottom: 25px;
+    }
+
+    .about-blog__img {
+      height: 100%;
+    }
+
+  }
+}
+
+.blog-all__card {
+  padding: 17px 26px 25px 21px;
+  border-radius: 10px;
+  box-shadow: 0 4px 14px 0 #dee2e6;
+  background-color: #ffffff;
+  margin-bottom: 43px;
+
+  .blog-all__form {
+    border-radius: 19px;
+    border: solid 1px #dee2e6;
+    background-color: #fdfdfd;
+    display: flex;
+    padding: 9px 21px 9px 22px;
+
+    a {
+      margin-left: 5px;
+    }
+
+    img {
+      width: 15px;
+      height: 15px;
+
+    }
+
+    input {
+      border: none;
+      width: 100%;
+      background: transparent;
+      font-size: 14px;
+      font-weight: normal;
+      font-stretch: normal;
+      font-style: normal;
+      line-height: normal;
+      letter-spacing: normal;
+      color: #6d7278;
+
+      &::placeholder {
+        font-size: 14px;
+        font-weight: normal;
+        font-stretch: normal;
+        font-style: normal;
+        line-height: normal;
+        letter-spacing: normal;
+        color: #6d7278;
+      }
+    }
+  }
+
+  .general-title {
+    font-size: 25px;
+  }
+
+  ul {
+    list-style: none;
+    padding-left: 0;
+
+    li {
+      margin-bottom: 17px;
+    }
+
+    a {
+      transition: .3s;
+
+      &:hover {
+        transition: .3s;
+        color: #00a451;
+      }
+    }
+  }
+}
 
 
 .main-powered {
