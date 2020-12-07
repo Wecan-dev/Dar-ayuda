@@ -3333,50 +3333,50 @@ button:focus {
   margin-top: 35px;
 }
 
-.search-single .search-general__list .search-general__text {
+.search-content .search-general__list .search-general__text {
   width: 100%;
 }
 
-.search-single .search-general__list .search-general__item {
+.search-content .search-general__list .search-general__item {
   padding: 11px 24px 11px 31px;
 }
 
-.search-single .search-general__list ul {
+.search-content .search-general__list ul {
   width: 100%;
 }
 
-.search-single .search-general__list .search-general__body {
+.search-content .search-general__list .search-general__body {
   width: 100%;
   display: block;
 }
 
-.search-single .search-general__list li img {
+.search-content .search-general__list li img {
   margin-right: 6px;
 }
 
-.search-single .search-general__list .search-general__img {
+.search-content .search-general__list .search-general__img {
   display: flex;
   margin-bottom: 7px;
 }
 
 @media (min-width: 0px) and (max-width: 767px) {
-  .search-single .search-general__list .search-general__img {
+  .search-content .search-general__list .search-general__img {
     margin-bottom: 0;
   }
 }
 
-.search-single .search-general__list .search-general__img img {
+.search-content .search-general__list .search-general__img img {
   margin-right: 11px;
 }
 
 @media (min-width: 0px) and (max-width: 767px) {
-  .search-single .search-general__list .search-general__img img {
+  .search-content .search-general__list .search-general__img img {
     width: 74px;
     height: 100%;
   }
 }
 
-.search-single .search-general__list .search-general__title {
+.search-content .search-general__list .search-general__title {
   font-size: 15px;
 }
 
