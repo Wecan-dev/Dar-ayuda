@@ -276,6 +276,8 @@ button:focus {
     transition: .3s ease-in-out;
     background-color: rgba(255, 255, 255, 0.56);
     color: #000;
+    border: solid 1px transparent;
+
   }
 
   @include respond-to(xs) {
@@ -358,6 +360,13 @@ button:focus {
   @include respond-to(xs) {
     justify-content: center;
     margin: .5rem 0;
+    flex-direction: column;
+  }
+
+  @include respond-to(sm) {
+    justify-content: center;
+    margin: .5rem 0;
+    flex-direction: column;
   }
 
   & a {
@@ -399,6 +408,16 @@ button:focus {
   a {
     text-align: start;
     color: rgba(255, 255, 255, .4);
+
+    @include respond-to(xs) {
+      color: #007844;
+      text-align: center;
+    }
+
+    @include respond-to(sm) {
+      color: #fff;
+      text-align: center;
+    }
   }
 }
 
@@ -449,7 +468,7 @@ button:focus {
     transition: .3s ease-in-out;
 
     @include respond-to(sm) {
-      color: $white;
+      color: #007844;
     }
   }
 
@@ -1049,8 +1068,8 @@ button:focus {
 
   .main-register__dotted {
     position: absolute;
-    top: 19px;
-    right: 0;
+    top: 24px;
+    right: 2px;
 
     @include respond-to(xs) {
       object-fit: contain;
@@ -1167,7 +1186,7 @@ button:focus {
 
   .main-search__dotted {
     position: absolute;
-    right: 0;
+    right: 4px;
     top: 105px;
     bottom: 87px;
     height: 118px;
@@ -1237,6 +1256,18 @@ button:focus {
     right: 107px;
     z-index: -1;
     top: 47px;
+
+    @include respond-to(xs) {
+      display: none;
+    }
+
+    @include respond-to(md) {
+      right: 0;
+    }
+
+    @include respond-to(sm) {
+      right: 0;
+    }
   }
 
   .container-grid {
@@ -1318,10 +1349,23 @@ button:focus {
     right: 31px;
     z-index: -1;
     top: -43px;
+
+    @include respond-to(xs) {
+      display: none;
+    }
+
+    @include respond-to(md) {
+      right: 0;
+      top: 0;
+    }
+
+    @include respond-to(sm) {
+      display: none;
+    }
   }
 
   .padding-top-bottom {
-    padding-top: 55px;
+    padding-top: 0;
     padding-bottom: 33px;
   }
 
@@ -1600,6 +1644,11 @@ button:focus {
     }
   }
 
+  .main-general__button {
+    width: 162px;
+    height: 44px;
+  }
+
   .about-news__flex {
     display: flex;
     justify-content: space-between;
@@ -1638,16 +1687,19 @@ button:focus {
   .about-news__dotted {
     position: absolute;
     left: 5px;
-    top: -68px;
-    width: 59px;
+    top: -60px;
+    width: 54px;
+    object-fit: contain;
     height: 118px;
   }
 
   .about-news__dotted--right {
     left: initial;
     right: 5px;
-    bottom: -68px;
+    bottom: -70px;
     top: initial;
+    width: 54px;
+    object-fit: contain;
   }
 }
 
@@ -1690,14 +1742,26 @@ button:focus {
 
   .interest-general__img {
     margin-bottom: 64px;
-    width: 100%;
+    width: 99%;
   }
 
   .interest-general__dotted {
     position: absolute;
-    top: 209px;
-    right: 125px;
+    top: 200px;
+    right: 140px;
     z-index: -1;
+
+    @include respond-to(xs) {
+      display: none;
+    }
+
+    @include respond-to(sm) {
+      right: 0;
+    }
+
+    @include respond-to(md) {
+      right: 0;
+    }
   }
 
   .interest-general__title {
@@ -1984,6 +2048,10 @@ button:focus {
     top: 29px;
     left: 124px;
     z-index: -1;
+
+    @include respond-to(xs) {
+      display: none;
+    }
   }
 
   .contact-info__dotted--bottom {
@@ -2291,7 +2359,7 @@ button:focus {
 
   .portfolio-general__img {
     margin-bottom: 31px;
-    width: 100%;
+    width: 99%;
     object-fit: cover;
   }
 
@@ -2470,7 +2538,7 @@ button:focus {
 
   .about-blog__item {
     height: auto;
-    margin-bottom: 41px;
+    margin-bottom: 50px;
     margin-left: 0;
     margin-right: 0;
 
@@ -2517,7 +2585,7 @@ button:focus {
   border-radius: 10px;
   box-shadow: 0 4px 14px 0 #dee2e6;
   background-color: #ffffff;
-  margin-bottom: 45px;
+  margin-bottom: 41px;
 
   .blog-all__form {
     border-radius: 19px;
