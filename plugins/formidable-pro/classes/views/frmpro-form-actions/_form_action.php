@@ -1,3 +1,8 @@
+<?php
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'You are not allowed to call this page directly.' );
+}
+?>
 <?php if ( ! empty($form_fields) ) { ?>
 	<span class="frm_add_logic_link <?php echo esc_attr( $show_logic ? ' frm_hidden' : '' ); ?>" id="logic_link_<?php echo esc_attr( $action_key ) ?>">
 		<a href="javascript:void(0)" class="frm_add_form_logic frm_add_logic_row frm_add_logic_link" data-emailkey="<?php echo esc_attr( $action_key ); ?>" id="email_logic_<?php echo esc_attr( $action_key ); ?>">

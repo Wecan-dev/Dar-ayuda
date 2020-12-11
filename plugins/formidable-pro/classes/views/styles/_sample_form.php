@@ -1,4 +1,8 @@
-
+<?php
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'You are not allowed to call this page directly.' );
+}
+?>
 <div class="frm_form_field frm_section_heading form-field frm_half frm_first">
 	<h3 class="frm_pos_top frm_section_spacing"><?php esc_html_e( 'Repeatable Section', 'formidable-pro' ); ?></h3>
     <div>
@@ -69,12 +73,13 @@
 		<?php esc_html_e( 'Toggle', 'formidable-pro' ); ?>
 	</label>
 	<div>
-		<span class="frm_off_label frm_switch_opt">No</span>
-		<label class="frm_switch">
-			<input type="checkbox" id="field_toggle" value="Yes" />
-			<span class="frm_slider"></span>
+		<label class="frm_switch_block">
+			<span class="frm_off_label frm_switch_opt">No</span>
+			<input type="checkbox" value="Yes" data-off="No" data-invmsg="I am trading in a car is invalid" />
+			<span class="frm_switch">
+				<span class="frm_slider"></span>
+			</span><span class="frm_on_label frm_switch_opt">Yes</span>
 		</label>
-		<span class="frm_on_label frm_switch_opt">Yes</span>
 	</div>
 </div>
 
@@ -83,8 +88,12 @@
 		<?php esc_html_e( 'Slider', 'formidable-pro' ); ?>
 	</label>
 	<div class="frm_range_container">
-		<input type="range" id="field_slider" value="150" min="100" max="200" step="1" />
 		<span class="frm_range_value">150</span>
+		<input type="range" id="field_slider" value="150" min="100" max="200" step="1" />
+		<div class="frm_description">
+			<span class="frm_range_min">100</span>
+			<span class="frm_range_max">200</span>
+		</div>
 	</div>
 </div>
 

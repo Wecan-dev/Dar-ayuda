@@ -1,3 +1,8 @@
+<?php
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'You are not allowed to call this page directly.' );
+}
+?>
 <div class="frm_grid_container">
 	<?php $field_obj->show_get_options( $field ); ?>
 
@@ -11,7 +16,7 @@
 				$row_key = 0;
 				$selected_field = '';
 				include( FrmProAppHelper::plugin_path() . '/classes/views/lookup-fields/back-end/watch-row.php' );
-			} else {
+			} elseif ( isset( $field['watch_lookup'] ) ) {
 				$field_id = $field['id'];
 				foreach ( $field['watch_lookup'] as $row_key => $selected_field ) {
 					include( FrmProAppHelper::plugin_path() . '/classes/views/lookup-fields/back-end/watch-row.php' );
@@ -26,7 +31,7 @@
 </div>
 <p>
 	<label for="get_most_recent_value_<?php echo absint( $field['id'] ); ?>">
-		<input type="checkbox" value="1" name="field_options[get_most_recent_value_<?php echo absint( $field['id'] ); ?>]" <?php checked( $field['get_most_recent_value'], 1 ); ?> id="get_most_recent_value_<?php echo absint( $field['id'] ); ?>" />
+		<input type="checkbox" value="1" name="field_options[get_most_recent_value_<?php echo absint( $field['id'] ); ?>]" <?php checked( isset( $field['get_most_recent_value'] ) ? $field['get_most_recent_value'] : 0, 1 ); ?> id="get_most_recent_value_<?php echo absint( $field['id'] ); ?>" />
 		<?php esc_html_e( 'Get only the most recent value', 'formidable-pro' ); ?>
 	</label>
 </p>

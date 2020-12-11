@@ -1,5 +1,9 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'You are not allowed to call this page directly.' );
+}
+
 /**
  * @since 3.0
  */
@@ -75,21 +79,21 @@ class FrmProFieldToggle extends FrmFieldType {
 		$input = '<div>';
 
 		$data = '';
+
+		$input .= '<label class="frm_switch_block">' . "\r\n";
 		if ( $show_labels && ! empty( $off_label ) ) {
 			$data = ' data-off="' . esc_attr( $off_label ) . '"';
 			$input .= '<span class="frm_off_label frm_switch_opt">' . $off_label . '</span>';
 		}
 
-		$input .= '<label class="frm_switch">' . "\r\n";
 		$input .= '<input type="checkbox" name="' . esc_attr( $args['field_name'] ) . '[]" id="' . esc_attr( $args['html_id'] ) . '" value="' . esc_attr( $on_label ) . '" ' . $checked . $data . $input_html . '/>' . "\r\n";
-
+		$input .= '<span class="frm_switch">' . "\r\n";
 		$input .= '<span class="frm_slider"></span>' . "\r\n";
-		$input .= '</label>';
-
+		$input .= '</span>';
 		if ( $show_labels && $on_label != 1 ) {
 			$input .= '<span class="frm_on_label frm_switch_opt">' . $on_label . '</span>' . "\r\n";
 		}
-
+		$input .= '</label>';
 		$input .= '</div>';
 
 		return $input;

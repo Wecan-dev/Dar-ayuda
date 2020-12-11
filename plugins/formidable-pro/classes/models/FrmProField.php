@@ -1,28 +1,33 @@
 <?php
+
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'You are not allowed to call this page directly.' );
+}
+
 class FrmProField {
 
 	public static function create( $field_data ) {
 
-        if ( $field_data['field_options']['label'] != 'none' ) {
-            $field_data['field_options']['label'] = '';
-        }
+		if ( $field_data['field_options']['label'] != 'none' ) {
+			$field_data['field_options']['label'] = '';
+		}
 
 		self::switch_in_section_field_option( $field_data );
 
 		switch ( $field_data['type'] ) {
-            case 'select':
-                $width = FrmStylesController::get_style_val('auto_width', $field_data['form_id']);
-                $field_data['field_options']['size'] = $width;
-                break;
-            case 'divider':
-                if ( isset($field_data['field_options']['repeat']) && $field_data['field_options']['repeat'] ) {
-                    // create the repeatable form
-                    $field_data['field_options']['form_select'] = self::create_repeat_form( 0, array( 'parent_form_id' => $field_data['form_id'], 'field_name' => $field_data['name'] ) );
-                }
-                break;
-        }
-        return $field_data;
-    }
+			case 'select':
+				$width = FrmStylesController::get_style_val('auto_width', $field_data['form_id']);
+				$field_data['field_options']['size'] = $width;
+				break;
+			case 'divider':
+				if ( isset($field_data['field_options']['repeat']) && $field_data['field_options']['repeat'] ) {
+					// create the repeatable form
+					$field_data['field_options']['form_select'] = self::create_repeat_form( 0, array( 'parent_form_id' => $field_data['form_id'], 'field_name' => $field_data['name'] ) );
+				}
+				break;
+		}
+		return $field_data;
+	}
 
 	/**
 	 * Change the default in_section value to the ID of the section where a new field was dragged and dropped
@@ -59,21 +64,21 @@ class FrmProField {
 		foreach ( $field_options['hide_field'] as $i => $f ) {
 			if ( empty( $f ) ) {
 				unset( $field_options['hide_field'][ $i ], $field_options['hide_field_cond'][ $i ] );
-                if ( isset($field_options['hide_opt']) && is_array($field_options['hide_opt']) ) {
+				if ( isset($field_options['hide_opt']) && is_array($field_options['hide_opt']) ) {
 					unset( $field_options['hide_opt'][ $i ] );
-                }
-            }
-            unset($i, $f);
-        }
+				}
+			}
+			unset($i, $f);
+		}
 
 		if ( $field->type == 'hidden' && isset($field_options['required']) && $field_options['required'] ) {
-            $field_options['required'] = false;
-        } else if ( $field->type == 'file' ) {
-        	self::format_mime_types( $field_options, $field->id );
-        }
+			$field_options['required'] = false;
+		} else if ( $field->type == 'file' ) {
+			self::format_mime_types( $field_options, $field->id );
+		}
 
-        return $field_options;
-    }
+		return $field_options;
+	}
 
 	private static function format_mime_types( &$options, $field_id ) {
 		$file_options = isset( $options['ftypes'] ) ? $options['ftypes'] : array();
@@ -89,65 +94,78 @@ class FrmProField {
 		}
 	}
 
-	public static function duplicate( $values ) {
-        global $frm_duplicate_ids;
-        if ( empty($frm_duplicate_ids) || empty($values['field_options']) ) {
-            return $values;
-        }
+	public static function duplicate( $values, $atts = array() ) {
+		global $frm_duplicate_ids;
+		if ( empty($frm_duplicate_ids) || empty($values['field_options']) ) {
+			return $values;
+		}
 
-        // switch out fields from calculation or default values
+		$is_second_run = isset( $atts['after'] ) ? $atts['after'] : false;
+
+		// switch out fields from calculation or default values
 		$switch_string = array( 'default_value', 'calc' );
-        foreach ( $switch_string as $opt ) {
+		foreach ( $switch_string as $opt ) {
 			if ( ( ! isset( $values['field_options'][ $opt ] ) || empty( $values['field_options'][ $opt ] ) ) &&
 				( ! isset( $values[ $opt ] ) || empty( $values[ $opt ] ) ) ) {
-                continue;
-            }
+				continue;
+			}
 
 			$this_val = isset( $values[ $opt ] ) ? $values[ $opt ] : $values['field_options'][ $opt ];
-            if ( is_array($this_val) ) {
-                continue;
-            }
+			if ( is_array($this_val) ) {
+				continue;
+			}
 
-            $ids = implode( '|', array_keys($frm_duplicate_ids) );
+			$ids = implode( '|', array_keys($frm_duplicate_ids) );
 
 			preg_match_all( '/\[(' . $ids . ')\]/s', $this_val, $matches, PREG_PATTERN_ORDER );
-            unset($ids);
+			unset($ids);
 
-            if ( ! isset($matches[1]) ) {
-                unset($matches);
-                continue;
-            }
+			if ( ! isset($matches[1]) ) {
+				unset($matches);
+				continue;
+			}
 
-            foreach ( $matches[1] as $val ) {
-				$new_val = str_replace( '[' . $val . ']', '[' . $frm_duplicate_ids[ $val ] . ']', $this_val );
-				if ( isset( $values[ $opt ] ) ) {
-					$this_val = $values[ $opt ] = $new_val;
-				} else {
-					$this_val = $values['field_options'][ $opt ] = $new_val;
+			foreach ( $matches[1] as $val ) {
+				if ( $is_second_run && in_array( $val, $frm_duplicate_ids ) ) {
+					// The field id may have already been replaced.
+					continue;
 				}
-                unset($new_val, $val);
-            }
 
-            unset($this_val, $matches);
-        }
+				$this_val = str_replace( '[' . $val . ']', '[' . $frm_duplicate_ids[ $val ] . ']', $this_val );
 
-        // switch out field ids in conditional logic
+				if ( isset( $values[ $opt ] ) ) {
+					$values[ $opt ] = $this_val;
+				} else {
+					$values['field_options'][ $opt ] = $this_val;
+				}
+				unset( $val );
+			}
+
+			unset($this_val, $matches);
+		}
+
+		// switch out field ids in conditional logic
 		if ( isset( $values['field_options']['hide_field'] ) && ! empty( $values['field_options']['hide_field'] ) ) {
 			foreach ( array( 'hide_field_cond', 'hide_opt', 'hide_field' ) as $logic ) {
 				if ( isset( $values['field_options'][ $logic ] ) ) {
-					$values['field_options'][ $logic ] = maybe_unserialize( $values['field_options'][ $logic ] );
+					FrmProAppHelper::unserialize_or_decode( $values['field_options'][ $logic ] );
 				} else {
 					$values['field_options'][ $logic ] = array();
 				}
 			}
 
-            foreach ( $values['field_options']['hide_field'] as $k => $f ) {
+			foreach ( $values['field_options']['hide_field'] as $k => $f ) {
+				if ( $is_second_run && in_array( $f, $frm_duplicate_ids ) ) {
+					// The field id may have already been replaced.
+					continue;
+				}
+
 				if ( isset( $frm_duplicate_ids[ $f ] ) ) {
 					$values['field_options']['hide_field'][ $k ] = $frm_duplicate_ids[ $f ];
 				}
-                unset($k, $f);
-            }
-        }
+				unset($k, $f);
+			}
+		}
 
 		self::switch_out_form_select( $frm_duplicate_ids, $values );
 
@@ -155,8 +173,8 @@ class FrmProField {
 
 		self::switch_ids_for_lookup_settings( $frm_duplicate_ids, $values );
 
-        return $values;
-    }
+		return $values;
+	}
 
 	/**
 	 * Switch out field ids if selected in a Dynamic Field
@@ -231,26 +249,26 @@ class FrmProField {
 	}
 
 	public static function delete( $id ) {
-        $field = FrmField::getOne($id);
+		$field = FrmField::getOne($id);
 		if ( empty( $field ) ) {
 			return;
 		}
 
-        // delete the form this repeating field created
-        self::delete_repeat_field($field);
+		// delete the form this repeating field created
+		self::delete_repeat_field($field);
 
-        //TODO: before delete do something with entries with data field meta_value = field_id
-    }
+		//TODO: before delete do something with entries with data field meta_value = field_id
+	}
 
 	public static function delete_repeat_field( $field ) {
-        if ( ! FrmField::is_repeating_field($field) ) {
-            return;
-        }
+		if ( ! FrmField::is_repeating_field($field) ) {
+			return;
+		}
 
-        if ( isset($field->field_options['form_select']) && is_numeric($field->field_options['form_select']) && $field->field_options['form_select'] != $field->form_id ) {
-            FrmForm::destroy($field->field_options['form_select']);
-        }
-    }
+		if ( isset($field->field_options['form_select']) && is_numeric($field->field_options['form_select']) && $field->field_options['form_select'] != $field->form_id ) {
+			FrmForm::destroy($field->field_options['form_select']);
+		}
+	}
 
 	public static function is_list_field( $field ) {
 		return $field->type == 'data' && ( ! isset( $field->field_options['data_type'] ) || $field->field_options['data_type'] == 'data' || $field->field_options['data_type'] == '' );
@@ -271,9 +289,9 @@ class FrmProField {
 			'name' => $atts['field_name'],
 			'status' => 'published',
 		);
-        $form_values = FrmFormsHelper::setup_new_vars( $form_values );
+		$form_values = FrmFormsHelper::setup_new_vars( $form_values );
 
-        $form_id = (int) FrmForm::create( $form_values );
+		$form_id = (int) FrmForm::create( $form_values );
 
 		return $form_id;
 	}

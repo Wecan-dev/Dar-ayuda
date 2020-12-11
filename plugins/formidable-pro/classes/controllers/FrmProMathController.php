@@ -1,5 +1,9 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'You are not allowed to call this page directly.' );
+}
+
 class FrmProMathController {
 
 	/**
@@ -23,7 +27,10 @@ class FrmProMathController {
 				'thousands_sep' => ',',
 				'error'         => '',
 				'clean'         => 0,
-			), $atts, 'frm-math' );
+			),
+			$atts,
+			'frm-math'
+		);
 
 		$expression = self::get_math_expression_from_shortcode_content( $content, $atts );
 		if ( $expression === '' ) {

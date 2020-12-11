@@ -1,3 +1,8 @@
+<?php
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'You are not allowed to call this page directly.' );
+}
+?>
 <label class="frm_primary_label">
 	<?php esc_html_e( 'Filter by Lookup Fields', 'formidable-pro' ); ?>
 </label>

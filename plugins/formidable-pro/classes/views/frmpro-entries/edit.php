@@ -1,3 +1,8 @@
+<?php
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'You are not allowed to call this page directly.' );
+}
+?>
 <form enctype="multipart/form-data" method="post" id="form_<?php echo esc_attr( $form->form_key ); ?>" class="frm-show-form">
 <div id="form_entries_page" class="frm_wrap frm_single_entry_page">
 	<div class="frm_page_container frm_forms" id="frm_form_<?php echo (int) $form->id; ?>_container">

@@ -1,14 +1,17 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'You are not allowed to call this page directly.' );
+}
 
 class FrmProPostAction extends FrmFormAction {
 
 	public function __construct() {
 		$action_ops = array(
-			'classes'   => 'frm_wordpress_icon frm_icon_font frm-inverse',
-			'color'     => 'rgb(0,160,210)',
-			'limit'     => 1,
-			'priority'  => 40,
-			'event'     => array( 'create', 'update', 'import' ),
+			'classes'     => 'frm_wordpress_icon frm_icon_font frm-inverse',
+			'color'       => 'rgb(0,160,210)',
+			'limit'       => 1,
+			'priority'    => 40,
+			'event'       => array( 'create', 'update', 'import' ),
 			'force_event' => true,
 		);
 
@@ -16,50 +19,19 @@ class FrmProPostAction extends FrmFormAction {
 	}
 
 	public function form( $form_action, $args = array() ) {
-	    global $wpdb;
-
-	    extract($args);
+	    extract( $args );
 
 	    $post_types = FrmProAppHelper::get_custom_post_types();
         if ( ! $post_types ) {
             return;
         }
 
-        $post_type = FrmProFormsHelper::post_type( $args['values']['id'] );
-        $taxonomies = get_object_taxonomies($post_type);
+        $post_type      = FrmProFormsHelper::post_type( $args['values']['id'] );
+        $taxonomies     = get_object_taxonomies($post_type);
         $action_control = $this;
-
-        $echo = true;
-        $form_id = $form->id;
-        $display = false;
-        $displays = array();
-
-        $display_ids = FrmDb::get_col( $wpdb->postmeta, array( 'meta_key' => 'frm_form_id', 'meta_value' => $form_id), 'post_ID' );
-
-        if ( $display_ids ) {
-            $query_args = array(
-                'pm.meta_key' => 'frm_show_count', 'post_type' => 'frm_display',
-				'pm.meta_value' => array( 'dynamic', 'calendar', 'one' ),
-				'p.post_status' => array( 'publish', 'private' ),
-                'p.ID' => $display_ids,
-            );
-            $displays = FrmDb::get_results(
-				$wpdb->posts . ' p LEFT JOIN ' . $wpdb->postmeta . ' pm ON (p.ID = pm.post_ID)', $query_args, 'p.ID, p.post_title', array( 'order_by' => 'p.post_title ASC' )
-            );
-
-            if ( isset($form_action->post_content['display_id']) ) {
-                // get view from settings
-                if ( is_numeric($form_action->post_content['display_id']) ) {
-                    $display = FrmProDisplay::getOne( $form_action->post_content['display_id'], false, true );
-                }
-            } else if ( ! is_numeric($form_action->post_content['post_content']) && ! empty($display_ids) ) {
-                // get auto view
-                $display = FrmProDisplay::get_form_custom_display($form_id);
-                if ( $display ) {
-                    $display = FrmProDisplaysHelper::setup_edit_vars($display, true);
-                }
-            }
-        }
+        $echo           = true;
+		$form_id        = $form->id;
+		$display        = $this->get_form_action_display( $form_id, $form_action );
 
         // Get array of all custom fields
         $custom_fields = array();
@@ -72,11 +44,9 @@ class FrmProPostAction extends FrmFormAction {
             }
         }
 
-        unset($display_ids);
-
 		if ( empty( $form_action->post_content['post_category'] ) && ! empty( $values['fields'] ) ) {
 			foreach ( $values['fields'] as $fo_key => $fo ) {
-				if ( $fo['post_field'] == 'post_category' ) {
+				if ( $fo['post_field'] === 'post_category' ) {
 					if ( ! isset( $fo['taxonomy'] ) || $fo['taxonomy'] == '' ) {
 						$fo['taxonomy'] = 'post_category';
 					}
@@ -89,7 +59,7 @@ class FrmProPostAction extends FrmFormAction {
 						'meta_name'   => $fo['taxonomy'],
 					);
 					unset( $tax_count );
-				} else if ( $fo['post_field'] == 'post_custom' && ! in_array( $fo['custom_field'], $custom_fields ) ) {
+				} elseif ( $fo['post_field'] === 'post_custom' && ! in_array( $fo['custom_field'], $custom_fields ) ) {
 					$form_action->post_content['post_custom_fields'][ $fo['custom_field'] ] = array(
 						'field_id'  => $fo['id'],
 						'meta_name' => $fo['custom_field'],
@@ -99,28 +69,49 @@ class FrmProPostAction extends FrmFormAction {
 			}
 		}
 
-		include( dirname(__FILE__) . '/post_options.php' );
+		include dirname( __FILE__ ) . '/post_options.php';
+	}
+
+	private function get_form_action_display( $form_id, $form_action ) {
+		if ( is_callable( 'FrmViewsDisplay::get_form_action_display' ) ) {
+			return FrmViewsDisplay::get_form_action_display( $form_id, $form_action );
+		}
+		return false;
+	}
+
+	private function post_options_for_views( $display, $form_id, $form_action ) {
+		if ( is_callable( 'FrmViewsDisplay::post_options_for_views' ) ) {
+			return FrmViewsDisplay::post_options_for_views( $display, $form_id, $this );
+		}
+		$link                  = $this->get_views_placeholder_link( $form_id );
+		$display_id_field_name = $this->get_field_name( 'display_id' );
+		$display_id            = isset( $form_action->post_content['display_id'] ) ? $form_action->post_content['display_id'] : '';
+		require dirname( __FILE__ ) . '/post_options_for_views_placeholder.php';
+	}
+
+	private function get_views_placeholder_link( $form_id ) {
+		return admin_url( 'admin.php?page=formidable-views&frm-full=1&form=' . absint( $form_id ) );
 	}
 
 	public function get_defaults() {
 	    return array(
-            'post_type'     => 'post',
-            'post_category' => array(),
-            'post_content'  => '',
-            'post_excerpt'  => '',
-            'post_title'    => '',
-            'post_name'     => '',
-            'post_date'     => '',
-            'post_status'   => '',
+            'post_type'          => 'post',
+            'post_category'      => array(),
+            'post_content'       => '',
+            'post_excerpt'       => '',
+            'post_title'         => '',
+            'post_name'          => '',
+            'post_date'          => '',
+            'post_status'        => '',
             'post_custom_fields' => array(),
-            'post_password' => '',
-			'event'         => array( 'create', 'update' ),
+            'post_password'      => '',
+			'event'              => array( 'create', 'update' ),
         );
 	}
 
 	public function get_switch_fields() {
 		return array(
-			'post_category' => array( 'field_id' ),
+			'post_category'      => array( 'field_id' ),
 			'post_custom_fields' => array( 'field_id' ),
 		);
 	}

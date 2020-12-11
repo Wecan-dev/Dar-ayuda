@@ -1,3 +1,8 @@
+<?php
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'You are not allowed to call this page directly.' );
+}
+?>
 <div class="postbox" id="frm_comment_list">
 	<h3 class="hndle"><span><?php esc_html_e( 'Comments/Notes', 'formidable-pro' ) ?></span></h3>
     <div class="inside">

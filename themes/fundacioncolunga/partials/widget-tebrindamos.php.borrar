@@ -1,0 +1,63 @@
+<?php
+
+$te_brindamos_titulo = get_field('te_brindamos_titulo', 'option');
+$te_brindamos_subtitulo = get_field('te_brindamos_subtitulo', 'option');
+$bloque_fis_imagen = get_field('bloque_fis_imagen', 'option');
+$bloque_fis_descripcion = get_field('bloque_fis_descripcion', 'option');
+$bloque_colungahub_imagen = get_field('bloque_colungahub_imagen', 'option');
+$bloque_colungahub_descripcion = get_field('bloque_colungahub_descripcion', 'option');
+$bloque_colungalab_imagen = get_field('bloque_colungalab_imagen', 'option');
+$bloque_colungalab_descripcion = get_field('bloque_colungalab_descripcion', 'option');
+
+?>
+
+
+<section class="proyectos">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        <h1 class="text-center"><?php echo $te_brindamos_titulo; ?></h1>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <h2 class="proyectos__sub-title"><?php echo $te_brindamos_subtitulo; ?></h2>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-4">
+        <div class="box-proyecto">
+          <a href="<?php echo SITE_URL; ?>/lineas-de-accion/fondos-de-inversion-social/" class="no-style">
+            <img class="box-proyecto__img" src="<?php echo $bloque_fis_imagen['sizes']['w500']; ?>" alt="<?php echo $bloque_fis_imagen['alt']; ?>">
+          </a>
+          <p class="box-proyecto__text">
+            <?php echo $bloque_fis_descripcion; ?>
+          </p>
+          <a href="<?php echo SITE_URL; ?>/lineas-de-accion/fondos-de-inversion-social/" class="btn btn-green">Fondos de Inversión Social</a>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="box-proyecto">
+          <a href="<?php echo SITE_URL; ?>/colungahub" class="no-style">
+            <img class="box-proyecto__img" src="<?php echo $bloque_colungahub_imagen['sizes']['w500']; ?>" alt="<?php echo $bloque_colungahub_imagen['alt']; ?>">
+          </a>
+          <p class="box-proyecto__text">
+            <?php echo $bloque_colungahub_descripcion; ?>
+          </p>
+          <a href="<?php echo SITE_URL; ?>/colungahub" class="btn btn-green">ColungaHUB</a>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="box-proyecto">
+          <a href="<?php echo SITE_URL; ?>/lineas-de-accion/labsocial/" class="no-style">
+            <img class="box-proyecto__img" src="<?php echo $bloque_colungalab_imagen['sizes']['w500']; ?>" alt="<?php echo $bloque_colungalab_imagen['alt']; ?>">
+          </a>
+          <p class="box-proyecto__text">
+            <?php echo $bloque_colungalab_descripcion; ?>
+          </p>
+          <a href="<?php echo SITE_URL; ?>/lineas-de-accion/labsocial/" class="btn btn-green">LAB Social</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

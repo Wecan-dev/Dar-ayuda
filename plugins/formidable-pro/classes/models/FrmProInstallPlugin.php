@@ -1,5 +1,9 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'You are not allowed to call this page directly.' );
+}
+
 /**
  * @since 3.0
  */
@@ -50,23 +54,26 @@ class FrmProInstallPlugin {
 		include_once( ABSPATH . 'wp-admin/includes/class-wp-upgrader.php' );
 		include_once( ABSPATH . 'wp-admin/includes/plugin-install.php' );
 
-		$api = plugins_api( 'plugin_information', array(
-			'slug'   => $this->plugin_slug,
-			'fields' => array(
-				'short_description' => false,
-				'sections'          => false,
-				'requires'          => false,
-				'rating'            => false,
-				'ratings'           => false,
-				'downloaded'        => false,
-				'last_updated'      => false,
-				'added'             => false,
-				'tags'              => false,
-				'compatibility'     => false,
-				'homepage'          => false,
-				'donate_link'       => false,
-			),
-		) );
+		$api = plugins_api(
+			'plugin_information',
+			array(
+				'slug'   => $this->plugin_slug,
+				'fields' => array(
+					'short_description' => false,
+					'sections'          => false,
+					'requires'          => false,
+					'rating'            => false,
+					'ratings'           => false,
+					'downloaded'        => false,
+					'last_updated'      => false,
+					'added'             => false,
+					'tags'              => false,
+					'compatibility'     => false,
+					'homepage'          => false,
+					'donate_link'       => false,
+				),
+			)
+		);
 
 		if ( is_wp_error( $api ) ) {
 			return;

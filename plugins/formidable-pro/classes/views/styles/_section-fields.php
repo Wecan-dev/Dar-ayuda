@@ -1,3 +1,8 @@
+<?php
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'You are not allowed to call this page directly.' );
+}
+?>
 		<p class="frm4 frm_first frm_form_field">
         	<label><?php esc_html_e( 'Color', 'formidable-pro' ); ?></label>
         	<input type="text" name="<?php echo esc_attr( $frm_style->get_field_name('section_color') ) ?>" id="frm_section_color" class="hex" value="<?php echo esc_attr( $style->post_content['section_color'] ) ?>" />

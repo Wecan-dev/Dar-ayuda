@@ -1,6 +1,12 @@
+<?php
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'You are not allowed to call this page directly.' );
+}
+?>
 <p class="frm6 frm_form_field">
-	<label class="frm_help" title="<?php esc_attr_e( 'Set the order for the values in your Lookup Field.', 'formidable-pro' ); ?>">
+	<label>
 		<?php esc_html_e( 'Option order', 'formidable-pro' ); ?>
+		<span class="frm_help frm_icon_font frm_tooltip_icon" data-placement="right" title="<?php esc_attr_e( 'Set the order for the values in your Lookup Field.', 'formidable-pro' ); ?>"></span>
 	</label>
 	<select name="field_options[lookup_option_order_<?php echo esc_attr( $field['id'] ); ?>]">
 		<option value="ascending" <?php selected( $field['lookup_option_order'], 'ascending' ); ?>>

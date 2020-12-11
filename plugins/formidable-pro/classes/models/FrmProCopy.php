@@ -1,12 +1,16 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'You are not allowed to call this page directly.' );
+}
+
 class FrmProCopy {
 
-    public static function table_name() {
-        global $wpmuBaseTablePrefix, $wpdb;
-        $prefix = $wpmuBaseTablePrefix ? $wpmuBaseTablePrefix : $wpdb->base_prefix;
+	public static function table_name() {
+		global $wpmuBaseTablePrefix, $wpdb;
+		$prefix = $wpmuBaseTablePrefix ? $wpmuBaseTablePrefix : $wpdb->base_prefix;
 		return $prefix . 'frmpro_copies';
-    }
+	}
 
 	public static function create( $values ) {
 		global $wpdb, $blog_id;
@@ -48,32 +52,31 @@ class FrmProCopy {
 		global $blog_id;
 		$new_values['blog_id'] = $blog_id;
 		$new_values['form_id'] = isset( $values['form_id'] ) ? (int) $values['form_id'] : null;
-		$new_values['type'] = isset( $values['type'] ) ? $values['type'] : 'form'; //options here are: form, display
-		if ( $new_values['type'] == 'form' ) {
-			$form_copied = FrmForm::getOne( $new_values['form_id'] );
+		$new_values['type']    = isset( $values['type'] ) ? $values['type'] : 'form'; // options here are: form, display
+		if ( 'form' === $new_values['type'] ) {
+			$form_copied            = FrmForm::getOne( $new_values['form_id'] );
 			$new_values['copy_key'] = $form_copied->form_key;
-		} else {
-			$form_copied = FrmProDisplay::getOne( $new_values['form_id'] );
-			$new_values['copy_key'] = $form_copied->post_name;
+		} elseif ( 'display' === $new_values['type'] && is_callable( 'FrmViewsCopy::prepare_values' ) ) {
+			$new_values['copy_key'] = FrmViewsCopy::prepare_values( $new_values['form_id'] );
 		}
 		$new_values['created_at'] = current_time('mysql', 1);
 	}
 
-    public static function install( $force = false ) {
-        $db_version = 1.2; // this is the version of the database we're moving to
-        $old_db_version = get_site_option('frmpro_copies_db_version');
+	public static function install( $force = false ) {
+		$db_version = 1.2; // this is the version of the database we're moving to
+		$old_db_version = get_site_option('frmpro_copies_db_version');
 
-        global $wpdb;
+		global $wpdb;
 
 		if ( ( $db_version != $old_db_version ) || $force ) {
-            $force = true;
+			$force = true;
 
-            require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+			require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 
-            $frmdb = new FrmMigrate();
-            $charset_collate = $frmdb->collation();
+			$frmdb = new FrmMigrate();
+			$charset_collate = $frmdb->collation();
 
-            /* Create/Upgrade Display Table */
+			/* Create/Upgrade Display Table */
 			$sql = 'CREATE TABLE ' . self::table_name() . ' (
                     id int(11) NOT NULL auto_increment,
                     type varchar(255) default NULL,
@@ -86,13 +89,13 @@ class FrmProCopy {
                     KEY blog_id (blog_id)
 			) ' . $charset_collate . ';';
 
-            dbDelta($sql);
+			dbDelta($sql);
 
-            update_site_option('frmpro_copies_db_version', $db_version);
-        }
+			update_site_option('frmpro_copies_db_version', $db_version);
+		}
 
-        self::copy_forms($force);
-    }
+		self::copy_forms($force);
+	}
 
 	/**
 	 * Copy forms that are set to copy from one site to another
@@ -105,15 +108,15 @@ class FrmProCopy {
 
 		$templates = self::get_templates_to_copy();
 
-		foreach ( $templates as $temp ) {
-			if ( $temp->type == 'form' ) {
-				self::copy_form( $temp );
-			} else {
-				self::copy_view( $temp );
+		foreach ( $templates as $template ) {
+			if ( 'form' === $template->type ) {
+				self::copy_form( $template );
+			} elseif ( 'display' === $template->type && is_callable( 'FrmViewsCopy::copy_view' ) ) {
+				FrmViewsCopy::copy_view( $template );
 			}
 
 			//TODO: replace any ids with field keys in the display before duplicated
-			unset( $temp );
+			unset( $template );
 		}
 
 		update_option( 'frmpro_copies_checked', time() );
@@ -160,36 +163,5 @@ class FrmProCopy {
 	 */
 	private static function copy_form( $template ) {
 		FrmForm::duplicate( $template->form_id, false, true, $template->blog_id );
-	}
-
-	/**
-	 * @since 2.02.10
-	 * @param object $template
-	 */
-	private static function copy_view( $template ) {
-		$values = FrmProDisplay::getOne( $template->form_id, $template->blog_id, true );
-		if ( $values && 'trash' != $values->post_status ) {
-
-			if ( ! self::post_slug_exists( $values ) ) {
-
-				if ( $values->post_name != $template->copy_key ) {
-					global $wpdb;
-					$wpdb->update( self::table_name(), array( 'copy_key' => $values->post_name ), array( 'id' => $template->id ) );
-				}
-
-				FrmProDisplay::duplicate( $template->form_id, true, $template->blog_id );
-			}
-		}
-	}
-
-	/**
-	 * @since 2.02.10
-	 * @param object $values
-	 *
-	 * @return bool
-	 */
-	private static function post_slug_exists( $values ) {
-		$post_name = wp_unique_post_slug( $values->post_name, 0, 'publish', 'frm_display', 0 );
-		return ( $post_name != $values->post_name );
 	}
 }

@@ -1,5 +1,9 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'You are not allowed to call this page directly.' );
+}
+
 /**
  * @since 3.0
  */
@@ -115,10 +119,12 @@ class FrmProFieldTime extends FrmFieldType {
 	public function front_field_input( $args, $shortcode_atts ) {
 		ob_start();
 
-		$this->show_time_field( array(
-			'html_id'    => $args['html_id'],
-			'field_name' => $args['field_name'],
-		) );
+		$this->show_time_field(
+			array(
+				'html_id'    => $args['html_id'],
+				'field_name' => $args['field_name'],
+			)
+		);
 		$input_html = ob_get_contents();
 		ob_end_clean();
 
@@ -129,7 +135,8 @@ class FrmProFieldTime extends FrmFieldType {
 		if ( isset( $values['field'] ) ) {
 			$field = $values['field'];
 		} else {
-			$field = $values['field'] = $this->field;
+			$field           = $this->field;
+			$values['field'] = $field;
 		}
 
 		$values['field_value'] = $field['value'];
@@ -180,9 +187,12 @@ class FrmProFieldTime extends FrmFieldType {
 	 */
 	private function maybe_format_time( &$time ) {
 		if ( ! is_array( $time ) && ! strpos( $time, ' ' ) ) {
-			$time = $this->get_display_value( $time, array(
-				'format' => $this->get_time_format_for_field(),
-			) );
+			$time = $this->get_display_value(
+				$time,
+				array(
+					'format' => $this->get_time_format_for_field(),
+				)
+			);
 		}
 	}
 
@@ -244,6 +254,7 @@ class FrmProFieldTime extends FrmFieldType {
 
 		$this->step_in_minutes( $values['step'] );
 
+		$this->set_step( $values['step'] );
 		$values['hour_step'] = floor( $values['step'] / 60 );
 		if ( ! $values['hour_step'] ) {
 			$values['hour_step'] = 1;
@@ -400,12 +411,23 @@ class FrmProFieldTime extends FrmFieldType {
 		$time = strtotime( $values['start_time_str'] );
 		$end_time = strtotime( $values['end_time_str'] );
 		$format = ( $values['clock'] == 24 ) ? 'H:i' : 'g:i A';
+
+		$this->set_step( $values['step'] );
 		$values['step'] = max( $values['step'] * 60, 60 ); //switch minutes to seconds
 
 		$options[] = '';
 		while ( $time <= $end_time ) {
-			$options[] = date( $format, $time );
+			$options[] = gmdate( $format, $time );
 			$time += $values['step'];
+		}
+	}
+
+	/**
+	 * @since 4.04.04
+	 */
+	private function set_step( &$step ) {
+		if ( ! is_numeric( $step ) ) {
+			$step = 30;
 		}
 	}
 

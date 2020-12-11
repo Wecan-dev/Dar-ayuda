@@ -1,4 +1,8 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'You are not allowed to call this page directly.' );
+}
+
 if ( isset($taxonomies) && $taxonomies ) { ?>
 	<option value=""><?php esc_html_e( '&mdash; Select a Taxonomy &mdash;', 'formidable-pro' ); ?></option>
     <?php foreach ( $taxonomies as $taxonomy ) { ?>

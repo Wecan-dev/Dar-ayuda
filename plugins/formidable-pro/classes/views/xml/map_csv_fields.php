@@ -1,7 +1,12 @@
+<?php
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'You are not allowed to call this page directly.' );
+}
+?>
 <div class="wrap">
 	<h2><?php esc_html_e( 'Import/Export', 'formidable-pro' ); ?></h2>
 
-	<?php include( FrmAppHelper::plugin_path() . '/classes/views/shared/errors.php' ); ?>
+	<?php include FrmAppHelper::plugin_path() . '/classes/views/shared/errors.php'; ?>
     <div id="poststuff" class="metabox-holder">
     <div id="post-body">
     <div id="post-body-content">
@@ -25,9 +30,15 @@
                 <th><b><?php esc_html_e( 'Corresponding Field', 'formidable' ); ?></b></th>
             </tr>
             </thead>
-            <?php foreach ( $headers as $i => $header ) { ?>
+            <?php
+            $skip_field_ids = array();
+            foreach ( $headers as $i => $header ) {
+                $already_selected_a_value = false;
+                $converted_header         = htmlspecialchars( $header );
+                $lower_header             = strtolower( $converted_header );
+            ?>
             <tr class="form-field">
-                <td><?php echo htmlspecialchars($header) ?></td>
+                <td><?php echo $converted_header ?></td>
                 <td><?php if ( isset( $example[ $i ] ) ) { ?>
                     <span class="howto"><?php echo htmlspecialchars( $example[ $i ] ) ?></span>
                 <?php } ?></td>
@@ -39,8 +50,26 @@
 							if ( FrmField::is_no_save_field( $field->type ) ) {
                                 continue;
                             }
-							$selected = ( strtolower( strip_tags( $field->name ) ) == strtolower( htmlspecialchars( $header ) ) );
+
+							$selected = ! $already_selected_a_value && ! in_array( $field->id, $skip_field_ids, true ) && strtolower( wp_strip_all_tags( $field->name ) ) === $lower_header;
                             $selected = apply_filters('frm_map_csv_field', $selected, $field, $header);
+
+                            if ( $selected ) {
+                                $skip = true;
+                                if ( $field->field_options['in_section'] ) {
+                                    $section = FrmField::getOne( $field->field_options['in_section'] );
+
+                                    if ( $section && FrmField::is_repeating_field( $section ) ) {
+                                        $skip = false;
+                                    }
+                                }
+
+                                if ( $skip ) {
+                                    $skip_field_ids[] = $field->id;
+                                }
+
+                                $already_selected_a_value = true;
+                            }
                         ?>
                             <option value="<?php echo esc_attr( $field->id ) ?>" <?php selected($selected, true) ?>><?php echo FrmAppHelper::truncate($field->name, 50) ?></option>
                         <?php
@@ -75,7 +104,9 @@
                     </select>
                 </td>
             </tr>
-            <?php } ?>
+            <?php
+            }
+            ?>
         </table>
         <p class="submit">
             <input type="submit" value="<?php esc_attr_e( 'Import', 'formidable-pro' ) ?>" class="button-primary" />

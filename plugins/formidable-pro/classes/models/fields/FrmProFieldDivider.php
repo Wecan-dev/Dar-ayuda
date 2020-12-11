@@ -1,5 +1,9 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'You are not allowed to call this page directly.' );
+}
+
 /**
  * @since 3.0
  */
@@ -159,10 +163,11 @@ DEFAULT_HTML;
 		}
 
 		if ( FrmField::is_option_true( $this->field, 'slide' ) ) {
-			$trigger = ' frm_trigger';
+			$trigger      = ' frm_trigger';
 			$collapse_div = '<div class="frm_toggle_container frm_grid_container" style="display:none;">';
 		} else {
-			$trigger = $collapse_div = '';
+			$trigger      = '';
+			$collapse_div = '';
 		}
 
 		if ( FrmField::is_option_true( $this->field, 'repeat' ) ) {

@@ -1,3 +1,8 @@
+<?php
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'You are not allowed to call this page directly.' );
+}
+?>
 <p class="frm6 frm_form_field">
 	<label for="radio_maxnum_<?php echo absint( $field['id'] ) ?>">
 		<?php esc_html_e( 'Maximum Rating', 'formidable-pro' ); ?>

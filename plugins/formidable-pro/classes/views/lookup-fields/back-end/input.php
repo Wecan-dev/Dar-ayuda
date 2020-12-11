@@ -1,4 +1,7 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'You are not allowed to call this page directly.' );
+}
 
 if ( empty( $field['get_values_field'] ) ) {
 	?>
@@ -57,7 +60,7 @@ if ( 'select' == $field['data_type'] ) {
 			<input type="<?php echo esc_attr( $field['data_type'] ); ?>" name="<?php echo esc_attr( $field_name ) ?>"
 				   value="<?php echo esc_attr( $opt_value ) ?>"<?php echo $checked ?>/>
 			<label class="frm_ipe_field_option field_<?php echo esc_attr( $field['id'] ) ?>_option"
-				   id="<?php echo esc_attr( $html_id . '-' . $opt_key ) ?>"><?php echo esc_attr( $opt_value ) ?></label>
+				   id="<?php echo esc_attr( $html_id . '-' . $opt_key ) ?>"><?php echo FrmAppHelper::kses( $opt_value, 'all' ); // WPCS: XSS ok. ?></label>
 			</li><?php
 		}
 		unset( $opt_key, $checked, $opt_value );

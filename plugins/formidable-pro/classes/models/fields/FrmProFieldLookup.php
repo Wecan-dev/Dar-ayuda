@@ -1,5 +1,9 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'You are not allowed to call this page directly.' );
+}
+
 /**
  * @since 3.0
  */
@@ -118,7 +122,7 @@ class FrmProFieldLookup extends FrmFieldType {
 		// Get all forms for the -select form- option
 		$lookup_args['form_list'] = FrmForm::get_published_forms();
 
-		if ( is_numeric( $field['get_values_form'] ) ) {
+		if ( isset( $field['get_values_form'] ) && is_numeric( $field['get_values_form'] ) ) {
 			$lookup_args['form_fields'] = $this->get_fields_for_get_values_field_dropdown( $field['get_values_form'], $field['type'] );
 
 		} else {

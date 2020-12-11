@@ -1,5 +1,11 @@
+<?php
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'You are not allowed to call this page directly.' );
+}
+?>
 .with_frm_style .chosen-container{
     font-size:<?php echo esc_html( $defaults['field_font_size'] ) ?>;
+	font-size:var(--field-font-size)<?php echo esc_html( $important ) ?>;
     position:relative;
     display:inline-block;
     zoom:1;
@@ -173,6 +179,12 @@
     line-height:15px;
     word-wrap:break-word;
     -webkit-touch-callout:none;
+}
+
+.with_frm_style .chosen-container .chosen-results li,
+.with_frm_style .chosen-container .chosen-results li span{
+	color:<?php echo esc_html( $defaults['text_color'] ); ?>;
+	color:var(--text-color)<?php echo esc_html( $important ); ?>;
 }
 
 .with_frm_style .chosen-container .chosen-results li.active-result{

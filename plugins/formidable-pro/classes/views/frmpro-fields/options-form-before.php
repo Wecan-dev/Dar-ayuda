@@ -1,3 +1,8 @@
+<?php
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'You are not allowed to call this page directly.' );
+}
+?>
 <div class="frm_import_options frm_grid_container">
 	<p class="frm6 frm_form_field">
 		<label for="frm_tax_entry_field_<?php echo absint( $field['id'] ); ?>">

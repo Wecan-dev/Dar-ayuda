@@ -1,3 +1,8 @@
+<?php
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'You are not allowed to call this page directly.' );
+}
+?>
 <div id="<?php echo esc_attr( $id ) ?>" class="frm_logic_row frm_logic_row_<?php echo esc_attr( $key ); ?> frm_grid_container">
 <p class="frm3 frm_form_field">
 <select name="<?php echo esc_attr( $names['hide_field'] ) ?>" <?php

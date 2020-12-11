@@ -1,4 +1,7 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'You are not allowed to call this page directly.' );
+}
 
 // Show a message until the field is set up.
 if ( empty( $field['form_select'] ) && $field['post_field'] !== 'post_category' ) {

@@ -1,4 +1,8 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'You are not allowed to call this page directly.' );
+}
+
 if ( empty( $tags ) ) {
 	echo '<p class="frm_no_bottom_margin">' . esc_html__( 'No options found.', 'formidable-pro' ) . '</p>';
 	return;

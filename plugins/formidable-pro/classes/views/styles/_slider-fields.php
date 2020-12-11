@@ -1,3 +1,8 @@
+<?php
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'You are not allowed to call this page directly.' );
+}
+?>
 <p class="frm4 frm_first frm_form_field">
 	<label for="frm_progress_bg_color"><?php esc_html_e( 'Color', 'formidable-pro' ); ?></label>
 	<input type="text" name="<?php echo esc_attr( $frm_style->get_field_name( 'slider_color' ) ) ?>" id="frm_slider_color" class="hex" value="<?php echo esc_attr( $style->post_content['slider_color'] ) ?>" size="4" />

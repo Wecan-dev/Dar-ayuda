@@ -1,3 +1,8 @@
+<?php
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'You are not allowed to call this page directly.' );
+}
+?>
 <p class="frm8 frm_first frm_form_field frm-number-range">
 	<label><?php esc_html_e( 'Time Range', 'formidable-pro' ); ?></label>
 

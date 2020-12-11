@@ -1,5 +1,9 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'You are not allowed to call this page directly.' );
+}
+
 /**
  * Class FrmProContent
  */
@@ -83,6 +87,7 @@ class FrmProContent {
 
 		if ( ! $foreach && ! $conditional && isset( $atts['show'] ) && ( $atts['show'] == 'field_label' || $atts['show'] == 'description' ) ) {
 			// get the field label or description and return before any other checking
+			$field = apply_filters( 'frm_field_object_for_shortcode', $field );
 			$replace_with = ( $atts['show'] == 'field_label' ) ? $field->name : $field->description;
 			$content = str_replace( $shortcodes[0][ $short_key ], $replace_with, $content );
 			return;
@@ -120,6 +125,11 @@ class FrmProContent {
 			if ( ! $keep_array && $field->type != 'file' ) {
 				$replace_with = FrmAppHelper::array_flatten( $replace_with );
 				$replace_with = array_filter( $replace_with, array( 'FrmProContent', 'is_not_empty' ) );
+
+				if ( ! isset( $atts['sep'] ) && FrmProImages::has_images_options_in_html( $replace_with ) ) {
+					$sep = '';
+				}
+
 				$replace_with = implode( $sep, $replace_with );
 			} else if ( empty( $replace_with ) ) {
 				$replace_with = '';
@@ -183,6 +193,18 @@ class FrmProContent {
 		return $val !== '';
 	}
 
+	/**
+	 * Filter out entry_number shortcode when we have the entry position in the view
+	 *
+	 * @since 4.03.01
+	 */
+	public static function replace_entry_position_shortcode( $entry_args, $args, &$content ) {
+		preg_match_all( "/\[(if )?(entry_position)\b(.*?)(?:(\/))?\](?:(.+?)\[\/\2\])?/s", $content, $shortcodes, PREG_PATTERN_ORDER );
+		foreach ( $shortcodes[0] as $short_key => $tag ) {
+			self::replace_single_shortcode( $shortcodes, $short_key, $tag, $entry_args['entry'], $entry_args['view'], $args, $content );
+		}
+	}
+
 	public static function replace_calendar_date_shortcode( $content, $date ) {
 		preg_match_all( "/\[(calendar_date)\b(.*?)(?:(\/))?\]/s", $content, $matches, PREG_PATTERN_ORDER );
 		if ( empty( $matches ) ) {
@@ -244,7 +266,7 @@ class FrmProContent {
 	public static function get_pretty_url( $atts ) {
 		global $post;
 		$base_url = untrailingslashit( $post ? get_permalink( $post->ID ) : FrmAppHelper::get_server_value( 'REQUEST_URI' ) );
-		if ( ! is_front_page() && self::rewriting_on() ) {
+		if ( ! is_front_page() && self::rewriting_on() && strpos( $base_url, '?' ) === false ) {
 			$url = $base_url . '/' . $atts['param'] . '/' . $atts['param_value'];
 		} else {
 			$url = esc_url_raw( add_query_arg( $atts['param'], $atts['param_value'], $base_url ) );
@@ -295,7 +317,25 @@ class FrmProContent {
 	private static function get_rewrite_params() {
 		global $wpdb;
 		$params = FrmDb::get_col( $wpdb->postmeta, array( 'meta_key' => 'frm_param' ), 'meta_value' );
+		$params = self::remove_reserved_words( $params );
 		return array_filter( array_unique( $params ) );
+	}
+
+	/**
+	 * Removes reserved words from a list of params.
+	 *
+	 * @param array $params A list of params.
+	 *
+	 * @return array The list of params with reserved words removed.
+	 */
+	private static function remove_reserved_words( $params ) {
+		if ( ! is_callable( 'FrmFormsHelper::reserved_words' ) ) {
+			return $params;
+		}
+
+		$reserved_words = FrmFormsHelper::reserved_words();
+
+		return array_diff( $params, $reserved_words );
 	}
 
 	public static function do_shortcode_editlink( &$content, $atts, $shortcodes, $short_key, $args ) {
@@ -614,7 +654,7 @@ class FrmProContent {
 					if ( strtolower( $atts[ $att_name ] ) == 'now' ) {
 						$atts[ $att_name ] = FrmProAppHelper::get_date( 'H:i' );
 					} else {
-						$atts[ $att_name ] = date( 'H:i', strtotime( $atts[ $att_name ] ) );
+						$atts[ $att_name ] = gmdate( 'H:i', strtotime( $atts[ $att_name ] ) );
 					}
 
 					if ( ! $formatted_time ) {
@@ -622,6 +662,11 @@ class FrmProContent {
 						$formatted_time = true;
 					}
 				}
+			}
+		} else {
+			// Compare properly with &.
+			if ( is_callable( 'FrmAppHelper::decode_specialchars' ) ) {
+				FrmAppHelper::decode_specialchars( $replace_with );
 			}
 		}
 
@@ -642,7 +687,7 @@ class FrmProContent {
 				} elseif ( $atts[ $att_name ] == 'NOW' ) {
 					$atts[ $att_name ] = FrmProAppHelper::get_date( 'Y-m-d' );
 				} else {
-					$atts[ $att_name ] = date( 'Y-m-d', strtotime( $atts[ $att_name ] ) );
+					$atts[ $att_name ] = gmdate( 'Y-m-d', strtotime( $atts[ $att_name ] ) );
 				}
 			}
 			unset( $att_name );
@@ -658,7 +703,7 @@ class FrmProContent {
 
 		$compare = strtolower( $compare );
 		if ( strpos( $compare, 'like' ) === false ) {
-			$where_val = date( 'Y-m-d H:i:s', strtotime( $where_val ) );
+			$where_val = gmdate( 'Y-m-d H:i:s', strtotime( $where_val ) );
 
 			// If using less than or equal to, set the time to the end of the day
 			if ( $compare == '<=' || $compare == 'less_than' ) {
@@ -819,9 +864,15 @@ class FrmProContent {
 			return FrmAppHelper::truncate( $replace_with, (int) $atts['truncate'], 3, $more_link_text );
 		}
 
-		$clean_text = wp_strip_all_tags( $replace_with );
+		if ( empty( $replace_with ) ) {
+			return $replace_with;
+		}
+
+		$clean_text = trim( wp_strip_all_tags( $replace_with ) );
 		$part_one = FrmAppHelper::truncate( $clean_text, (int) $atts['truncate'], 3, '' );
-		$part_two = str_replace( $part_one, '', $clean_text );
+		$pos      = strpos( $clean_text, $part_one );
+		// Only replace the first occurance of the string.
+		$part_two = substr_replace( $clean_text, '', $pos, strlen( $part_one ) );
 
 		if ( ! empty( $part_two ) ) {
 			$replace_with = $part_one . '<a href="#" onclick="jQuery(this).next().css(\'display\', \'inline\');jQuery(this).css(\'display\', \'none\');return false;" class="frm_text_exposed_show"> ' . $more_link_text . '</a><span style="display:none;">' . $part_two . '</span>';

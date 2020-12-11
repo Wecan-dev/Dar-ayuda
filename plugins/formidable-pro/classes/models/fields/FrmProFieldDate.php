@@ -1,5 +1,9 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'You are not allowed to call this page directly.' );
+}
+
 /**
  * @since 3.0
  */
@@ -20,9 +24,19 @@ class FrmProFieldDate extends FrmFieldType {
 			'clear_on_focus' => true,
 			'invalid'       => true,
 			'read_only'     => true,
+			'prefix'        => true,
 		);
 		FrmProFieldsHelper::fill_default_field_display( $settings );
 		return $settings;
+	}
+
+	/**
+	 * @since 4.05
+	 */
+	protected function builder_text_field( $name = '' ) {
+		$html  = FrmProFieldsHelper::builder_page_prepend( $this->field );
+		$field = parent::builder_text_field( $name );
+		return str_replace( '[input]', $field, $html );
 	}
 
 	protected function extra_field_opts() {
@@ -54,10 +68,10 @@ class FrmProFieldDate extends FrmFieldType {
 	 * @since 3.01.01
 	 */
 	public function show_options( $field, $display, $values ) {
-		if ( ! function_exists( 'frm_dates_autoloader' ) && is_callable( 'FrmAddonsController::install_link' ) ) {
+		if ( ! function_exists( 'frm_dates_autoloader' ) && is_callable( 'FrmProAddonsController::install_link' ) ) {
 			$install_data = '';
 			$class        = ' frm_noallow';
-			$upgrading    = FrmAddonsController::install_link( 'dates' );
+			$upgrading    = FrmProAddonsController::install_link( 'dates' );
 			if ( isset( $upgrading['url'] ) ) {
 				$install_data = json_encode( $upgrading );
 				$class        = '';
@@ -145,10 +159,15 @@ class FrmProFieldDate extends FrmFieldType {
 			$formated_date = FrmProAppHelper::convert_date( $value, $frmpro_settings->date_format, 'Y-m-d' );
 
 			//check format before converting
-			if ( $value != date( $frmpro_settings->date_format, strtotime( $formated_date ) ) ) {
-				$allow_it = apply_filters( 'frm_allow_date_mismatch', false, array(
-					'date' => $value, 'formatted_date' => $formated_date,
-				) );
+			if ( $value != gmdate( $frmpro_settings->date_format, strtotime( $formated_date ) ) ) {
+				$allow_it = apply_filters(
+					'frm_allow_date_mismatch',
+					false,
+					array(
+						'date'           => $value,
+						'formatted_date' => $formated_date,
+					)
+				);
 				if ( ! $allow_it ) {
 					$errors[ 'field' . $args['id'] ] = FrmFieldsHelper::get_error_msg( $this->field, 'invalid' );
 				}
@@ -183,7 +202,7 @@ class FrmProFieldDate extends FrmFieldType {
 		$rel_year = FrmField::get_option( $this->field, $start_end );
 
 		if ( is_string( $rel_year ) && strlen( $rel_year ) > 0 && ( '0' === $rel_year || '+' == $rel_year[0] || '-' == $rel_year[0] || strlen( $rel_year ) < 4 ) ) {
-			$rel_year = date( 'Y', strtotime( $rel_year . ' year' ) );
+			$rel_year = gmdate( 'Y', strtotime( $rel_year . ' year' ) );
 		}
 
 		return (int) $rel_year;
@@ -203,10 +222,20 @@ class FrmProFieldDate extends FrmFieldType {
 			return $value;
 		}
 
+		if ( isset( $atts['offset'] ) ) {
+			$value = FrmProFieldsHelper::get_date( $value, 'Y-m-d H:i:s' );
+			if ( isset( $atts['time_ago'] ) ) {
+				$atts['format'] = 'Y-m-d H:i:s';
+			} elseif ( ! isset( $atts['format'] ) || empty( $atts['format'] ) ) {
+				$atts['format'] = get_option( 'date_format' );
+			}
+			$value = gmdate( $atts['format'], strtotime( $atts['offset'], strtotime( $value ) ) );
+		}
+
 		if ( isset( $atts['time_ago'] ) ) {
 			$value = FrmProFieldsHelper::get_date( $value, 'Y-m-d H:i:s' );
-			$value = FrmAppHelper::human_time_diff( strtotime( $value ), strtotime( date_i18n( 'Y-m-d' ) ), absint( $atts['time_ago'] ) );
-		} else {
+			$value = FrmAppHelper::human_time_diff( strtotime( $value ), strtotime( date_i18n( 'Y-m-d' ) ), $atts['time_ago'] );
+		} elseif ( ! isset( $atts['offset'] ) ) {
 			if ( ! is_array( $value ) && strpos( $value, ',' ) ) {
 				$value = explode( ',', $value );
 			}
@@ -223,7 +252,7 @@ class FrmProFieldDate extends FrmFieldType {
 
 	protected function prepare_import_value( $value, $atts ) {
 		if ( ! empty( $value ) ) {
-			$value = date( 'Y-m-d', strtotime( $value ) );
+			$value = gmdate( 'Y-m-d', strtotime( $value ) );
 		}
 
 		return $value;

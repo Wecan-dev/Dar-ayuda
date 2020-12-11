@@ -1,3 +1,8 @@
+<?php
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'You are not allowed to call this page directly.' );
+}
+?>
 <div class="frm_submit_logic_rows frm_logic_rows frm_add_remove <?php echo ( ! empty( $submit_conditions['hide_field'] ) && ( count( $submit_conditions['hide_field'] ) > 1 || reset( $submit_conditions['hide_field'] ) != '' ) ) ? '' : ' frm_hidden'; ?>" id="frm_submit_logic_rows">
 	<div id="frm_submit_logic_row">
 			<select name="options[submit_conditions][show_hide]" class="auto_width">

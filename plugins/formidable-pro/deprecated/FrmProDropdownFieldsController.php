@@ -1,5 +1,9 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'You are not allowed to call this page directly.' );
+}
+
 class FrmProDropdownFieldsController{
 
 	public static function get_hidden_fields_with_readonly_values( $field, $field_name, $html_id ) {

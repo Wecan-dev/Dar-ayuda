@@ -1,3 +1,8 @@
+<?php
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'You are not allowed to call this page directly.' );
+}
+?>
 <p>
 	<label for="field_options_format_<?php echo absint( $field['id'] ); ?>">
 		<?php esc_html_e( 'Repeat Layout', 'formidable-pro' ); ?>

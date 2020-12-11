@@ -1,5 +1,9 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'You are not allowed to call this page directly.' );
+}
+
 class FrmProComboFieldsController {
 
 	public static function show_in_form_builder( $field, $name = '', $sub_fields = array() ) {

@@ -1,12 +1,18 @@
+<?php
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'You are not allowed to call this page directly.' );
+}
+?>
 <div class="frm_grid_container">
 	<p class="frm6 frm_form_field">
-		<label class="frm_help" title="<?php esc_attr_e( 'To setup a new custom post type, install and setup a plugin like \'Custom Post Type UI\', then return to this page to select your new custom post type.', 'formidable-pro' ) ?>">
+		<label>
 			<?php esc_html_e( 'Post Type', 'formidable-pro' ); ?>
+			<span class="frm_help frm_icon_font frm_tooltip_icon" title="<?php esc_attr_e( 'To setup a new custom post type, install and setup a plugin like \'Custom Post Type UI\', then return to this page to select your new custom post type.', 'formidable-pro' ) ?>"></span>
 		</label>
 		<select class="frm_post_type" name="<?php echo esc_attr( $this->get_field_name('post_type') ) ?>">
 			<?php
 			foreach ( $post_types as $post_key => $post_type ) {
-				if ( in_array( $post_key, array( 'frm_display', 'frm_form_actions', 'frm_styles' ) ) ) {
+				if ( in_array( $post_key, array( 'frm_display', 'frm_form_actions', 'frm_styles' ), true ) ) {
 					continue;
 				}
 				$expected_post_key = sanitize_title_with_dashes( $post_type->label );
@@ -42,7 +48,7 @@
 			<option value="post_content" <?php echo is_numeric( $form_action->post_content['post_content'] ) ? 'selected="selected"' : ''; ?>>
 				<?php esc_html_e( 'Use a single field', 'formidable-pro' ); ?>
 			</option>
-			<option value="dyncontent" <?php echo ( $display ? 'selected="selected"' : '' ); ?>>
+			<option value="dyncontent" <?php echo $display ? 'selected="selected"' : ''; ?>>
 				<?php esc_html_e( 'Customize post content', 'formidable-pro' ); ?>
 			</option>
 		</select>
@@ -57,37 +63,9 @@
 			?>
 		</select>
 	</p>
-	<p class="frm6 frm_form_field frm_dyncontent_opt <?php echo ( $display ? '' : 'frm_hidden' ); ?>">
-		<label><?php esc_html_e( 'Select View', 'formidable-pro' ); ?></label>
-		<select name="<?php echo esc_attr( $this->get_field_name('display_id') ) ?>" class="frm_dyncontent_opt">
-			<option value=""><?php esc_html_e( '&mdash; Select &mdash;' ); ?></option>
-			<option value="new"><?php esc_html_e( 'Create new view', 'formidable-pro' ); ?></option>
-			<?php foreach ( $displays as $d ) { ?>
-				<option value="<?php echo absint( $d->ID ) ?>" <?php
-					if ( $display ) {
-						selected( $d->ID, $display->ID );
-					}
-					?>>
-					<?php echo esc_html( stripslashes( $d->post_title ) ) ?>
-				</option>
-			<?php } ?>
-		</select>
-	</p>
-	<div class="frm_dyncontent_opt <?php echo esc_attr( $display ? '' : 'frm_hidden' ); ?>">
-		<p class="frm_has_shortcodes">
-			<label class="frm_help" title="<?php esc_attr_e( 'The content shown on your single post page. If nothing is entered here, the regular post content will be used.', 'formidable-pro' ) ?>">
-				<?php esc_html_e( 'Customize Content', 'formidable-pro' ); ?>
-			</label>
-			<textarea id="frm_dyncontent" placeholder="<?php esc_attr_e( 'Add text, HTML, and fields from your form to build your post content.', 'formidable-pro' ) ?>" name="dyncontent" rows="10" class="frm_not_email_message"><?php
-				if ( $display ) {
-					echo FrmAppHelper::esc_textarea($display->frm_show_count == 'one' ? $display->post_content : $display->frm_dyncontent);
-				}
-			?></textarea>
-		</p>
-		<span class="howto">
-			<?php esc_html_e( 'Editing this box will update your existing view or create a new one.', 'formidable-pro' ); ?>
-		</span>
-	</div>
+
+	<?php $this->post_options_for_views( $display, $form_id, $form_action ); ?>
+
 	<p class="frm6 frm_form_field frm_first">
 		<label><?php esc_html_e( 'Excerpt', 'formidable-pro' ); ?></label>
 		<select name="<?php echo esc_attr( $this->get_field_name('post_excerpt') ) ?>" class="frm_single_post_field">

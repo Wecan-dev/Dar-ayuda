@@ -1,3 +1,8 @@
+<?php
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'You are not allowed to call this page directly.' );
+}
+?>
 <p id="frm_watch_lookup_<?php echo esc_attr( $field_id . '_' . $row_key ); ?>" class="frm_single_option frm_no_top_margin">
 	<select name="field_options[watch_lookup_<?php echo esc_attr( $field_id ) ?>][]">
 		<option value=""><?php esc_html_e( '&mdash; Select Field &mdash;', 'formidable-pro' ); ?></option>

@@ -1,3 +1,8 @@
+<?php
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'You are not allowed to call this page directly.' );
+}
+?>
 <div class="frm_forms<?php echo FrmFormsHelper::get_form_style_class($values); ?>" id="frm_form_<?php echo (int) $form->id ?>_container" <?php echo apply_filters( 'frm_form_div_attributes', '', $form ); ?>>
 <?php
 include( FrmAppHelper::plugin_path() . '/classes/views/frm-entries/errors.php' );

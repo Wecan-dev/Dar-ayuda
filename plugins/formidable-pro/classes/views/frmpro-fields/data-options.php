@@ -1,4 +1,8 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'You are not allowed to call this page directly.' );
+}
+
 // Check if field is read only
 $disabled = ( FrmField::is_read_only( $field ) && ! FrmAppHelper::is_admin() ) ? ' disabled="disabled"' : '';
 

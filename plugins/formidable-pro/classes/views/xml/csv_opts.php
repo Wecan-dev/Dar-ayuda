@@ -1,3 +1,8 @@
+<?php
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'You are not allowed to call this page directly.' );
+}
+?>
 <div class="show_csv hide-if-js">
 	<p>
 		<label class="frm_left_label"><?php esc_html_e( 'CSV Delimiter', 'formidable-pro' ); ?></label>
@@ -9,7 +14,7 @@
         <select name="form_id">
 		<?php
 		foreach ( $forms as $form ) {
-            if ( $form->is_template ) {
+            if ( $form->is_template || $form->parent_form_id ) {
                 continue;
             }
         ?>

@@ -1,3 +1,8 @@
+<?php
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'You are not allowed to call this page directly.' );
+}
+?>
 <tr>
     <td>
 		<label><?php esc_html_e( 'Update Button Text', 'formidable-pro' ); ?></label>

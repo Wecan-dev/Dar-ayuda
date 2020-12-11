@@ -1,4 +1,9 @@
 <?php
+
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'You are not allowed to call this page directly.' );
+}
+
 class FrmProEntryMeta {
 
 	/**
@@ -62,66 +67,66 @@ class FrmProEntryMeta {
 	}
 
 	public static function validate( $errors, $field, $value, $args ) {
-        $field->temp_id = $args['id'];
+		$field->temp_id = $args['id'];
 
-        // Keep current value for "Other" fields because it is needed for correct validation
-        if ( ! $args['other'] ) {
-            FrmEntriesHelper::get_posted_value($field, $value, $args);
-        }
+		// Keep current value for "Other" fields because it is needed for correct validation
+		if ( ! $args['other'] ) {
+			FrmEntriesHelper::get_posted_value($field, $value, $args);
+		}
 
 		if ( $field->type == 'form' || FrmField::is_repeating_field( $field ) ) {
-            self::validate_embedded_form( $errors, $field, $args['exclude'] );
+			self::validate_embedded_form( $errors, $field, $args['exclude'] );
 
 			// get any values updated during nested validation
 			FrmEntriesHelper::get_posted_value( $field, $value, $args );
-        }
+		}
 
-        // don't validate if going backwards
-        if ( FrmProFormsHelper::going_to_prev($field->form_id) ) {
-            return array();
-        }
+		// don't validate if going backwards
+		if ( FrmProFormsHelper::going_to_prev($field->form_id) ) {
+			return array();
+		}
 
 		// clear any existing errors if draft
 		if ( FrmProFormsHelper::saving_draft() && isset( $errors[ 'field' . $field->temp_id ] ) ) {
 			unset( $errors[ 'field' . $field->temp_id ] );
 		}
 
-        // if saving draft, only check confirmation field since the confirmation field value is not saved
-        if ( FrmProFormsHelper::saving_draft() ) {
+		// if saving draft, only check confirmation field since the confirmation field value is not saved
+		if ( FrmProFormsHelper::saving_draft() ) {
 
-            //Check confirmation field if saving a draft
-    		self::validate_confirmation_field($errors, $field, $value, $args);
+			//Check confirmation field if saving a draft
+			self::validate_confirmation_field($errors, $field, $value, $args);
 
-            return $errors;
-        }
+			return $errors;
+		}
 
-        self::validate_no_input_fields($errors, $field);
+		self::validate_no_input_fields($errors, $field);
 
 		if ( empty( $args['parent_field_id'] ) && ! isset( $_POST['item_meta'][ $field->id ] ) ) {
 			return $errors;
 		}
 
 		if ( ( ( $field->type != 'tag' && $value == 0 ) || ( $field->type == 'tag' && $value == '' ) ) && isset( $field->field_options['post_field'] ) && $field->field_options['post_field'] == 'post_category' && $field->required == '1' ) {
-            $frm_settings = FrmAppHelper::get_settings();
+			$frm_settings = FrmAppHelper::get_settings();
 			$errors[ 'field' . $field->temp_id ] = ( ! isset( $field->field_options['blank'] ) || $field->field_options['blank'] == '' || $field->field_options['blank'] == 'Untitled cannot be blank' ) ? $frm_settings->blank_msg : $field->field_options['blank'];
-        }
+		}
 
-        //Don't require fields hidden with shortcode fields="25,26,27"
-        global $frm_vars;
+		//Don't require fields hidden with shortcode fields="25,26,27"
+		global $frm_vars;
 		if ( self::is_field_hidden_by_shortcode( $field, $errors ) ) {
 			unset( $errors[ 'field' . $field->temp_id ] );
-            $value = '';
-        }
+			$value = '';
+		}
 
 		// Don't require a conditionally hidden field
 		self::clear_errors_and_value_for_conditionally_hidden_field( $field, $errors, $value );
 
-        //make sure the [auto_id] is still unique
-        self::validate_auto_id($field, $value);
+		//make sure the [auto_id] is still unique
+		self::validate_auto_id($field, $value);
 
-        //check uniqueness
-        self::validate_unique_field($errors, $field, $value);
-        self::set_post_fields($field, $value, $errors);
+		//check uniqueness
+		self::validate_unique_field($errors, $field, $value);
+		self::set_post_fields($field, $value, $errors);
 
 		if ( self::has_invisible_errors( $field ) ) {
 			unset( $errors[ 'field' . $field->temp_id ] );
@@ -132,7 +137,7 @@ class FrmProEntryMeta {
 		FrmEntriesHelper::set_posted_value( $field, $value, $args );
 
 		return $errors;
-    }
+	}
 
 	public static function validate_embedded_form( &$errors, $field, $exclude = array() ) {
 		// Check if this section is conditionally hidden before validating the nested fields
@@ -283,8 +288,8 @@ class FrmProEntryMeta {
 		} else if ( $field->type == 'end_divider' ) {
 			global $frm_hidden_divider, $frm_invisible_divider;
 
-			$frm_hidden_divider = $frm_invisible_divider = false;
-
+			$frm_hidden_divider    = false;
+			$frm_invisible_divider = false;
 		}
 
 		if ( isset( $errors[ 'field' . $field->temp_id ] ) ) {
@@ -294,15 +299,15 @@ class FrmProEntryMeta {
 
 	public static function validate_hidden_shortcode_field( &$errors, $field, &$value ) {
 		if ( ! isset( $errors[ 'field' . $field->temp_id ] ) ) {
-            return;
-        }
+			return;
+		}
 
-        //Don't require fields hidden with shortcode fields="25,26,27"
-        global $frm_vars;
+		//Don't require fields hidden with shortcode fields="25,26,27"
+		global $frm_vars;
 		if ( isset( $frm_vars['show_fields'] ) && ! empty( $frm_vars['show_fields'] ) && is_array( $frm_vars['show_fields'] ) && $field->required == '1' && ! in_array( $field->id, $frm_vars['show_fields'] ) && ! in_array( $field->field_key, $frm_vars['show_fields'] ) ) {
 			unset( $errors[ 'field' . $field->temp_id ] );
-            $value = '';
-        }
+			$value = '';
+		}
 	}
 
 	/**
@@ -353,7 +358,7 @@ class FrmProEntryMeta {
 	 *
 	 * @return bool
 	 */
-	private static function is_field_conditionally_hidden( $field ) {
+	public static function is_field_conditionally_hidden( $field ) {
 		return self::is_individual_field_conditionally_hidden( $field )
 			   || self::is_field_in_hidden_section( $field )
 			   || self::is_field_in_hidden_embedded_form( $field )
@@ -417,34 +422,34 @@ class FrmProEntryMeta {
 		return $frm_hidden_break;
 	}
 
-    /**
-     * Make sure the [auto_id] is still unique
-     */
+	/**
+	 * Make sure the [auto_id] is still unique
+	 */
 	public static function validate_auto_id( $field, &$value ) {
 		if ( empty( $field->default_value ) || is_array( $field->default_value ) || empty( $value ) || strpos( $field->default_value, '[auto_id' ) === false ) {
-            return;
-        }
+			return;
+		}
 
-        //make sure we are not editing
-        if ( ( $_POST && ! isset($_POST['id']) ) || ! is_numeric($_POST['id']) ) {
-            $value = FrmProFieldsHelper::get_default_value($field->default_value, $field);
-        }
-    }
+		//make sure we are not editing
+		if ( ( $_POST && ! isset($_POST['id']) ) || ! is_numeric($_POST['id']) ) {
+			$value = FrmProFieldsHelper::get_default_value($field->default_value, $field);
+		}
+	}
 
-    /**
-     * Make sure this value is unique
-     */
+	/**
+	 * Make sure this value is unique
+	 */
 	public static function validate_unique_field( &$errors, $field, $value ) {
 		if ( empty( $value ) || ! FrmField::is_option_true( $field, 'unique' ) ) {
-            return;
-        }
+			return;
+		}
 
-        $entry_id = self::get_validated_entry_id( $field );
+		$entry_id = self::get_validated_entry_id( $field );
 		$field_obj = FrmFieldFactory::get_field_object( $field );
 		if ( $field_obj->is_not_unique( $value, $entry_id ) ) {
 			$errors[ 'field' . $field->temp_id ] = FrmFieldsHelper::get_error_msg( $field, 'unique_msg' );
 		}
-    }
+	}
 
 	public static function get_validated_entry_id( $field ) {
 		$entry_id = ( $_POST && isset($_POST['id']) ) ? absint( $_POST['id'] ) : 0;
@@ -471,54 +476,54 @@ class FrmProEntryMeta {
 	public static function validate_confirmation_field( &$errors, $field, $value, $args ) {
 		//Make sure confirmation field matches original field
 		if ( ! FrmField::is_option_true( $field, 'conf_field' ) ) {
-            return;
-        }
+			return;
+		}
 
-        if ( FrmProFormsHelper::saving_draft() ) {
-            //Check confirmation field if saving a draft
-            $args['action'] = ( $_POST['frm_action'] == 'create' ) ? 'create' : 'update';
-            self::validate_check_confirmation_field($errors, $field, $value, $args);
-            return;
-        }
+		if ( FrmProFormsHelper::saving_draft() ) {
+			//Check confirmation field if saving a draft
+			$args['action'] = ( $_POST['frm_action'] == 'create' ) ? 'create' : 'update';
+			self::validate_check_confirmation_field($errors, $field, $value, $args);
+			return;
+		}
 
-        $args['action'] = ( $_POST['frm_action'] == 'update' ) ? 'update' : 'create';
+		$args['action'] = ( $_POST['frm_action'] == 'update' ) ? 'update' : 'create';
 
-        self::validate_check_confirmation_field($errors, $field, $value, $args);
-    }
+		self::validate_check_confirmation_field($errors, $field, $value, $args);
+	}
 
 	public static function validate_check_confirmation_field( &$errors, $field, $value, $args ) {
-        $conf_val = '';
+		$conf_val = '';
 
 		// Temporarily swtich $field->id in order to get and set the value posted in confirmation field
-        $field_id = $field->id;
+		$field_id = $field->id;
 		$field->id = 'conf_' . $field_id;
-        FrmEntriesHelper::get_posted_value($field, $conf_val, $args);
+		FrmEntriesHelper::get_posted_value($field, $conf_val, $args);
 
 		// Switch $field->id back to original id
-        $field->id = $field_id;
-        unset($field_id);
+		$field->id = $field_id;
+		unset($field_id);
 
-        //If editing entry or if user hits Next/Submit on a draft
-        if ( $args['action'] == 'update' ) {
-            //If in repeating section
-            if ( isset( $args['key_pointer'] ) && ( $args['key_pointer'] || $args['key_pointer'] === 0 ) ) {
-                $entry_id = str_replace( 'i', '', $args['key_pointer'] );
-            } else {
-                $entry_id = ( $_POST && isset($_POST['id']) ) ? $_POST['id'] : false;
-            }
+		//If editing entry or if user hits Next/Submit on a draft
+		if ( $args['action'] == 'update' ) {
+			//If in repeating section
+			if ( isset( $args['key_pointer'] ) && ( $args['key_pointer'] || $args['key_pointer'] === 0 ) ) {
+				$entry_id = str_replace( 'i', '', $args['key_pointer'] );
+			} else {
+				$entry_id = ( $_POST && isset($_POST['id']) ) ? $_POST['id'] : false;
+			}
 
-            $prev_value = FrmEntryMeta::get_entry_meta_by_field($entry_id, $field->id);
+			$prev_value = FrmEntryMeta::get_entry_meta_by_field($entry_id, $field->id);
 
-            if ( $prev_value != $value && $conf_val != $value ) {
+			if ( $prev_value != $value && $conf_val != $value ) {
 				$errors[ 'fieldconf_' . $field->temp_id ] = FrmFieldsHelper::get_error_msg( $field, 'conf_msg' );
 				$errors[ 'field' . $field->temp_id ] = '';
-            }
-        } else if ( $args['action'] == 'create' && $conf_val != $value ) {
-            //If creating entry
+			}
+		} else if ( $args['action'] == 'create' && $conf_val != $value ) {
+			//If creating entry
 			$errors[ 'fieldconf_' . $field->temp_id ] = FrmFieldsHelper::get_error_msg( $field, 'conf_msg' );
 			$errors[ 'field' . $field->temp_id ] = '';
-        }
-    }
+		}
+	}
 
 	public static function skip_required_validation( $field ) {
 		$going_backwards = FrmProFormsHelper::going_to_prev( $field->form_id );
@@ -538,13 +543,13 @@ class FrmProEntryMeta {
 		return false;
 	}
 
-    /**
-     * Get metas for post or non-post fields
-     *
-     * @since 2.0
-     */
-    public static function get_all_metas_for_field( $field, $args = array() ) {
-        global $wpdb;
+	/**
+	 * Get metas for post or non-post fields
+	 *
+	 * @since 2.0
+	 */
+	public static function get_all_metas_for_field( $field, $args = array() ) {
+		global $wpdb;
 
 		$where = array(
 			'e.form_id' => $field->form_id,
@@ -557,7 +562,7 @@ class FrmProEntryMeta {
 			$get_table = $wpdb->prefix . 'frm_item_metas em INNER JOIN ' . $wpdb->prefix . 'frm_items e ON (e.id=em.item_id)';
 			$where['em.field_id'] = $field->id;
 
-        } else if ( $field->field_options['post_field'] == 'post_custom' ) {
+		} else if ( $field->field_options['post_field'] == 'post_custom' ) {
 			// If field is a custom field
 			$get_field = 'pm.meta_value';
 			$get_table = $wpdb->postmeta . ' pm INNER JOIN ' . $wpdb->prefix . 'frm_items e ON pm.post_id=e.post_id';
@@ -568,7 +573,7 @@ class FrmProEntryMeta {
 			$get_field = 'p.' . sanitize_title( $field->field_options['post_field'] );
 			$get_table = $wpdb->posts . ' p INNER JOIN ' . $wpdb->prefix . 'frm_items e ON p.ID=e.post_id';
 
-        } else {
+		} else {
 			// If field is a category field
 			$post_ids = self::get_all_post_ids_for_form( $field->form_id, $args );
 
@@ -581,24 +586,25 @@ class FrmProEntryMeta {
 			}
 
 			$args = array();
-        }
+		}
 
 		self::add_to_where_query( $args, $where );
 		$query_args = self::setup_args_for_frmdb_query( $args );
 
-        // Get the metas
+		// Get the metas
 		$metas = FrmDb::get_col( $get_table, $where, $get_field, $query_args );
 
-        // Maybe unserialize
-        foreach ( $metas as $k => $v ) {
-			$metas[ $k ] = maybe_unserialize( $v );
-            unset($k, $v);
-        }
+		// Maybe unserialize
+		foreach ( $metas as $k => $v ) {
+			$metas[ $k ] = $v;
+			FrmProAppHelper::unserialize_or_decode( $metas[ $k ] );
+			unset($k, $v);
+		}
 
 		$metas = wp_unslash( $metas );
 
-        return $metas;
-    }
+		return $metas;
+	}
 
 	/**
 	 * Get all post IDs for form
@@ -608,7 +614,7 @@ class FrmProEntryMeta {
 	 * @param array $args
 	 * @return mixed
 	 */
-    private static function get_all_post_ids_for_form( $form_id, $args ) {
+	private static function get_all_post_ids_for_form( $form_id, $args ) {
 		$where = array(
 			'e.form_id' => $form_id,
 			'e.is_draft' => 0,
@@ -637,10 +643,10 @@ class FrmProEntryMeta {
 
 		$get_column = 'e.id,';
 
-		$where = array(
-			'e.form_id' => $field->form_id,
-			'e.is_draft' => 0,
-		);
+		$where = self::base_query( $field );
+		if ( empty( $where['e.form_id'] ) ) {
+			return array();
+		}
 
 		if ( ! FrmField::is_option_true( $field, 'post_field' ) ) {
 			// If field is not a post field
@@ -707,26 +713,38 @@ class FrmProEntryMeta {
 	public static function get_entry_ids_for_field_and_value( $field, $value, $args = array() ) {
 		global $wpdb;
 
-		$where = array(
-			'e.form_id' => $field->form_id,
-			'e.is_draft' => 0
-		);
+		$where = self::base_query( $field );
+		if ( empty( $where['e.form_id'] ) ) {
+			return array();
+		}
 
 		$operator = self::get_operator_for_query( $args );
 
-		if ( strpos( $operator, 'LIKE' ) === false ) {
+		if ( strpos( $operator, 'LIKE' ) === false && ! empty( $field ) ) {
 			$num_query = FrmProAppHelper::maybe_query_as_number( $field->type );
 			$operator = $num_query . $operator;
 		}
 
-		if ( ! FrmField::is_option_true( $field, 'post_field' ) ) {
-			// If field is not a post field
-			$get_field = 'em.item_id';
-			$get_table = $wpdb->prefix . 'frm_item_metas em INNER JOIN ' . $wpdb->prefix . 'frm_items e ON (e.id=em.item_id)';
+		$get_field = 'em.item_id';
+		$get_table = $wpdb->prefix . 'frm_item_metas em INNER JOIN ' . $wpdb->prefix . 'frm_items e ON (e.id=em.item_id)';
 
-			$where['em.field_id'] = $field->id;
+		if ( empty( $field ) ) {
+			// If the extra meta if being searched ie Comments.
+			$where['em.field_id'] = 0;
 			$where[ 'em.meta_value' . $operator ] = $value;
+		} elseif ( ! FrmField::is_option_true( $field, 'post_field' ) ) {
+			// If field is not a post field
+			$where['em.field_id'] = $field->id;
 
+			if ( '' === $operator ) {
+				$where[] = array(
+					'or'                 => 1,
+					'em.meta_value'      => $value,
+					'em.meta_value LIKE' => ':"' . $value . '"',
+				);
+			} else {
+				$where[ 'em.meta_value' . $operator ] = $value;
+			}
 		} else if ( $field->field_options['post_field'] == 'post_custom' ) {
 			// If field is a custom field
 			$get_field = 'e.id';
@@ -751,6 +769,31 @@ class FrmProEntryMeta {
 		self::add_to_where_query( $args, $where );
 
 		return FrmDb::get_col( $get_table, $where, $get_field );
+	}
+
+	/**
+	 * Get the base query for the entry search.
+	 *
+	 * @since 4.04.03
+	 *
+	 * @return array
+	 */
+	private static function base_query( $field ) {
+		$where = array(
+			'e.form_id'  => empty( $field ) ? 0 : $field->form_id,
+			'e.is_draft' => 0,
+		);
+
+		if ( ! empty( $field ) ) {
+			return $where;
+		}
+
+		$form_id = FrmAppHelper::get_param( 'form', 0, 'get', 'absint' );
+		if ( ! empty( $form_id ) ) {
+			$where['e.form_id'] = $form_id;
+		}
+
+		return $where;
 	}
 
 	/**
@@ -785,27 +828,27 @@ class FrmProEntryMeta {
 	 * @param $args
 	 * @param $where
 	 */
-    private static function add_to_where_query( $args, &$where ) {
+	private static function add_to_where_query( $args, &$where ) {
 
-        // If entry IDs is set
-        if ( isset( $args['entry_ids'] ) ) {
-            $where['e.id'] = $args['entry_ids'];
-        }
+		// If entry IDs is set
+		if ( isset( $args['entry_ids'] ) ) {
+			$where['e.id'] = $args['entry_ids'];
+		}
 
-        // If user ID is set
-        if ( isset( $args['user_id'] ) ) {
-            $where['e.user_id'] = $args['user_id'];
-        }
+		// If user ID is set
+		if ( isset( $args['user_id'] ) ) {
+			$where['e.user_id'] = $args['user_id'];
+		}
 
-        // If start date is set
-        if ( isset( $args['start_date'] ) ) {
-            $where['e.created_at >'] = date( 'Y-m-d 00:00:00', strtotime( $args['start_date'] ) );
-        }
+		// If start date is set.
+		if ( isset( $args['start_date'] ) ) {
+			$where['e.created_at >'] = gmdate( 'Y-m-d 00:00:00', strtotime( $args['start_date'] ) );
+		}
 
-        // If end date is set
-        if ( isset( $args['end_date'] ) ) {
-            $where['e.created_at <'] = date( 'Y-m-d 23:59:59', strtotime( $args['end_date'] ) );
-        }
+		// If end date is set.
+		if ( isset( $args['end_date'] ) ) {
+			$where['e.created_at <'] = gmdate( 'Y-m-d 23:59:59', strtotime( $args['end_date'] ) );
+		}
 
 		// If is_draft is set
 		if ( isset( $args['is_draft'] ) ) {
@@ -815,7 +858,7 @@ class FrmProEntryMeta {
 				$where['e.is_draft'] = $args['is_draft'];
 			}
 		}
-    }
+	}
 
 	/**
 	 * Convert args to usable query args for FrmDb::get_col function
@@ -839,9 +882,9 @@ class FrmProEntryMeta {
 	}
 
 	public static function set_post_fields( $field, $value, &$errors ) {
-        $errors = FrmProEntryMetaHelper::set_post_fields($field, $value, $errors);
-        return $errors;
-    }
+		$errors = FrmProEntryMetaHelper::set_post_fields($field, $value, $errors);
+		return $errors;
+	}
 
 	public static function add_post_value_to_entry( $field, &$entry ) {
 		if ( $entry->post_id && ( $field->type == 'tag' || ( isset( $field->field_options['post_field'] ) && $field->field_options['post_field'] ) ) ) {
@@ -938,14 +981,14 @@ class FrmProEntryMeta {
 	/**
 	 * @deprecated 2.02
 	 */
-    public static function validate_file_upload( &$errors, $field, $args ) {
-        if ( $field->type != 'file' ) {
-            return;
-        }
+	public static function validate_file_upload( &$errors, $field, $args ) {
+		if ( $field->type != 'file' ) {
+			return;
+		}
 
 		_deprecated_function( __FUNCTION__, '2.02', 'FrmProFileField::validate_file_upload' );
 		FrmProFileField::validate_file_upload( $errors, $field, $args );
-    }
+	}
 
 	/**
 	 * @since 2.0.22
@@ -965,15 +1008,15 @@ class FrmProEntryMeta {
 		FrmProFileField::delete_files_from_field( $field, $entry );
 	}
 
-    /**
-    * Get name of uploaded file
-    *
-    * @since 2.0
+	/**
+	* Get name of uploaded file
+	*
+	* @since 2.0
 	* @deprecated 2.02
-    */
-    public static function get_file_name( $field_id, &$file_name, &$parent_field, &$key_pointer, &$repeating ) {
-        _deprecated_function( __FUNCTION__, '2.02' );
-    }
+	*/
+	public static function get_file_name( $field_id, &$file_name, &$parent_field, &$key_pointer, &$repeating ) {
+		_deprecated_function( __FUNCTION__, '2.02' );
+	}
 
 	/**
 	 * @deprecated 2.03.02

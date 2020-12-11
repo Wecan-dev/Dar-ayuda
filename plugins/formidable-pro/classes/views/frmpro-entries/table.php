@@ -1,3 +1,8 @@
+<?php
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'You are not allowed to call this page directly.' );
+}
+?>
 <table class="form_results<?php echo ( $atts['style'] ? FrmFormsHelper::get_form_style_class() : '' ); ?>" id="form_results<?php echo (int) $atts['form']->id ?>" cellspacing="0">
     <thead>
     <tr>

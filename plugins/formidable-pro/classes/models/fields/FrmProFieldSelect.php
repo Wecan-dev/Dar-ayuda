@@ -1,5 +1,9 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'You are not allowed to call this page directly.' );
+}
+
 /**
  * @since 3.0
  */
@@ -11,7 +15,8 @@ class FrmProFieldSelect extends FrmFieldSelect {
 		$settings['autopopulate'] = true;
 		$settings['default_value'] = true;
 		$settings['read_only'] = true;
-		$settings['unique'] = true;
+		$settings['unique']    = true;
+		$settings['prefix']    = true;
 
 		FrmProFieldsHelper::fill_default_field_display( $settings );
 		return $settings;
@@ -32,5 +37,14 @@ class FrmProFieldSelect extends FrmFieldSelect {
 		}
 
 		parent::show_extra_field_choices( $args );
+	}
+
+	/**
+	 * @since 4.05
+	 */
+	protected function builder_text_field( $name = '' ) {
+		$html  = FrmProFieldsHelper::builder_page_prepend( $this->field );
+		$field = parent::builder_text_field( $name );
+		return str_replace( '[input]', $field, $html );
 	}
 }

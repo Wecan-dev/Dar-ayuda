@@ -1,5 +1,9 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'You are not allowed to call this page directly.' );
+}
+
 class FrmProStatisticsController {
 
 	/**
@@ -52,7 +56,7 @@ class FrmProStatisticsController {
 		$cleaned_values = array();
 
 		foreach ( $field_values as $k => $i ) {
-			$i = maybe_unserialize( $i );
+			FrmProAppHelper::unserialize_or_decode( $i );
 
 			if ( ! is_array( $i ) ) {
 				$cleaned_values[] = $i;
@@ -734,7 +738,7 @@ class FrmProStatisticsController {
 
 		if ( in_array( $filter_args['field'], array( 'created_at', 'updated_at' ) ) ) {
 			$filter_args['value'] = str_replace( array( '"', "'" ), '', $filter_args['value'] );
-			$filter_args['value'] = date( 'Y-m-d H:i:s', strtotime( $filter_args['value'] ) );
+			$filter_args['value'] = gmdate( 'Y-m-d H:i:s', strtotime( $filter_args['value'] ) );
 			$filter_args['value'] = get_gmt_from_date( $filter_args['value'] );
 		} else {
 			$filter_args['value'] = trim( trim( $filter_args['value'], "'" ), '"' );

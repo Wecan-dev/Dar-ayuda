@@ -1,3 +1,8 @@
+<?php
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'You are not allowed to call this page directly.' );
+}
+?>
 <div id="form_reports_page" class="wrap frm_charts">
 	<h2><?php esc_html_e( 'Reports', 'formidable-pro' ); ?></h2>
 

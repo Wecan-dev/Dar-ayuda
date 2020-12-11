@@ -1,7 +1,7 @@
 function frmProFormJS() {
 	/* globals frm_js, frmFrontForm, google */
 	/* globals __frmDatepicker, __frmDropzone, __frmUniqueTimes */
-	/* globals __FRMLOOKUP, __FRMCALC, __FRMRULES */
+	/* globals __FRMLOOKUP, __FRMCALC, __FRMRULES, __FRMCURR */
 	/* globals __frmChosen, __frmHideOrShowFields, __frmDepDynamicFields */
 	/* globals __frmDepLookupFields, __frmMasks, __FRMTABLES */
 
@@ -43,6 +43,19 @@ function frmProFormJS() {
 		} else if ( this.className.indexOf( 'frm_page_back' ) !== -1 ) {
 			v = $thisObj.data( 'page' );
 		}
+
+		var removeIds = [];
+		jQuery( '.frm_form_field .wp-editor-area' ).each(function() {
+			removeIds.push( this.id );
+		});
+
+		jQuery( document ).one( 'frmPageChanged', function() {
+			// Remove tinymce from RTE fields on page update so they can initialize properly when the page becomes active again
+			for ( var removeIndex = 0; removeIndex < removeIds.length; ++removeIndex ) {
+				removeRichText( removeIds[ removeIndex ] );
+			}
+			checkConditionalLogic();
+		});
 
 		jQuery( '.frm_next_page' ).val( v );
 		jQuery( '.frm_saving_draft' ).val( d );
@@ -133,7 +146,7 @@ function frmProFormJS() {
 		}
 
 		field = jQuery( selector );
-		if ( field.length < 1 || field.hasClass( 'dz-clickable' ) ) {
+		if ( field.length < 1 || field.hasClass( 'dz-clickable' ) || field.hasClass( 'dz-started' ) ) {
 			return;
 		}
 
@@ -146,11 +159,6 @@ function frmProFormJS() {
 		}
 
 		var form = field.closest( 'form' );
-		var formID = '#' + form.attr( 'id' );
-		if ( formID === '#undefined' ) {
-			// use a class if there is not id for WooCommerce
-			formID = 'form.' + form.attr( 'class' ).replace( ' ', '.' );
-		}
 
 		field.dropzone( {
 			url: frm_js.ajax_url,
@@ -159,7 +167,7 @@ function frmProFormJS() {
 			maxFilesize: uploadFields[ i ].maxFilesize,
 			maxFiles: max,
 			uploadMultiple: uploadFields[ i ].uploadMultiple,
-			hiddenInputContainer: formID,
+			hiddenInputContainer: field.parent()[0],
 			dictDefaultMessage: uploadFields[ i ].defaultMessage,
 			dictFallbackMessage: uploadFields[ i ].fallbackMessage,
 			dictFallbackText: uploadFields[ i ].fallbackText,
@@ -183,6 +191,11 @@ function frmProFormJS() {
 				jQuery( this.element ).closest( 'form' ).removeClass( 'frm_ajax_submit' );
 			},
 			init: function() {
+				var hidden = field.parent().find('.dz-hidden-input');
+				if ( typeof hidden.attr('id') === 'undefined' ) {
+					hidden.attr( 'id', uploadFields[ i ].label );
+				}
+
 				this.on( 'sending', function( file, xhr, formData ) {
 
 					if ( ! anyPrecedingRequiredFieldsCompleted( uploadFields[ i ], selector ) ) {
@@ -207,6 +220,10 @@ function frmProFormJS() {
 						if ( uploadFields[ i ].uploadMultiple !== true ) {
 							jQuery( 'input[name="' + fieldName + '"]' ).val( mediaIDs[ m ] );
 						}
+					}
+
+					if ( this.options.uploadMultiple === false ) {
+						this.disable();
 					}
 				} );
 
@@ -242,13 +259,19 @@ function frmProFormJS() {
 				} );
 
 				this.on( 'removedfile', function( file ) {
+					var fileCount = this.files.length;
+
+					if ( this.options.uploadMultiple === false && fileCount < 1 ) {
+						this.enable();
+					}
+
 					if ( file.accepted !== false && uploadFields[ i ].uploadMultiple !== true ) {
 						jQuery( 'input[name="' + fieldName + '"]' ).val( '' );
 					}
 
 					if ( file.accepted !== false && typeof file.mediaID !== 'undefined' ) {
 						jQuery( file.previewElement ).remove();
-						var fileCount = this.files.length;
+						fileCount = this.files.length;
 						this.options.maxFiles = uploadFields[ i ].maxFiles - fileCount;
 					}
 				} );
@@ -659,14 +682,22 @@ function frmProFormJS() {
 	}
 
 	function hideOrShowSingleField( depFieldArgs ) {
-		var logicOutcomes = [],
+		var add,
+			logicOutcomes = [],
 			len = depFieldArgs.conditions.length;
 
 		for ( var i = 0; i < len; i++ ) {
-			logicOutcomes.push( checkLogicCondition( depFieldArgs.conditions[ i ], depFieldArgs ) );
+			add = checkLogicCondition( depFieldArgs.conditions[ i ], depFieldArgs );
+			if ( add !== null ) {
+				// Prevent fields not on the page from being hidden without a chance.
+				logicOutcomes.push( add );
+			}
 		}
 
-		routeToHideOrShowField( depFieldArgs, logicOutcomes );
+		if ( logicOutcomes.length ) {
+			// Only continue if the field was found on the page.
+			routeToHideOrShowField( depFieldArgs, logicOutcomes );
+		}
 	}
 
 	function getRulesForSingleField( fieldId ) {
@@ -687,6 +718,11 @@ function frmProFormJS() {
 		var fieldId = logicCondition.fieldId,
 			logicFieldArgs = getRulesForSingleField( fieldId ),
 			fieldValue = getFieldValue( logicFieldArgs, depFieldArgs );
+
+		if ( fieldValue === null ) {
+			// The field wasn't found.
+			return null;
+		}
 
 		return getLogicConditionOutcome( logicCondition, fieldValue, depFieldArgs, logicFieldArgs );
 	}
@@ -740,6 +776,10 @@ function frmProFormJS() {
 
 		if ( logicFieldInput === null ) {
 			logicFieldValue = parseTimeValue( logicFieldArgs, fieldCall );
+			if ( logicFieldValue === '' ) {
+				// Check for hidden fields.
+				logicFieldValue = getValueFromMultiSelectDropdown( logicFieldArgs, depFieldArgs );
+			}
 		} else {
 			logicFieldValue = logicFieldInput.value;
 		}
@@ -797,6 +837,11 @@ function frmProFormJS() {
 		var logicFieldValue,
 			inputName = buildLogicFieldInputName( logicFieldArgs, depFieldArgs ),
 			logicFieldInputs = document.querySelectorAll( 'input[name^="' + inputName + '"]' );
+
+		if ( logicFieldInputs.length === 0 ) {
+			// Don't continue if the field doesn't exist.
+			return null;
+		}
 
 		if ( logicFieldArgs.inputType === 'checkbox' || logicFieldArgs.inputType === 'toggle' ) {
 			logicFieldValue = getValuesFromCheckboxInputs( logicFieldInputs );
@@ -1263,8 +1308,9 @@ function frmProFormJS() {
 					continue;
 				}
 
-				setDefaultValue( inputs[ i ] );
+				setDefaultValue( inputs[ i ], inContainer );
 				maybeSetWatchingFieldValue( inputs[ i ] );
+				setShownProduct( inputs[ i ] );
 				maybeDoCalcForSingleField( inputs[ i ] );
 
 				prevInput = inputs[ i ];
@@ -1458,11 +1504,12 @@ function frmProFormJS() {
 			return;
 		}
 
-		var prevInput,
+		var prevInput, blankSelect,
 			valueChanged = true;
 
 		for ( var i = 0, l = inputs.length; i < l; i++ ) {
-			if ( inputs[ i ].className.indexOf( 'frm_dnc' ) > -1 ) {
+			// Don't remove values from some fields.
+			if ( inputs[ i ].className.indexOf( 'frm_dnc' ) > -1 || inputs[ i ].name.indexOf( '[row_ids]' ) > -1 ) {
 				prevInput = inputs[ i ];
 				continue;
 			}
@@ -1477,10 +1524,11 @@ function frmProFormJS() {
 			if ( inputs[ i ].type === 'radio' || inputs[ i ].type === 'checkbox' ) {
 				inputs[ i ].checked = false;
 			} else if ( inputs[ i ].tagName === 'SELECT' ) {
-				if ( ( inputs[ i ].selectedIndex === 0 ) || ( inputs[ i ].selectedIndex === - 1 ) ) {
+				blankSelect = inputs[ i ].selectedIndex === 0 && inputs[ i ].options[ 0 ].text.trim() === '';
+				if ( blankSelect || ( inputs[ i ].selectedIndex === - 1 ) ) {
 					valueChanged = false;
 				} else {
-					inputs[ i ].selectedIndex = 0;
+					inputs[ i ].selectedIndex = -1;
 				}
 
 				var chosenId = inputs[ i ].id.replace( /[^\w]/g, '_' ); // match what the script is doing
@@ -1490,6 +1538,8 @@ function frmProFormJS() {
 				}
 			} else if ( inputs[ i ].type === 'range' ) {
 				inputs[ i ].value = 0;
+			} else if ( inputs[ i ].getAttribute( 'data-frmprice' ) !== null ) {
+				setHiddenProduct( inputs[ i ] );
 			} else {
 				inputs[ i ].value = '';
 			}
@@ -1580,8 +1630,9 @@ function frmProFormJS() {
 		return hiddenFields;
 	}
 
-	function setDefaultValue( input ) {
-		var $input = jQuery( input ),
+	function setDefaultValue( input, inContainer ) {
+		var placeholder,
+			$input = jQuery( input ),
 			defaultValue = $input.data( 'frmval' );
 
 		if ( typeof defaultValue === 'undefined' && input.classList.contains( 'wp-editor-area' ) ) {
@@ -1599,6 +1650,12 @@ function frmProFormJS() {
 			}
 		}
 
+		placeholder = defaultValue;
+		defaultValue = setDropdownPlaceholder( defaultValue, input );
+		if ( placeholder !== defaultValue ) {
+			placeholder = true;
+		}
+
 		if ( typeof defaultValue !== 'undefined' ) {
 			var numericKey = new RegExp( /\[\d*\]$/i );
 
@@ -1608,7 +1665,8 @@ function frmProFormJS() {
 			} else if ( input.type === 'hidden' && input.name.indexOf( '[]' ) > -1 ) {
 				setHiddenCheckboxDefaultValue( input.name, defaultValue );
 
-			} else if ( input.type === 'hidden' && input.name.indexOf( '][' ) > -1 && numericKey.test( input.name ) ) {
+			// Set for hidden checkbox fields that aren't on the current page. Skip hidden fields in a repeater.
+			} else if ( ! inContainer && input.type === 'hidden' && input.name.indexOf( '][' ) > -1 && numericKey.test( input.name ) ) {
 				setHiddenCheckboxDefaultValue( input.name.replace( numericKey, '' ), defaultValue );
 
 			} else {
@@ -1623,10 +1681,15 @@ function frmProFormJS() {
 					}
 				}
 
+				if ( typeof defaultValue === 'object' ) {
+					// Don't replace a field shortcode with the id.
+					defaultValue = '[' + defaultValue + ']';
+				}
+
 				input.value = defaultValue;
 			}
 
-			if ( input.tagName === 'SELECT' ) {
+			if ( ! placeholder && input.tagName === 'SELECT' ) {
 				maybeUpdateChosenOptions( input );
 				if ( input.value === '' ) {
 					setOtherSelectValue( input, defaultValue );
@@ -1637,11 +1700,30 @@ function frmProFormJS() {
 		}
 	}
 
+	/**
+	 * Select the option with placeholder if applicable.
+	 */
+	function setDropdownPlaceholder( defaultValue, input ) {
+		var placeholder;
+		if ( typeof defaultValue === 'undefined' && input.tagName === 'SELECT' ) {
+			placeholder = input.getAttribute( 'data-placeholder' );
+			if ( placeholder !== null ) {
+				defaultValue = '';
+			}
+		}
+		return defaultValue;
+	}
+
 	function setCheckboxOrRadioDefaultValue( inputName, defaultValue ) {
 		// Get all checkbox/radio inputs for this field
 		var radioInputs = document.getElementsByName( inputName ),
 			isSet = false,
 			firstInput = false;
+
+		if ( typeof defaultValue === 'object' ) {
+			// Convert the object to an array.
+			defaultValue = Object.keys( defaultValue ).map( (key) => defaultValue[ key ] );
+		}
 
 		// Loop through options and set the default value
 		for ( var i = 0, l = radioInputs.length; i < l; i++ ) {
@@ -1679,6 +1761,10 @@ function frmProFormJS() {
 		// Get all the hidden inputs with the same name
 		var hiddenInputs = jQuery( 'input[name^="' + inputName + '"]' ).get();
 
+		if ( typeof defaultValue === 'object' ) {
+			// Convert the object to an array.
+			defaultValue = Object.keys( defaultValue ).map( (key) => defaultValue[ key ] );
+		}
 		if ( jQuery.isArray( defaultValue ) ) {
 			for ( var i = 0, l = defaultValue.length; i < l; i++ ) {
 				if ( i in hiddenInputs ) {
@@ -2495,6 +2581,21 @@ function frmProFormJS() {
 	}
 
 	/**
+	 * Convert html entities back into their character values
+	 *
+	 * @param {string} string
+	 * @returns {string}
+	 */
+	function decodeEntities( string ) {
+		var decoded = string.replace( /&amp;/g, '&' )
+			.replace( /&lt;/g, '<' )
+			.replace( /&gt;/g, '>' )
+			.replace( /&quot;/g, '"' )
+			.replace( /&#039;/g, "'" );
+		return decoded;
+	}
+
+	/**
 	 * Insert a new text field Lookup value
 	 *
 	 * @since 2.01.0
@@ -2503,8 +2604,7 @@ function frmProFormJS() {
 	 * @param {string} newValue
  	 */
 	function insertValueInFieldWatchingLookup( fieldKey, childInput, newValue ) {
-		newValue = newValue.replace( /&amp;/g, '&' );
-		childInput.value = newValue;
+		childInput.value = decodeEntities( newValue );
 		triggerChange( jQuery( childInput ), fieldKey );
 	}
 
@@ -3035,8 +3135,63 @@ function frmProFormJS() {
 		alert( alertMessage );
 	}
 
+	/**
+	 * Adjust a Date for timezone offset
+	 *
+	 * @param {Date} date
+	 * @returns {Date}
+	 */
+	function treatAsUTC( date ) {
+		var copy = new Date( date.valueOf() );
+		copy.setMinutes( copy.getMinutes() - copy.getTimezoneOffset() );
+		return copy;
+	}
+
+	/**
+	 * Try to change date strings and ints to Date objects before calculations
+	 *
+	 * @param {mixed} date
+	 * @returns {mixed}
+	 */
+	function normalizeDate( date ) {
+		switch( typeof date ) {
+			case 'number': return new Date( date * 86400000 ); // 1000 * 60 * 60 * 24 (milliseconds per day)
+			case 'string': return new Date( date );
+			default:       return date;
+		}
+	}
+
+	/**
+	 * Calculate the difference between two dates
+	 *
+	 * @param {mixed} a date
+	 * @param {mixed} b date
+	 * @param {string} format
+	 * @returns {int}
+	 */
+	function calculateDateDifference( a, b, format ) {
+		a = normalizeDate( a );
+		b = normalizeDate( b );
+
+		switch( format ) {
+			case 'days': {
+				return Math.floor( ( treatAsUTC( b ) - treatAsUTC( a ) ) / 86400000 ); // 1000 * 60 * 60 * 24 (milliseconds per day)
+			}
+
+			case 'years': default: {
+				var years = b.getFullYear() - a.getFullYear();
+				if ( b.getMonth() < a.getMonth() || b.getMonth() === a.getMonth() && b.getDate() < a.getDate() ) {
+					years--;
+				}
+
+				return years;
+			}
+		}
+	}
+
 	function doSingleCalculation( allCalcs, fieldKey, vals, triggerField ) {
-		var thisCalc = allCalcs.calc[ fieldKey ],
+		var currency, total, dec, updatedTotal,
+			thisCalc = allCalcs.calc[ fieldKey ],
 			thisFullCalc = thisCalc.calc,
 			totalField = jQuery( document.getElementById( 'field_' + fieldKey ) ),
 			fieldInfo = {
@@ -3060,8 +3215,8 @@ function frmProFormJS() {
 		// loop through the fields in this calculation
 		thisFullCalc = getValsForSingleCalc( thisCalc, thisFullCalc, allCalcs, vals, fieldInfo );
 
-		var total = '';
-		var dec = '';
+		total = '';
+		dec = '';
 
 		if ( thisCalc.calc_type === 'text' ) {
 			total = thisFullCalc;
@@ -3098,19 +3253,83 @@ function frmProFormJS() {
 			}
 		}
 
-		if ( totalField.val() !== total ) {
-			if ( isNumeric( dec ) && totalField.attr( 'type' ) === 'number' ) {
-				if ( total.toString().slice(-1) == '0' && navigator.userAgent.toLowerCase().indexOf('firefox') > -1 ) {
-					// Change the input to text in Firefox. Otherwise, trailing decimals will fail.
-					totalField[0].setAttribute( 'type', 'text' );
-				}
-			}
-
-			totalField.val( total );
-			if ( triggerField === null || typeof triggerField === 'undefined' || totalField.attr( 'name' ) != triggerField.attr( 'name' ) ) {
-				triggerChange( totalField, fieldKey );
+		if ( thisCalc.is_currency === true && isNumeric( total ) ) {
+			currency = getCurrency( thisCalc.form_id );
+			if ( currency.decimals > 0 ) {
+				total = Math.round10( total, currency.decimals );
+				total = maybeAddTrailingZeroToPrice( total, currency );
+				dec = currency.decimals;
 			}
 		}
+
+		if ( totalField.val() === total ) {
+			setDisplayedTotal( totalField, total, currency );
+			return;
+		}
+
+		updatedTotal = false;
+		if ( ( isNumeric( dec ) || thisCalc.is_currency ) && [ 'number', 'text' ].indexOf( totalField.attr( 'type' ) ) > -1 ) {
+			if ( total.toString().slice(-1) == '0' && navigator.userAgent.toLowerCase().indexOf('firefox') > -1 ) {
+				// Change the input to text in Firefox. Otherwise, trailing decimals will fail.
+				totalField[0].setAttribute( 'type', 'text' );
+			}
+
+			if ( totalField.parent().is( '.frm_input_group.frm_with_box.frm_hidden' ) ) {
+				updatedTotal = true;
+				totalField.val( total.replace( ',', '.' ) );
+			}
+		}
+
+		if ( ! updatedTotal ) {
+			totalField.val( total );
+		}
+
+		if ( triggerField === null || typeof triggerField === 'undefined' || totalField.attr( 'name' ) != triggerField.attr( 'name' ) ) {
+			triggerChange( totalField, fieldKey );
+		}
+
+		setDisplayedTotal( totalField, total, currency );
+	}
+
+	/**
+	 * Show the total for frm_total fields.
+	 */
+	function setDisplayedTotal( totalField, total, currency ) {
+		var prepend, append,
+			showTotal = totalField.parent().prev();
+
+		if ( ! showTotal.hasClass( 'frm_total_formatted' ) ) {
+			return;
+		}
+
+		prepend = showTotal.data( 'prepend' );
+		append = showTotal.data( 'append' );
+		if ( typeof prepend === 'undefined' ) {
+			prepend = '';
+		}
+		if ( typeof append === 'undefined' ) {
+			append = '';
+		}
+
+		if ( typeof currency === 'object' ) {
+			total = formatCurrency( total, currency );
+			if ( currency.symbol_left === prepend ) {
+				prepend = '';
+			}
+			if ( currency.symbol_right === append ) {
+				append = '';
+			}
+		}
+
+		if ( prepend !== '' ) {
+			prepend = '<span class="frm_inline_pre">' + prepend + '</span>';
+		}
+
+		if ( append !== '' ) {
+			append = '<span class="frm_inline_pre">' + append + '</span>';
+		}
+
+		showTotal.html( prepend + '<span class="frm_inline_total">' + total + '</span>' + append );
 	}
 
 	function getValsForSingleCalc( thisCalc, thisFullCalc, allCalcs, vals, fieldInfo ) {
@@ -3123,6 +3342,7 @@ function frmProFormJS() {
 				valKey: fieldInfo.inSection + '' + thisCalc.fields[ f ],
 				thisField: allCalcs.fields[ thisCalc.fields[ f ] ],
 				thisFieldCall: 'input' + allCalcs.fieldKeys[ thisCalc.fields[ f ] ],
+				formID: thisCalc.form_id,
 			};
 
 			field = getCallForField( field, allCalcs );
@@ -3255,7 +3475,9 @@ function frmProFormJS() {
 
 		vals[ field.valKey ] = 0;
 
-		var calcField = getCalcField( field );
+		var currency,
+			calcField = getCalcField( field );
+
 		if ( calcField === false ) {
 			return vals;
 		}
@@ -3268,6 +3490,10 @@ function frmProFormJS() {
                 if ( d !== null ) {
 					vals[ field.valKey ] = Math.ceil( d / ( 1000 * 60 * 60 * 24 ) );
                 }
+			} else if ( this.hasAttribute( 'data-frmprice' ) || field.thisField.type === 'total' ) {
+				// data-frmprice means product field.
+				currency = getCurrency( field.formID );
+				vals[ field.valKey ] += parseFloat( ! currency ? thisVal : preparePrice( thisVal, currency ) );
 			} else {
 				var n = thisVal;
 
@@ -3461,13 +3687,15 @@ function frmProFormJS() {
 		if ( isOtherOption( thisField, currentOpt ) ) {
 			thisVal = getOtherValueAnyField( thisField, currentOpt );
 		} else if ( currentOpt.type === 'checkbox' || currentOpt.type === 'radio' ) {
+
 			if ( currentOpt.checked ) {
-				thisVal = currentOpt.value;
+				// hasAttribute( 'data-frmprice' ) is a product field.
+				thisVal = currentOpt.hasAttribute( 'data-frmprice' ) ? currentOpt.dataset.frmprice : currentOpt.value;
 			} else {
 				thisVal = currentOpt.dataset.off;
 			}
 		} else {
-			thisVal = jQuery( currentOpt ).val();
+			thisVal = currentOpt.hasAttribute( 'data-frmprice' ) ? currentOpt.dataset.frmprice : jQuery( currentOpt ).val();
 		}
 
 		if ( typeof thisVal === 'undefined' ) {
@@ -3643,6 +3871,10 @@ function frmProFormJS() {
 
 	function afterPageChanged() {
 		checkFieldsOnPage();
+		addTopAddRowBtnForRepeater();
+		maybeDisableCheckboxesWithLimit();
+		// make sure this comes last so that the total is calculated only after knowing the visible fields
+		calcProductsTotal();
 	}
 
 	/** Google Tables **/
@@ -3770,9 +4002,10 @@ function frmProFormJS() {
 	}
 
 	function generateSingleGoogleGraph( graphData ) {
-		google.load( 'visualization', '1.0', { packages: [ graphData.package ], callback: function() {
+		google.charts.load( 'current', { packages: [ graphData.package ] } );
+		google.charts.setOnLoadCallback( function() {
 			compileGoogleGraph( graphData );
-		} } );
+		} );
 	}
 
 	function compileGoogleGraph( graphData ) {
@@ -3837,7 +4070,13 @@ function frmProFormJS() {
 
 				var container = 'frm_field_' + fieldID + '-' + sectionID + '-' + rowNum + '_container';
 				removeFromHideFields( container, formId );
-			} );
+
+				// If the field is an RTE, remove the editor associated with it
+				//  this is done so that if/when the field is Added again it get initialized
+				if ( this.classList.contains( 'wp-editor-area' ) ) {
+					removeRichText( this.id );
+				}
+			});
 
 			showAddButton( sectionID );
 
@@ -3917,13 +4156,15 @@ function frmProFormJS() {
 
 					// hide fields with conditional logic
 					jQuery( html ).find( 'input, select, textarea' ).each( function() {
-						if ( this.type != 'file' ) {
-
 							// Readonly dropdown fields won't have a name attribute
 							if ( this.name === '' ) {
 								return true;
 							}
-							fieldID = this.name.replace( 'item_meta[', '' ).split( ']' )[ 2 ].replace( '[', '' );
+							if ( this.type == 'file' ) {
+								fieldID = this.name.replace('file', '').split( '-' )[0];
+							} else {
+								fieldID = this.name.replace( 'item_meta[', '' ).split( ']' )[ 2 ].replace( '[', '' );
+							}
 							if ( jQuery.inArray( fieldID, checked ) == -1 ) {
 								if ( this.id === false || this.id === '' ) {
 									return;
@@ -3939,7 +4180,6 @@ function frmProFormJS() {
 								doCalculation( fieldID, fieldObject );
 								reset = 'persist';
 							}
-						}
 					} );
 
 					jQuery( html ).find( '.frm_html_container' ).each( function() {
@@ -3954,6 +4194,23 @@ function frmProFormJS() {
 
 					// trigger autocomplete
 					loadChosen();
+
+					// load rich textboxes
+					jQuery( html ).find( '.frm_html_container' ).each( function() {
+						// check heading logic
+						var fieldID = this.id.replace( 'frm_field_', '' ).split( '-' )[ 0 ];
+						checked.push( fieldID );
+						hideOrShowFieldById( fieldID, repeatArgs );
+					});
+
+					// Find any RTEs in the new row/repeat and initialize the editor for them
+					//  there is an assumption here that tinyMCEPreInit.mceInit[0] referes to
+					//  an RTE that was initially loaded on the page. It's a safe assumption as
+					//  adding a row/repeat wouldn't have any RTEs if there wasn't one on the
+					//  page in the first place.
+					jQuery( html ).find( '.wp-editor-area' ).each( function() {
+						initRichText( this.id );
+					});
 				}
 
 				if ( typeof( frmThemeOverride_frmAddRow ) == 'function' ) {
@@ -3974,6 +4231,21 @@ function frmProFormJS() {
 		} );
 
 		return false;
+	}
+
+	function removeRichText( id ) {
+		tinymce.EditorManager.execCommand( 'mceRemoveEditor', true, id );
+	}
+
+	function initRichText( id ) {
+		var key = Object.keys( tinyMCEPreInit.mceInit )[0],
+			orgSettings = tinyMCEPreInit.mceInit[ key ],
+			newValues = {
+				selector: '#' + id,
+				body_class: orgSettings.body_class.replace( key, id )
+			},
+			newSettings = Object.assign( {}, orgSettings, newValues );
+		tinymce.init( newSettings );
 	}
 
 	/*****************************************************
@@ -4243,8 +4515,14 @@ function frmProFormJS() {
 
 	function loadSliders() {
 		jQuery( document ).on( 'input change', 'input[data-frmrange]', function() {
-			var range = jQuery( this );
-			range.next( '.frm_range_value' ).html( range.val() );
+			var i,
+				c = this.parentNode.children;
+			for ( i = 0; i < c.length; i++ ) {
+				if ( c[ i ].className === 'frm_range_value' ) {
+					c[i].innerHTML = this.value;
+					break;
+				} 
+			}
 		} );
 	}
 
@@ -4269,6 +4547,9 @@ function frmProFormJS() {
 			classList = field.attr( 'class' ),
 			layoutClasses = [ 'frm_full', 'half', 'third', 'fourth', 'fifth', 'sixth', 'seventh', 'eighth' ];
 
+		if ( typeof classList === 'undefined' ) {
+			return false;
+		}
 		for ( i = 1; i <= 12; i++ ) {
 			if ( field.hasClass( 'frm' + i ) ) {
 				return true;
@@ -4384,12 +4665,30 @@ function frmProFormJS() {
 	}
 
 	function checkPasswordField() {
-		if ( this.className.indexOf( 'frm_strength_meter' ) > -1 ) {
-			var fieldId = this.name.replace( /\D/g, '' ),
-				checks = passwordChecks();
+		var fieldId,
+			fieldIdSplit,
+			checks,
+			split,
+			suffix,
+			check,
+			span;
 
-			for ( var check in checks ) {
-				var span = document.getElementById( 'frm-pass-' + check + '-' + fieldId );
+		/*jshint validthis:true */
+		if ( this.className.indexOf( 'frm_strength_meter' ) > -1 ) {
+			fieldId = this.name.substr( this.name.indexOf( '[' ) + 1 ).replace( /\]\[\d\]\[/, '-' );
+			fieldId = fieldId.substr( 0, fieldId.length - 1 );
+			fieldIdSplit = fieldId.split( '-' );
+
+			if ( fieldIdSplit.length === 2 ) {
+				fieldId = fieldIdSplit[1] + '-' + fieldIdSplit[0];
+			}
+
+			checks = passwordChecks();
+			split = this.id.split( '-' );
+			suffix = split.length > 1 && ! isNaN( split[ split.length - 1 ] ) ? '-' + split[ split.length - 1 ] : '';
+
+			for ( check in checks ) {
+				span = document.getElementById( 'frm-pass-' + check + '-' + fieldId + suffix );
 				addOrRemoveVerifyPass( checks[ check ], this.value, span );
 			}
 		}
@@ -4431,6 +4730,7 @@ function frmProFormJS() {
 	}
 
 	function checkCheckboxSelectionLimit() {
+		/*jshint validthis:true */
 		var limit = parseInt( this.getAttribute( 'data-frmlimit' ) ),
 		    checked = this.checked;
 
@@ -4458,10 +4758,427 @@ function frmProFormJS() {
 		}
 	}
 
+	function addTopAddRowBtnForRepeater() {
+		// Set up 'Add Row' buttons that will show up when all repeated fields have been removed.
+		// Do it this way while we await CSS4 selectors that can do sth like .frm_repeat_sec:first-of-class
+		jQuery( '.frm_section_heading:has(div[class*="frm_repeat_"])' ).each( function() {
+			var firstRepeatedSection = jQuery( this ).find( 'div[class*="frm_repeat_"]:first' );
+			firstRepeatedSection.before( firstRepeatedSection.find( '.frm_add_form_row' ).clone().addClass( 'frm_hidden' ) );
+		} );
+	}
+
+	function maybeDisableCheckboxesWithLimit() {
+		// Disable unchecked ones after form submit error if limit is already reached.
+		jQuery( 'input[type="checkbox"][data-frmlimit]:not(:checked)' ).each( function() {
+			var limit = parseInt( this.getAttribute( 'data-frmlimit' ) );
+
+			if ( ! limit ) {
+				return;
+			}
+
+			var allBoxes = jQuery( this ).parents( '.frm_opt_container' ).find( 'input[type="checkbox"]' );
+			if ( limit >= allBoxes.length ) {
+				// Unreasonable limit
+				return;
+			}
+
+			var checkedBoxes = allBoxes.filter( function () {
+				return this.checked;
+			} );
+
+			if ( limit > checkedBoxes.length ) {
+				return;
+			}
+
+			this.setAttribute( 'disabled', 'disabled' );
+		} );
+	}
+
+	function checkQuantityFieldMinMax( input ) {
+		var val = parseFloat( input.value ? input.value.trim() : 0 ),
+			max = input.hasAttribute( 'max' ) ? parseFloat( input.getAttribute( 'max' ) ) : 0,
+			min = input.hasAttribute( 'min' ) ? parseFloat( input.getAttribute( 'min' ) ) : 0;
+
+		if ( isNaN( val ) ) {
+			return 0;
+		}
+
+		max = isNaN( max ) ? 0 : max;
+		min = isNaN( min ) ? 0 : ( min < 0 ? 0 : min );
+
+		if ( val < min ) {
+			input.value = min;
+			return min;
+		}
+
+		if ( 0 !== max && val > max ) {
+			input.value = max;
+			return max;
+		}
+
+		return val;
+	}
+
+	/**
+	 * @since 4.04.01
+	 */
+	function setHiddenProduct( input ) {
+		input.setAttribute( 'data-frmhidden', '1' );
+		triggerChange( jQuery( input ) );
+	}
+
+	/**
+	 * @since 4.04.01
+	 */
+	function setHiddenProductContainer( container ) {
+		if ( container.innerHTML.indexOf( 'data-frmprice' ) !== -1 ) {
+			jQuery( container ).find( 'input[data-frmprice], select:has([data-frmprice])' ).attr( 'data-frmhidden', '1' );
+		}
+	}
+
+	/**
+	 * @since 4.04.01
+	 */
+	function setShownProduct( input ) {
+		var wasHidden = input.getAttribute( 'data-frmhidden' );
+
+		if ( wasHidden !== null ) {
+			input.removeAttribute( 'data-frmhidden' );
+			triggerChange( jQuery( input ) );
+		}
+	}
+
+	/**
+	 * @since 4.04
+	 */
+	function calcProductsTotal( e ) {
+		var formTotals = [],
+			totalFields, leftSymbol, rightSymbol;
+
+		if ( typeof __FRMCURR  === 'undefined' ) {
+			return;
+		}
+
+		if ( undefined !== e && 'undefined' !== typeof e.target && ( 'keyup' === e.type || 'change' === e.type ) ) {
+			// an event has been fired
+			var el = e.target;
+			if ( el.hasAttribute( 'data-frmprice' ) && el instanceof HTMLInputElement && 'text' === el.type ) {
+				// user-defined product
+				el.setAttribute( 'data-frmprice', el.value.trim() );
+			}
+		}
+
+		totalFields = jQuery( '[data-frmtotal]' );
+		if ( ! totalFields.length ) {
+			return;
+		}
+
+		totalFields.each( function() {
+			var currency, formId, formatted,
+				total = 0,
+				totalField = jQuery( this ),
+				$form = totalField.closest( 'form' ),
+				isRepeatingTotal = isRepeatingFieldByName( this.name );
+
+			if ( ! $form.length ) {
+				return;
+			}
+
+			formId = $form.find( 'input[name="form_id"]' ).val();
+			currency = getCurrency( formId );
+
+			if ( typeof formTotals[ formId ] !== 'undefined' && ! isRepeatingTotal ) {
+				total = formTotals[ formId ];
+			} else {
+
+				$form.find( 'input[data-frmprice],select:has([data-frmprice])' ).each( function() {
+					var quantity, $this,
+						price = 0,
+						isUserDef = false,
+						isSingle = false;
+
+					// total fields inside repeaters are for their corresponding rows only.
+					if ( isRepeatingTotal && ! isRepeatingWithTotal( this, totalField[0] ) ) {
+						return;
+					}
+
+					if ( this.hasAttribute( 'data-frmhigherpg' ) || isProductFieldHidden( this ) ) {
+						return;
+					}
+
+					if ( this.tagName === 'SELECT' ) {
+						if ( this.selectedIndex !== -1 ) {
+							price = this.options[ this.selectedIndex ].getAttribute( 'data-frmprice' );
+						}
+					} else {
+						isUserDef = 'text' === this.type;
+						isSingle = 'hidden' === this.type;
+						$this = jQuery( this );
+						if ( ( ! isUserDef && ! isSingle ) && ! $this.is( ':checked' ) ) {
+							return;
+						}
+						price = this.getAttribute( 'data-frmprice' );
+					}
+
+					if ( ! price ) {
+						price = 0;
+					} else {
+						price = preparePrice( price, currency );
+						quantity = getQuantity( isUserDef, this );
+						price = parseFloat( quantity ) * parseFloat( price );
+					}
+
+					total += price;
+				} );
+
+				if ( ! isRepeatingTotal ) {
+					formTotals[ formId ] = total;
+				}
+			}
+
+			total = isNaN( total ) ? 0 : total;
+
+			// Set a decimal separator for currency if no default for it
+			currency.decimal_separator = currency.decimal_separator.trim(); // first remove unnecessary space(s)
+			if ( ! currency.decimal_separator.length ) {
+				currency.decimal_separator = '.';
+			}
+
+			total = currency.decimals > 0 ? Math.round10( total, currency.decimals ) : Math.ceil( total );
+			total = maybeAddTrailingZeroToPrice( total, currency );
+			totalField.val( total );
+
+			// because of e.g. fields that might be using this field for calculations
+			triggerChange( totalField );
+
+			total = formatCurrency( total, currency );
+			formatted = totalField.prev( '.frm_total_formatted' );
+			if ( formatted.length < 1 ) {
+				// In case paragraphs have been added to the form.
+				formatted = totalField.closest( '.frm_form_field' ).find( '.frm_total_formatted' );
+			}
+			if ( formatted.length ) {
+				formatted.html( total );
+			}
+		});
+	}
+
+	/**
+	 * @since 4.05.01
+	 */
+	function formatCurrency( total, currency ) {
+		var leftSymbol, rightSymbol;
+
+		total = maybeAddTrailingZeroToPrice( total, currency );
+		total = addThousands( total, currency );
+		leftSymbol = currency.symbol_left + currency.symbol_padding;
+		rightSymbol = currency.symbol_padding + currency.symbol_right;
+		return leftSymbol + total + rightSymbol;
+	}
+
+	/**
+	 * @since 4.04.01
+	 *
+	 * This function is most suited for (product) fields that are
+	 * on their own page i.e. not hidden (in a multi-paged form).
+	 *
+	 * As for fields that are conditionally hidden - themselves or
+	 * their parent - and are not on their own page, the PHP side
+	 * handles them well; either their HTML is not included on the
+	 * page at all (e.g. fields in a conditionally hidden section)
+	 * or their value is empty & price is thus 0, so no worries here.
+	 */
+	function isProductFieldHidden( input ) {
+		return input.getAttribute( 'data-frmhidden' ) !== null;
+	}
+
+	/**
+	 * @since 4.04
+	 */
+	function isRepeatingWithTotal( input, total ) {
+		// .+ is safer than d+ because field keys might be used at times.
+		var regex = /item_meta\[.+?\]\[.+?\]/;
+
+		return isRepeatingFieldByName( input.name ) && ( total.name.match( regex )[0] === input.name.match( regex )[0] );
+	}
+
+	/**
+	 * @since 4.04
+	 */
+	function getCurrency( formId ) {
+		if ( typeof __FRMCURR  !== 'undefined' && typeof __FRMCURR[ formId ] !== 'undefined' ) {
+			return __FRMCURR[ formId ];
+		}
+	}
+
+	/**
+	 * @since 4.04
+	 */
+	function getQuantity( isUserDef, field ) {
+		var quantity, quantityFields, isRepeating, fieldID,
+			$this = jQuery( field );
+
+		fieldID = frmFrontForm.getFieldId( field, false );
+		if ( ! fieldID ) {
+			return 0;
+		}
+
+		isRepeating = isRepeatingFieldByName( field.name );
+
+		if ( isRepeating ) {
+			// .+ is safer than d+ because field keys might be used at times.
+			var match = field.name.match( /item_meta\[.+?\]\[.+?\]/ );
+			if ( null === match ) {
+				// very unlikely though
+				return 0;
+			}
+			// we may need this in getQuantityFields
+			$this.nameMatch = match[0];
+		}
+
+		quantity = getQuantityField( $this, fieldID, isRepeating );
+
+		if ( quantity ) {
+			quantity = checkQuantityFieldMinMax( quantity );
+		} else {
+			quantityFields = getQuantityFields( $this, isRepeating );
+			if ( 1 === quantityFields.length && '' === quantityFields[0].getAttribute( 'data-frmproduct' ).trim() ) {
+				quantity = checkQuantityFieldMinMax( quantityFields[0] );
+			} else {
+				// If there is no quantity field, assume 1.
+				quantity = 1;
+			}
+		}
+
+		if ( 0 === quantity && isUserDef ) {
+			// only user-defined fields may not have attached quantity fields
+			quantity = 1;
+		}
+
+		return quantity;
+	}
+
+	function getQuantityField( elementObj, fieldID, isRepeating ) {
+		var quantity,
+			quantityFields = elementObj.closest( 'form' ).find( '[data-frmproduct]' );
+
+		fieldID = fieldID.toString();
+
+		quantityFields.each( function() {
+			var ids;
+
+			if ( isRepeating && -1 === this.name.indexOf( elementObj.nameMatch ) ) {
+				return true;
+			}
+
+			ids = JSON.parse( this.getAttribute( 'data-frmproduct' ).trim() );
+			if ( '' === ids ) {
+				return true;
+			}
+
+			// convert to array if necessary cos of existing fields that are already using single product fields
+			ids = 'string' === typeof ids ? [ ids.toString() ] : ids;
+			if ( ids.indexOf( fieldID ) > -1 ) {
+				quantity = this;
+				return false;
+			}
+		} );
+
+		return quantity;
+	}
+
+	/**
+	 * @since 4.04
+	 */
+	function getQuantityFields( elementObj, isRepeating ) {
+		var quantityFields;
+		if ( isRepeating ) {
+			quantityFields = elementObj.closest( 'form' ).find( '[name^="' + elementObj.nameMatch + '"]' + '[data-frmproduct]' );
+		} else {
+			// make sure the search is form-based (i.e. per form) cos there could be more than 1 form on the page
+			// not([id*="-"]) means : not inside a repeater
+			quantityFields = elementObj.closest( 'form' ).find( '[data-frmproduct]:not([id*="-"])' );
+		}
+
+		return quantityFields;
+	}
+
+	/**
+	 * @since 4.04
+	 */
+	function preparePrice( price, currency ) {
+		var matches;
+
+		if ( ! price ) {
+			return 0;
+		}
+		price = price + ''; // convert to string just to be sure
+
+		matches = price.match( /[0-9,.]*\.?\,?[0-9]+/g );
+		if ( null === matches ) {
+			return 0;
+		}
+
+		price = matches.length ? matches[ matches.length - 1 ] : 0;
+		if ( price ) {
+			price = maybeUseDecimal( price, currency );
+			price = price.replace( currency.thousand_separator, '' ).replace( currency.decimal_separator, '.' );
+		}
+
+		return price;
+	}
+
+	/**
+	 * @since 4.04
+	 */
+	function maybeUseDecimal( amount, currency ) {
+		var used_for_decimal, amount_parts;
+
+		if ( currency.thousand_separator == '.' ) {
+			amount_parts = amount.split( '.' );
+			used_for_decimal = ( 2 == amount_parts.length && 2 == amount_parts[1].length );
+			if ( used_for_decimal ) {
+				amount = amount.replace( '.', currency.decimal_separator );
+			}
+		}
+		return amount;
+	}
+
+	/**
+	 * @since 4.04
+	 */
+	function maybeAddTrailingZeroToPrice( price, currency ) {
+		if ( 'number' !== typeof price ) {
+			return price;
+		}
+
+		price += ''; // first convert to string
+		var pos = price.indexOf( '.' );
+
+		if ( pos === -1 ) {
+			price = price + '.00';
+		} else if ( price.substring( pos + 1 ).length < 2 ) {
+			price += '0';
+		}
+
+		return price.replace( '.', currency.decimal_separator );
+	}
+
+	/**
+	 * @since 4.04.04
+	 */
+	function addThousands( total, currency ) {
+		if ( currency.thousand_separator ) {
+			total = total.toString().replace( /\B(?=(\d{3})+(?!\d))/g, currency.thousand_separator );
+		}
+		return total;
+	}
+
 	return {
 		init: function() {
 			jQuery( document ).on( 'frmFormComplete', afterFormSubmitted );
 			jQuery( document ).on( 'frmPageChanged', afterPageChanged );
+			jQuery( document ).on( 'frmAfterAddRow frmAfterRemoveRow', calcProductsTotal );
 
 			jQuery( document ).on( 'click', '.frm_trigger', toggleSection );
 			var $blankField = jQuery( '.frm_blank_field' );
@@ -4507,44 +5224,23 @@ function frmProFormJS() {
 				}
 			} );
 
-			// Set up 'Add Row' buttons that will show up when all repeated fields have been removed.
-			// Do it this way while we await CSS4 selectors that can do sth like .frm_repeat_sec:first-of-class
-			jQuery( '.frm_section_heading:has(div[class*="frm_repeat_"])' ).each( function() {
-				var firstRepeatedSection = jQuery( this ).find( 'div[class*="frm_repeat_"]:first' );
-				firstRepeatedSection.before( firstRepeatedSection.find( '.frm_add_form_row' ).clone().addClass( 'frm_hidden' ) );
-			} );
+			addTopAddRowBtnForRepeater();
 
 			// Checkbox Selection Limit
 			jQuery( document ).on( 'click', 'input[type="checkbox"][data-frmlimit]', checkCheckboxSelectionLimit );
 
-			// Disable unchecked ones after form submit error if limit is already reached.
-			jQuery( 'input[type="checkbox"][data-frmlimit]:not(:checked)' ).each( function() {
-				var limit = parseInt( this.getAttribute( 'data-frmlimit' ) );
+			// Total field calc
+			jQuery( document ).on( 'change', '[type="checkbox"][data-frmprice],[type="radio"][data-frmprice],[type="hidden"][data-frmprice],select:has([data-frmprice])', calcProductsTotal );
+			jQuery( document ).on( 'keyup change', '[data-frmproduct],[type="text"][data-frmprice]', calcProductsTotal );
 
-				if ( ! limit ) {
-					return;
-				}
-
-				var allBoxes = jQuery( this ).parents( '.frm_opt_container' ).find( 'input[type="checkbox"]' );
-				if ( limit >= allBoxes.length ) {
-					// Unreasonable limit
-					return;
-				}
-
-				var checkedBoxes = allBoxes.filter( function () {
-					return this.checked;
-				} );
-
-				if ( limit > checkedBoxes.length ) {
-					return;
-				}
-
-				this.setAttribute( 'disabled', 'disabled' );
-			})
+			maybeDisableCheckboxesWithLimit();
 
 			setInlineFormWidth();
 			checkConditionalLogic( 'pageLoad' );
 			checkFieldsOnPage();
+
+			// make sure this comes last, particularly after checkConditionalLogic & checkFieldsOnPage
+			calcProductsTotal();
 		},
 
 		savingDraft: function( object ) {
@@ -4586,6 +5282,7 @@ function frmProFormJS() {
 
 				if ( container !== null ) {
 					container.style.display = 'none';
+					setHiddenProductContainer( container );
 				}
 			}
 		},
@@ -4674,3 +5371,12 @@ var frmProForm = frmProFormJS();
 jQuery( document ).ready( function() {
 	frmProForm.init();
 } );
+
+(function() {
+	if ( ! Math.round10 ) {
+		// https://www.jacklmoore.com/notes/rounding-in-javascript/
+		Math.round10 = function( value, decimals ) {
+			return Number( Math.round( value + 'e' + decimals ) + 'e-' + decimals );
+		};
+	}
+})();

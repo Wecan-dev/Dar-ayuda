@@ -1,3 +1,8 @@
+<?php
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'You are not allowed to call this page directly.' );
+}
+?>
 <div id="frm_bs_dropdown" class="dropdown <?php echo esc_attr( is_rtl() ? 'pull-right' : 'pull-left' ); ?>">
 	<a href="#" id="frm-navbarDrop" class="frm-dropdown-toggle" data-toggle="dropdown">
 		<h1>

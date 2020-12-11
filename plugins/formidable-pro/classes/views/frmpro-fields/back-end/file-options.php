@@ -1,3 +1,8 @@
+<?php
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'You are not allowed to call this page directly.' );
+}
+?>
 <h3>
 	<?php esc_html_e( 'File Upload Options', 'formidable-pro' ); ?>
 	<i class="frm_icon_font frm_arrowdown6_icon"></i>
@@ -22,9 +27,10 @@
 		</label>
 	</p>
 	<p>
-		<label class="frm_help" title="<?php esc_attr_e( 'When a large image is uploaded, resize it before you save it to your site.', 'formidable-pro' ); ?>">
+		<label>
 			<input type="checkbox" id="resize_<?php echo esc_attr( $field['id'] ); ?>" name="field_options[resize_<?php echo esc_attr( $field['id'] ); ?>]" value="1" onchange="frm_show_div('resize_file_<?php echo absint( $field['id'] ); ?>',this.checked,1,'.')" <?php checked( $field['resize'], 1 ); ?> />
 			<?php esc_html_e( 'Automatically resize files before upload', 'formidable-pro' ); ?>
+			<span class="frm_help frm_icon_font frm_tooltip_icon" title="<?php esc_attr_e( 'When a large image is uploaded, resize it before you save it to your site.', 'formidable-pro' ); ?>"></span>
 		</label>
 	</p>
 	<p class="resize_file_<?php echo esc_attr( $field['id'] ); ?> <?php echo esc_attr( $field['resize'] == 1 ? '' : 'frm_hidden' ); ?>">
@@ -75,8 +81,9 @@
 	<?php } ?>
 
 	<p class="frm6 frm_form_field frm_first">
-		<label for="size_<?php echo esc_attr( $field['id'] ); ?>" class="frm_help" title="<?php echo esc_attr( sprintf( __( 'Set the file size limit for each file uploaded. Your server settings allow a maximum of %d MB.', 'formidable-pro' ), FrmProFileField::get_max_file_size() ) ); ?>">
+		<label for="size_<?php echo esc_attr( $field['id'] ); ?>">
 			<?php esc_html_e( 'Max file size (MB)', 'formidable-pro' ); ?>
+			<span class="frm_help frm_icon_font frm_tooltip_icon" title="<?php echo esc_attr( sprintf( __( 'Set the file size limit for each file uploaded. Your server settings allow a maximum of %d MB.', 'formidable-pro' ), FrmProFileField::get_max_file_size() ) ); ?>"></span>
 		</label>
 		<input type="text" id="size_<?php echo esc_attr( $field['id'] ); ?>" name="field_options[size_<?php echo esc_attr( $field['id'] ); ?>]" value="<?php echo esc_attr( $field['size'] ); ?>" size="5" />
 	</p>
@@ -94,8 +101,9 @@
 		<input type="text" id="drop_msg_<?php echo esc_attr( $field['id'] ); ?>" class="frm_long_input" name="field_options[drop_msg_<?php echo esc_attr( $field['id'] ); ?>]" value="<?php echo esc_attr( $field['drop_msg'] ); ?>" />
 	</p>
 	<p>
-		<label for="choose_msg_<?php echo esc_attr( $field['id'] ); ?>" class="frm_help" title="<?php echo esc_attr__( 'The label shown when the file upload field is compacted with the frm_compact CSS layout class.', 'formidable-pro' ); ?>">
+		<label for="choose_msg_<?php echo esc_attr( $field['id'] ); ?>">
 			<?php esc_html_e( 'Compact upload text', 'formidable-pro' ); ?>
+			<span class="frm_help frm_icon_font frm_tooltip_icon" title="<?php esc_attr_e( 'The label shown when the file upload field is compacted with the frm_compact CSS layout class.', 'formidable-pro' ); ?>"></span>
 		</label>
 		<input type="text" id="choose_msg_<?php echo esc_attr( $field['id'] ); ?>" class="frm_long_input" name="field_options[choose_msg_<?php echo esc_attr( $field['id'] ); ?>]" value="<?php echo esc_attr( $field['choose_msg'] ); ?>" />
 	</p>

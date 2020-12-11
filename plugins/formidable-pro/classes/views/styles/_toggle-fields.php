@@ -1,3 +1,8 @@
+<?php
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'You are not allowed to call this page directly.' );
+}
+?>
 <p class="frm4 frm_first frm_form_field">
 	<label for="frm_toggle_on_color"><?php esc_html_e( 'On Color', 'formidable-pro' ); ?></label>
 	<input type="text" name="<?php echo esc_attr( $frm_style->get_field_name( 'toggle_on_color' ) ) ?>" id="frm_toggle_on_color" class="hex" value="<?php echo esc_attr( $style->post_content['toggle_on_color'] ) ?>" size="4" />

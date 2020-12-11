@@ -1,5 +1,9 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'You are not allowed to call this page directly.' );
+}
+
 class FrmProFormActionsController {
 
 	public static function register_actions( $actions ) {
@@ -11,10 +15,12 @@ class FrmProFormActionsController {
     }
 
 	public static function email_action_control( $settings ) {
-		$settings['event'] = array_unique(
-			array_merge( $settings['event'],
-			array( 'draft', 'create', 'update', 'delete', 'import' )
-		) );
+		$settings['event']    = array_unique(
+			array_merge(
+				$settings['event'],
+				array( 'draft', 'create', 'update', 'delete', 'import' )
+			)
+		);
 	    $settings['priority'] = 41;
 
 	    return $settings;
@@ -22,12 +28,17 @@ class FrmProFormActionsController {
 
 	public static function form_action_settings( $form_action, $atts ) {
         global $wpdb;
-        extract($atts);
+		extract($atts);
 
         $show_logic = self::has_valid_conditions( $form_action->post_content['conditions'] );
 
         // Text for different actions
         if ( $form_action->post_excerpt == 'email' ) {
+			/**
+			 * Adds fields to add email attachment.
+			 */
+			self::add_file_attachment_field( $form_action, $atts );
+
             $send = __( 'Send', 'formidable-pro' );
             $stop = __( 'Stop', 'formidable-pro' );
             $this_action_if = __( 'this notification if', 'formidable-pro' );
@@ -48,7 +59,124 @@ class FrmProFormActionsController {
         $form_fields = $atts['values']['fields'];
         unset($atts['values']['fields']);
         include(FrmProAppHelper::plugin_path() . '/classes/views/frmpro-form-actions/_form_action.php');
-    }
+	}
+
+	/**
+	 * Adds necessary fields to attach a file as attachment to email.
+	 *
+	 * @param object $form_action Describes the current Form Action.
+	 * @param object $pass_args
+	 *
+	 * @since 4.06.02
+	 */
+	private static function add_file_attachment_field( $form_action, $pass_args ) {
+		$has_attachment = ! empty( $form_action->post_content['email_attachment_id'] );
+
+		include( FrmProAppHelper::plugin_path() . '/classes/views/frmpro-form-actions/_email_attachment_row.php' );
+	}
+
+	/**
+	 * @since 4.06.02
+	 */
+	public static function action_conditions_met( $action, $entry ) {
+		$notification = $action->post_content;
+		$stop         = false;
+		$met          = array();
+
+		if ( ! isset( $notification['conditions'] ) || empty( $notification['conditions'] ) ) {
+			return $stop;
+		}
+
+		foreach ( $notification['conditions'] as $k => $condition ) {
+			if ( ! is_numeric( $k ) ) {
+				continue;
+			}
+
+			if ( $stop && 'any' == $notification['conditions']['any_all'] && 'stop' == $notification['conditions']['send_stop'] ) {
+				continue;
+			}
+
+			self::prepare_logic_value( $condition['hide_opt'], $action, $entry );
+
+			$observed_value = self::get_value_from_entry( $entry, $condition['hide_field'] );
+
+			$stop = FrmFieldsHelper::value_meets_condition( $observed_value, $condition['hide_field_cond'], $condition['hide_opt'] );
+
+			if ( $notification['conditions']['send_stop'] == 'send' ) {
+				$stop = $stop ? false : true;
+			}
+
+			$met[ $stop ] = $stop;
+		}
+
+		if ( $notification['conditions']['any_all'] == 'all' && ! empty( $met ) && isset( $met[0] ) && isset( $met[1] ) ) {
+			$stop = ( $notification['conditions']['send_stop'] == 'send' );
+		} elseif ( $notification['conditions']['any_all'] == 'any' && $notification['conditions']['send_stop'] == 'send' && isset( $met[0] ) ) {
+			$stop = false;
+		}
+
+		return $stop;
+	}
+
+
+	/**
+	 * Prepare the logic value for comparison against the entered value
+	 *
+	 * @since 4.06.02
+	 *
+	 * @param array|string $logic_value
+	 */
+	private static function prepare_logic_value( &$logic_value, $action, $entry ) {
+		if ( is_array( $logic_value ) ) {
+			$logic_value = reset( $logic_value );
+		}
+
+		if ( $logic_value === 'current_user' ) {
+			$logic_value = get_current_user_id();
+		}
+
+		$logic_value = apply_filters( 'frm_content', $logic_value, $action->menu_order, $entry );
+
+		/**
+		 * @since 4.04.05
+		 */
+		$logic_value = apply_filters( 'frm_action_logic_value', $logic_value );
+	}
+
+	/**
+	 * Get the value from a specific field and entry
+	 *
+	 * @since 4.06.02
+	 *
+	 * @param object $entry
+	 * @param int $field_id
+	 *
+	 * @return array|bool|mixed|string
+	 */
+	private static function get_value_from_entry( $entry, $field_id ) {
+		$observed_value = '';
+
+		if ( isset( $entry->metas[ $field_id ] ) ) {
+			$observed_value = $entry->metas[ $field_id ];
+		} elseif ( $entry->post_id && FrmAppHelper::pro_is_installed() ) {
+			$field          = FrmField::getOne( $field_id );
+			$observed_value = FrmProEntryMetaHelper::get_post_or_meta_value(
+				$entry,
+				$field,
+				array(
+					'links'    => false,
+					'truncate' => false,
+				)
+			);
+		}
+
+		/**
+		 * @since 4.06.02
+		 */
+		$observed_value = apply_filters( 'frm_action_logic_value', $observed_value, compact( 'entry', 'field_id' ) );
+
+		return $observed_value;
+	}
 
 	public static function _logic_row() {
 		FrmAppHelper::permission_check('frm_edit_forms');
@@ -61,16 +189,18 @@ class FrmProFormActionsController {
 
         $form = FrmForm::getOne($form_id);
 
-		FrmProFormsController::include_logic_row( array(
-			'form_id'   => $form->id,
-			'form'      => $form,
-			'meta_name' => $meta_name,
-			'condition' => array( 'hide_field_cond' => '==', 'hide_field' => '' ),
-			'key'       => $key,
-			'name'      => 'frm_' . $type . '_action[' . $key . '][post_content][conditions][' . $meta_name . ']',
-			'hidelast'  => '#frm_logic_rows_' . $key,
-			'showlast'  => '#logic_link_' . $key,
-		) );
+		FrmProFormsController::include_logic_row(
+			array(
+				'form_id'   => $form->id,
+				'form'      => $form,
+				'meta_name' => $meta_name,
+				'condition' => array( 'hide_field_cond' => '==', 'hide_field' => '' ),
+				'key'       => $key,
+				'name'      => 'frm_' . $type . '_action[' . $key . '][post_content][conditions][' . $meta_name . ']',
+				'hidelast'  => '#frm_logic_rows_' . $key,
+				'showlast'  => '#logic_link_' . $key,
+			)
+		);
 
         wp_die();
 	}
@@ -286,12 +416,14 @@ class FrmProFormActionsController {
 
 		$args['post_type'] = FrmProFormsHelper::post_type( $args['form_id'] );
 
-		$children = get_categories( array(
-			'hide_empty' => false,
-			'parent' => 0,
-			'type' => $args['post_type'],
-			'taxonomy' => $args['taxonomy'],
-		) );
+		$children = get_categories(
+			array(
+				'hide_empty' => false,
+				'parent'     => 0,
+				'type'       => $args['post_type'],
+				'taxonomy'   => $args['taxonomy'],
+			)
+		);
 
 		foreach ( $children as $key => $cat ) {
 			$args['cat'] = $cat; ?>
@@ -321,25 +453,27 @@ class FrmProFormActionsController {
 
 		?>
 		<div class="frm_checkbox">
-			<label><input type="checkbox" name="<?php echo esc_attr( $args['field_name'] ) ?>" value="<?php
+			<label><input type="checkbox" name="<?php echo esc_attr( $args['field_name'] ); ?>" value="<?php
 			echo esc_attr( $args['cat']->cat_ID );
 			?>"<?php
 			echo $checked;
-			?> /><?php echo esc_html( $args['cat']->cat_name ) ?></label><?php
+			?> /><?php echo esc_html( $args['cat']->cat_name ); ?></label><?php
 
-		$children = get_categories( array(
-			'type' => $args['post_type'],
-			'hide_empty' => false,
-			'parent' => $args['cat']->cat_ID,
-			'taxonomy' => $args['taxonomy'],
-		));
+		$children = get_categories(
+			array(
+				'type'       => $args['post_type'],
+				'hide_empty' => false,
+				'parent'     => $args['cat']->cat_ID,
+				'taxonomy'   => $args['taxonomy'],
+			)
+		);
 
 		if ( $children ) {
 			$args['level']++;
 			foreach ( $children as $key => $cat ) {
 				$args['cat'] = $cat;
 				?>
-		<div class="frm_catlevel_<?php echo esc_attr( $args['level'] ) ?>"><?php self::display_taxonomy_checkbox_group( $args ); ?></div>
+		<div class="frm_catlevel_<?php echo esc_attr( $args['level'] ); ?>"><?php self::display_taxonomy_checkbox_group( $args ); ?></div>
 <?php
 			}
 		}

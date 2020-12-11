@@ -1,3 +1,8 @@
+<?php
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'You are not allowed to call this page directly.' );
+}
+?>
 <p class="howto">
 	<?php esc_html_e( 'Remove references to Formidable Forms to provide an unbranded experience for your clients.', 'formidable-pro' ); ?>
 </p>

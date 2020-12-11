@@ -1,4 +1,8 @@
-
+<?php
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'You are not allowed to call this page directly.' );
+}
+?>
 <div id="frm_loading" style="display:none;background:url(<?php echo FrmProAppHelper::plugin_url() ?>/images/grey_bg.png);">
 <div id="frm_loading_content">
 <?php echo apply_filters( 'frm_uploading_files', '<h3>' . __( 'Uploading Files. Please Wait.', 'formidable-pro' ) . '</h3>' ); ?>

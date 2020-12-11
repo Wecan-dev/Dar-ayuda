@@ -1,5 +1,9 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'You are not allowed to call this page directly.' );
+}
+
 /**
  * @since 3.0
  */
@@ -52,6 +56,26 @@ class FrmProFieldRte extends FrmFieldType {
 				add_action( 'wp_print_footer_scripts', '_WP_Editors::enqueue_scripts', 1 );
 				$frm_vars['tinymce_loaded'] = true;
 			}
+		}
+	}
+
+	/**
+	 * Load deafult editor scripts when ajax form includes an RTE field.
+	 *
+	 * @since 4.06.02
+	 */
+	public function load_default_rte_script() {
+		global $frm_vars;
+		if ( isset( $frm_vars['tinymce_loaded'] ) && $frm_vars['tinymce_loaded'] ) {
+			// It's already been loaded on the page.
+			return;
+		}
+
+		wp_enqueue_editor();
+		if ( FrmAppHelper::is_preview_page() ) {
+			// Call the right hooks instead of admin hooks.
+			add_action( 'wp_print_footer_scripts', '_WP_Editors::force_uncompressed_tinymce', 1 );
+			add_action( 'wp_print_footer_scripts', '_WP_Editors::print_default_editor_scripts', 45 );
 		}
 	}
 }

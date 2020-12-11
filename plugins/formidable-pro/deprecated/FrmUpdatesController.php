@@ -1,4 +1,9 @@
 <?php
+
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'You are not allowed to call this page directly.' );
+}
+
 // Contains all the functions necessary to provide an update mechanism for FormidableForms!
 /**
  * @codeCoverageIgnore

@@ -1,3 +1,8 @@
+<?php
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'You are not allowed to call this page directly.' );
+}
+?>
 <p>
 	<label><?php esc_html_e( 'Repeat Links', 'formidable-pro' ); ?></label>
 	<select class="frm_repeat_format" name="field_options[format_<?php echo absint( $field['id'] ) ?>]">

@@ -1,4 +1,8 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'You are not allowed to call this page directly.' );
+}
+
 $themes = FrmProStylesController::jquery_themes( $style->post_content['theme_css'] );
 $use_themes = count( $themes ) > 1;
 $is_default = 1 === $style->menu_order;

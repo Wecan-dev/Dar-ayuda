@@ -1,3 +1,9 @@
+<?php
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'You are not allowed to call this page directly.' );
+}
+?>
+
 <div class="frm-preview-buttons frm_submit">
 	<button class="frm_prev_page" disabled="disabled">
 		<?php echo esc_html( $previous ); ?>

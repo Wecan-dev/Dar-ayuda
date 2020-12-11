@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1280px" height="614px" viewBox="0 0 1280 614" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 43.2 (39069) - http://www.bohemiancoding.com/sketch -->
+    <title>bg</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <rect id="path-1" x="0" y="0" width="1280" height="614"></rect>
+    </defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="red">
+            <g id="bg">
+                <mask id="mask-2" fill="white">
+                    <use xlink:href="#path-1"></use>
+                </mask>
+                <use id="Mask" fill="#F6F6F6" xlink:href="#path-1"></use>
+                <circle id="Oval-2" stroke="#FFFFFF" stroke-width="10" mask="url(#mask-2)" cx="640" cy="336" r="100"></circle>
+                <circle id="Oval-2" stroke="#FFFFFF" stroke-width="10" mask="url(#mask-2)" cx="640" cy="336" r="200"></circle>
+                <circle id="Oval-3" fill="#FFFFFF" mask="url(#mask-2)" cx="520" cy="175" r="23"></circle>
+                <circle id="Oval-3-Copy-3" fill="#FFFFFF" mask="url(#mask-2)" cx="453" cy="403" r="23"></circle>
+                <circle id="Oval-3-Copy-4" fill="#FFFFFF" mask="url(#mask-2)" cx="1092" cy="129" r="23"></circle>
+                <g id="Group-8" opacity="0.800000012" mask="url(#mask-2)">
+                    <g transform="translate(240.000000, -64.000000)">
+                        <circle id="Oval-3" stroke="none" fill="#FFFFFF" fill-rule="evenodd" cx="137" cy="100" r="23"></circle>
+                        <circle id="Oval-2" stroke="#FFFFFF" stroke-width="10" fill="none" cx="400" cy="400" r="400"></circle>
+                        <circle id="Oval-2" stroke="#FFFFFF" stroke-width="10" fill="none" cx="400" cy="400" r="300"></circle>
+                    </g>
+                </g>
+                <g id="Group-5" opacity="0.600000024" mask="url(#mask-2)">
+                    <g transform="translate(140.000000, -164.000000)">
+                        <circle id="Oval-3-Copy-2" stroke="none" fill="#FFFFFF" fill-rule="evenodd" cx="35" cy="677" r="23"></circle>
+                        <circle id="Oval-2" stroke="#FFFFFF" stroke-width="10" fill="none" cx="500" cy="500" r="500"></circle>
+                        <circle id="Oval-4" stroke="#FFFFFF" stroke-width="10" fill="#F6F6F6" fill-rule="evenodd" cx="67.5" cy="254.5" r="58.5"></circle>
+                    </g>
+                </g>
+                <g id="Group-4" opacity="0.600000024" mask="url(#mask-2)">
+                    <g transform="translate(40.000000, -264.000000)">
+                        <circle id="Oval-3-Copy" stroke="none" fill="#FFFFFF" fill-rule="evenodd" cx="23" cy="449" r="23"></circle>
+                        <circle id="Oval-3-Copy-5" stroke="none" fill="#FFFFFF" fill-rule="evenodd" cx="1163" cy="800" r="23"></circle>
+                        <circle id="Oval-3-Copy-6" stroke="none" fill="#FFFFFF" fill-rule="evenodd" cx="1200" cy="600" r="23"></circle>
+                        <circle id="Oval-2" stroke="#FFFFFF" stroke-width="10" fill="none" cx="600" cy="600" r="600"></circle>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

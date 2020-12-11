@@ -1,4 +1,7 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'You are not allowed to call this page directly.' );
+}
 
 // If read-only, add hidden fields to hold the values
 if ( $disabled && $field['data_type'] != 'text' ) {

@@ -1,5 +1,9 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'You are not allowed to call this page directly.' );
+}
+
 /**
  * @since 3.0
  */
@@ -20,6 +24,7 @@ class FrmProFieldPassword extends FrmFieldType {
 			'invalid'       => true,
 			'read_only'     => true,
 			'conf_field'    => true,
+			'prefix'        => true,
 		);
 
 		FrmProFieldsHelper::fill_default_field_display( $settings );
@@ -34,6 +39,15 @@ class FrmProFieldPassword extends FrmFieldType {
 			'strong_pass' => 0,
 			'strength_meter' => 0,
 		);
+	}
+
+	/**
+	 * @since 4.05
+	 */
+	protected function builder_text_field( $name = '' ) {
+		$html  = FrmProFieldsHelper::builder_page_prepend( $this->field );
+		$field = parent::builder_text_field( $name );
+		return str_replace( '[input]', $field, $html );
 	}
 
 	/**
@@ -116,13 +130,10 @@ class FrmProFieldPassword extends FrmFieldType {
 	}
 
 	public function front_field_input( $args, $shortcode_atts ) {
-		$input_html = parent::front_field_input( $args, $shortcode_atts );
-
+		$input_html            = parent::front_field_input( $args, $shortcode_atts );
 		$strength_meter_option = FrmField::get_option( $this->field, 'strength_meter' );
 
-		$parent_form = isset( $args['parent_form_id'] ) ? $args['parent_form_id'] : 0;
-
-		if ( ! $strength_meter_option || ! empty( $parent_form ) ) {
+		if ( ! $strength_meter_option ) {
 			return $input_html;
 		}
 
@@ -196,9 +207,13 @@ class FrmProFieldPassword extends FrmFieldType {
 		/**
 		 * @since 3.03
 		 */
-		return apply_filters( 'frm_password_checks', $checks, array(
-			'field' => $this->field,
-		) );
+		return apply_filters(
+			'frm_password_checks',
+			$checks,
+			array(
+				'field' => $this->field,
+			)
+		);
 	}
 
 	/**

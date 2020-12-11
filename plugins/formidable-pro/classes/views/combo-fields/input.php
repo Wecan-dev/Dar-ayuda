@@ -1,4 +1,9 @@
-<fieldset aria-labelledby="<?php echo esc_attr( $html_id ); ?>_label" role="group">
+<?php
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'You are not allowed to call this page directly.' );
+}
+?>
+<fieldset aria-labelledby="<?php echo esc_attr( $html_id ); ?>_label">
 <legend class="frm_screen_reader frm_hidden">
 	<?php echo esc_html( $field['name'] ); ?>
 </legend>

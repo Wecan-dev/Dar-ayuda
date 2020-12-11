@@ -1,4 +1,9 @@
-<p class="frm6 frm_form_field">
+<?php
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'You are not allowed to call this page directly.' );
+}
+?>
+<p class="frm6 frm_form_field frm_first frm_alignment_<?php echo absint( $field['id'] ) . esc_attr( empty( $field['image_options'] ) ? '' : ' frm_hidden' ); ?>">
 	<label for="field_options_align_<?php echo absint( $field['id'] ); ?>">
 		<?php esc_html_e( 'Option Layout', 'formidable-pro' ); ?>
 	</label>

@@ -1,12 +1,16 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'You are not allowed to call this page directly.' );
+}
+
 class FrmProCreditCardsController extends FrmProComboFieldsController {
 
 	public static function show_in_form( $field, $field_name, $atts ) {
 		$frm_settings = FrmAppHelper::get_settings();
 
-        $errors = isset( $atts['errors'] ) ? $atts['errors'] : array();
-        $html_id = $atts['html_id'];
+		$errors = isset( $atts['errors'] ) ? $atts['errors'] : array();
+		$html_id = $atts['html_id'];
 
 		$defaults = self::empty_value_array();
 		if ( empty( $field['value'] ) ) {
@@ -36,8 +40,7 @@ class FrmProCreditCardsController extends FrmProComboFieldsController {
 				'classes' => 'frm_full frm_cc_number',
 				'label'   => 1,
 				'atts'    => array(
-					'x-autocompletetype' => 'cc-number',
-					'autocompletetype'   => 'cc-number',
+					'autocomplete'   => 'cc-number',
 					'autocorrect'        => 'off',
 					'spellcheck'         => 'off',
 					'autocapitalize'     => 'off',
@@ -56,7 +59,7 @@ class FrmProCreditCardsController extends FrmProComboFieldsController {
 				'type'        => 'select',
 				'classes'     => 'frm_third frm_cc_exp_year',
 				'label'       => 1,
-				'options'     => range( date('Y'), date('Y') + 10 ),
+				'options'     => range( gmdate( 'Y' ), gmdate( 'Y' ) + 10 ),
 				'placeholder' => isset( $placeholder['year'] ) ? $placeholder['year'] : __( 'Year', 'formidable-pro' ),
 			),
 			'cvc'  => array(

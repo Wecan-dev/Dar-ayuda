@@ -1,5 +1,9 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'You are not allowed to call this page directly.' );
+}
+
 class FrmProSettingsController {
 
 	public static function license_box() {
@@ -12,8 +16,8 @@ class FrmProSettingsController {
 			if ( class_exists( 'FrmFormApi' ) ) {
 				$api = new FrmFormApi( $edd_update->license );
 				$errors = $api->error_for_license();
-			} elseif ( is_callable( 'FrmAddonsController::error_for_license' ) ) {
-				$errors = FrmAddonsController::error_for_license( $edd_update->license );
+			} elseif ( is_callable( 'FrmProAddonsController::error_for_license' ) ) {
+				$errors = FrmProAddonsController::error_for_license( $edd_update->license );
 			}
 		}
 
@@ -49,6 +53,13 @@ class FrmProSettingsController {
 			'icon'     => isset( $sections['white_label'] ) ? $sections['white_label']['icon'] : 'frm_icon_font frm_ghost_icon',
 		);
 
+		$sections['inbox'] = array(
+			'class'    => __CLASS__,
+			'function' => 'inbox_settings',
+			'name'     => isset( $sections['inbox'] ) ? $sections['inbox']['name'] : __( 'Inbox', 'formidable' ),
+			'icon'     => isset( $sections['inbox'] ) ? $sections['inbox']['icon'] : 'frm_icon_font frm_email_icon',
+		);
+
 		return $sections;
 	}
 
@@ -76,6 +87,79 @@ class FrmProSettingsController {
 		$frm_settings    = FrmAppHelper::get_settings();
 		$frmpro_settings = FrmProAppHelper::get_settings();
 		include( FrmProAppHelper::plugin_path() . '/classes/views/settings/white-label.php' );
+	}
+
+	/**
+	 * @since 4.06.01
+	 */
+	public static function inbox_settings() {
+		$settings      = FrmProAppHelper::get_settings();
+		$message_types = $settings->inbox_types();
+		$has_access    = self::has_current_access();
+		include( FrmProAppHelper::plugin_path() . '/classes/views/settings/inbox.php' );
+	}
+
+	/**
+	 * @since 4.06.01
+	 */
+	private static function has_current_access() {
+		$user_type = FrmProAddonsController::license_type();
+		return in_array( $user_type, array( 'elite', 'business', 'personal', 'grandfathered' ) );
+	}
+
+	/**
+	 * @since 4.06.01
+	 *
+	 * @param array $messages
+	 */
+	public static function filter_inbox( $messages ) {
+		if ( empty( $messages ) ) {
+			return $messages;
+		}
+
+		$excluded = self::excluded_messages();
+		if ( empty( $excluded ) ) {
+			return $messages;
+		}
+
+		foreach ( $messages as $k => $message ) {
+			if ( isset( $message['type'] ) && in_array( $message['type'], $excluded ) ) {
+				unset( $messages[ $k ] );
+			}
+		}
+		return $messages;
+	}
+
+	/**
+	 * @since 4.06.01
+	 */
+	private static function excluded_messages() {
+		$excluded = array();
+		if ( ! self::has_current_access() ) {
+			return $excluded;
+		}
+
+		$settings = FrmProAppHelper::get_settings();
+		$types    = $settings->inbox_types();
+		foreach ( $types as $type => $label ) {
+			if ( ! empty( $settings->inbox ) && ! isset( $settings->inbox[ $type ] ) ) {
+				$excluded[] = $type;
+			}
+		}
+
+		return $excluded;
+	}
+
+	/**
+	 * @since 4.06.01
+	 */
+	public static function inbox_badge( $count ) {
+		$settings = FrmProAppHelper::get_settings();
+		$off      = ! empty( $settings->inbox ) && ! isset( $settings->inbox['badge'] );
+		if ( $off && self::has_current_access() ) {
+			$count = ' <em class="frm_inbox_unread"></em>';
+		}
+		return $count;
 	}
 
 	public static function update( $params ) {
@@ -120,7 +204,7 @@ class FrmProSettingsController {
 					'foreach ' . $repeat_field . '][/foreach' => __( 'For Each', 'formidable-pro' ),
 				),
 			);
-        }
+		}
 
 		if ( ! empty( $dynamic_field ) ) {
 			$helpers['dynamic'] = array(

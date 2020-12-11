@@ -1,4 +1,8 @@
-
+<?php
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'You are not allowed to call this page directly.' );
+}
+?>
 <script>
 /*<![CDATA[*/
 <?php
@@ -26,6 +30,7 @@ FrmProFormsHelper::load_chosen_js( $frm_vars );
 FrmProFormsHelper::load_hide_conditional_fields_js( $frm_vars );
 FrmProFormsHelper::load_calc_js($frm_vars);
 FrmProFormsHelper::load_datepicker_js( $frm_vars );
+FrmProFormsHelper::load_currency_js( $frm_vars );
 FrmProFormsHelper::load_input_mask_js();
 FrmProLookupFieldsController::load_check_dependent_lookup_js( $frm_vars );
 FrmProFormsHelper::load_dropzone_js( $frm_vars );

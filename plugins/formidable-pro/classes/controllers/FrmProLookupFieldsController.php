@@ -1,5 +1,9 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'You are not allowed to call this page directly.' );
+}
+
 class FrmProLookupFieldsController {
 
 	/**
@@ -145,7 +149,7 @@ class FrmProLookupFieldsController {
 		$select_field_text = __( '&mdash; Select Field &mdash;', 'formidable-pro' );
 		echo '<option value="">' . esc_html( $select_field_text ) . '</option>';
 
-		$selected_value = empty( $field ) ? '' : $field['get_values_field'];
+		$selected_value = ( empty( $field ) || ! isset( $field['get_values_field'] ) ) ? '' : $field['get_values_field'];
 
 		foreach ( $form_fields as $field_option ) {
 			if ( FrmField::is_no_save_field( $field_option->type ) ) {
@@ -486,23 +490,26 @@ class FrmProLookupFieldsController {
 			self::maybe_initialize_frm_vars_lookup_fields_for_id( $values['id'], $frm_vars );
 
 			$lookup_parents = array_filter( $values['watch_lookup'] );
+			$lookup_logic   = $frm_vars['lookup_fields'][ $values['id'] ];
 
-			$frm_vars['lookup_fields'][ $values['id'] ]['fieldId'] = $values['id'];
-			$frm_vars['lookup_fields'][ $values['id'] ]['fieldKey'] = $values['field_key'];
-			$frm_vars['lookup_fields'][ $values['id'] ]['parents'] = $lookup_parents;
-			$frm_vars['lookup_fields'][ $values['id'] ]['fieldType'] = $values['original_type'];
-			$frm_vars['lookup_fields'][ $values['id'] ]['formId'] = $values['parent_form_id'];
-			$frm_vars['lookup_fields'][ $values['id'] ]['inSection'] = isset( $values['in_section'] ) ? $values['in_section'] : '0';
-			$frm_vars['lookup_fields'][ $values['id'] ]['inEmbedForm'] = isset( $values['in_embed_form'] ) ? $values['in_embed_form'] : '0';
-			$frm_vars['lookup_fields'][ $values['id'] ]['isRepeating'] = $values['form_id'] != $values['parent_form_id'];
-			$frm_vars['lookup_fields'][ $values['id'] ]['isMultiSelect'] = false;
-			$frm_vars['lookup_fields'][ $values['id'] ]['isReadOnly'] = (bool) $values['read_only'];
+			$lookup_logic['fieldId']       = $values['id'];
+			$lookup_logic['fieldKey']      = $values['field_key'];
+			$lookup_logic['parents']       = $lookup_parents;
+			$lookup_logic['fieldType']     = $values['original_type'];
+			$lookup_logic['formId']        = $values['parent_form_id'];
+			$lookup_logic['inSection']     = isset( $values['in_section'] ) ? $values['in_section'] : '0';
+			$lookup_logic['inEmbedForm']   = isset( $values['in_embed_form'] ) ? $values['in_embed_form'] : '0';
+			$lookup_logic['isRepeating']   = $values['form_id'] != $values['parent_form_id'];
+			$lookup_logic['isMultiSelect'] = FrmField::is_multiple_select( $values );
+			$lookup_logic['isReadOnly']    = isset( $values['read_only'] ) ? (bool) $values['read_only'] : 0;
 
 			if ( $values['original_type'] == 'lookup' ) {
-				$frm_vars['lookup_fields'][ $values['id'] ]['inputType'] = $values['data_type'];
+				$lookup_logic['inputType'] = $values['data_type'];
 			} else {
-				$frm_vars['lookup_fields'][ $values['id'] ]['inputType'] = $values['original_type'];
+				$lookup_logic['inputType'] = $values['original_type'];
 			}
+
+			$frm_vars['lookup_fields'][ $values['id'] ] = $lookup_logic;
 
 			// Add field to parent field's dependents, if there is a parent
 			if ( ! empty( $lookup_parents ) ) {
@@ -576,7 +583,8 @@ class FrmProLookupFieldsController {
 	 * @since 2.01.0
 	 */
 	public static function ajax_get_dependent_lookup_field_options() {
-		check_ajax_referer( 'frm_ajax', 'nonce' );
+		// Don't use nonce since this is front-end.
+
 		$field_id = FrmAppHelper::get_param( 'field_id', '', 'post', 'absint' );
 		$parent_args = array(
 			'parent_field_ids' => FrmAppHelper::get_param( 'parent_fields', '', 'post', 'absint' ),
@@ -598,7 +606,8 @@ class FrmProLookupFieldsController {
 	 * @since 2.01.0
 	 */
 	public static function ajax_get_dependent_cb_radio_lookup_options() {
-		check_ajax_referer( 'frm_ajax', 'nonce' );
+		// Don't use nonce since this is front-end.
+
 		$field_id = FrmAppHelper::get_param( 'field_id', '', 'post', 'absint' );
 		$parent_args = array(
 			'parent_field_ids' => FrmAppHelper::get_param( 'parent_fields', '', 'post', 'absint' ),
@@ -716,7 +725,8 @@ class FrmProLookupFieldsController {
 	 * @since 2.01.0
 	 */
 	public static function ajax_get_text_field_lookup_value() {
-		check_ajax_referer( 'frm_ajax', 'nonce' );
+		// Don't use nonce since this is front-end.
+
 		$parent_field_ids = FrmAppHelper::get_param( 'parent_fields', '', 'post', 'absint' );
 		$parent_vals = FrmAppHelper::get_param( 'parent_vals', '', 'post', 'wp_kses_post' );
 		FrmAppHelper::sanitize_value( 'wp_specialchars_decode', $parent_vals );
@@ -946,7 +956,7 @@ class FrmProLookupFieldsController {
 		$final_values = array();
 		foreach ( $meta_values as $meta_val ) {
 
-			$meta_val = maybe_unserialize( $meta_val );
+			FrmProAppHelper::unserialize_or_decode( $meta_val );
 			if ( is_array( $meta_val ) ) {
 				$final_values = array_merge( $final_values, $meta_val );
 			} else {

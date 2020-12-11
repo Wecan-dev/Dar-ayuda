@@ -1,3 +1,8 @@
+<?php
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'You are not allowed to call this page directly.' );
+}
+?>
 <?php $sanitized_name = sanitize_title_with_dashes($custom_data['meta_name']); ?>
 
 <div id="frm_postmeta_<?php echo esc_attr( $sanitized_name ) ?>" class="frm_postmeta_row frm_grid_container">

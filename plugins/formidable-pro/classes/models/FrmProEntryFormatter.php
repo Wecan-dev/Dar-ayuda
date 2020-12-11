@@ -1,5 +1,9 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'You are not allowed to call this page directly.' );
+}
+
 /**
  * @since 2.04
  */
@@ -260,11 +264,33 @@ class FrmProEntryFormatter extends FrmEntryFormatter {
 
 			case 'divider':
 				$display_value = '<h3>' . $field_value->get_field_label() . '</h3>';
+				$this->maybe_remove_section_title( $field_value, $display_value );
 				break;
 
 			default:
 				parent::prepare_html_display_value_for_extra_fields( $field_value, $display_value );
 		}
+	}
+
+	/**
+	 * Check if a section's title should be hidden in the summary.
+	 *
+	 * @since 4.03
+	 *
+	 * @param $field_value FrmProFieldSummaryValue
+	 */
+	protected function maybe_remove_section_title( $field_value, &$display_value ) {
+		if ( $this->atts['summary'] && $this->is_field_label_hidden( $field_value ) ) {
+			$display_value = '';
+		}
+	}
+
+	/**
+	 * @since 4.03
+	 */
+	protected function is_field_label_hidden( $field_value ) {
+		$label = $field_value->get_field_option( 'label' );
+		return 'hidden' === $label || 'none' === $label;
 	}
 
 	/**
@@ -417,6 +443,14 @@ class FrmProEntryFormatter extends FrmEntryFormatter {
 		$display_value = parent::prepare_display_value_for_html_table( $display_value, $type );
 
 		return $display_value;
+	}
+
+	protected function flatten_array( $value ) {
+		if ( is_array( $value ) && FrmProImages::has_images_options_in_html( $value ) ) {
+			return implode( ' ', $value );
+		}
+
+		return parent::flatten_array( $value );
 	}
 
 	/**

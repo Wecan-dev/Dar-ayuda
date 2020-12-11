@@ -1,5 +1,9 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'You are not allowed to call this page directly.' );
+}
+
 /**
  * @since 3.0
  */
@@ -81,7 +85,8 @@ class FrmProFieldData extends FrmFieldType {
 			return;
 		}
 
-		$selected_field   = $selected_form_id = '';
+		$selected_field   = '';
+		$selected_form_id = '';
 		$current_field_id = $field['id'];
 		if ( isset( $field['form_select'] ) && is_numeric( $field['form_select'] ) ) {
 			$selected_field = FrmField::getOne( $field['form_select'] );

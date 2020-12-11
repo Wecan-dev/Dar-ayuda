@@ -1,9 +1,13 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'You are not allowed to call this page directly.' );
+}
+
 class FrmProStylesController extends FrmStylesController {
 
 	public static function load_pro_hooks() {
-		if ( ! FrmAppHelper::is_admin_page( 'formidable-styles' ) ) {
+		if ( ! FrmAppHelper::is_admin_page( 'formidable-styles' ) && ! FrmAppHelper::is_admin_page( 'formidable-styles2' ) ) {
 			return;
 		}
 
@@ -127,7 +131,11 @@ class FrmProStylesController extends FrmStylesController {
 	public static function enqueue_jquery_css() {
 		$form = self::get_form_for_page();
 		$theme_css = FrmStylesController::get_style_val( 'theme_css', $form );
-		if ( $theme_css != -1 && ! FrmAppHelper::is_admin( 'formidable' ) ) {
+
+		$action     = FrmAppHelper::get_param( 'frm_action', '', 'get', 'sanitize_text_field' );
+		$is_builder = FrmAppHelper::is_admin( 'formidable' ) && $action !== 'settings';
+
+		if ( $theme_css != -1 && ! $is_builder ) {
 			wp_enqueue_style( 'jquery-theme', self::jquery_css_url( $theme_css ), array(), FrmAppHelper::plugin_version() );
 		}
 	}
@@ -174,25 +182,25 @@ class FrmProStylesController extends FrmStylesController {
 
 	public static function maybe_new_style( $style ) {
 		$action = FrmAppHelper::get_param( 'frm_action', '', 'get', 'sanitize_title' );
-    	if ( 'new_style' == $action ) {
-            $style = self::new_style('style');
-    	} else if ( 'duplicate' == $action ) {
-    		$style = self::duplicate('style');
-    	}
-        return $style;
-    }
+		if ( 'new_style' == $action ) {
+			$style = self::new_style('style');
+		} else if ( 'duplicate' == $action ) {
+			$style = self::duplicate('style');
+		}
+		return $style;
+	}
 
 	public static function new_style( $return = '' ) {
-        $frm_style = new FrmStyle();
-        $style = $frm_style->get_new();
+		$frm_style = new FrmStyle();
+		$style = $frm_style->get_new();
 
-        if ( 'style' == $return ) {
-            // return style object for header css link
-            return $style;
-        }
+		if ( 'style' == $return ) {
+			// return style object for header css link
+			return $style;
+		}
 
-        self::load_styler($style);
-    }
+		self::load_styler($style);
+	}
 
 	public static function duplicate( $return = '' ) {
 		$style_id = FrmAppHelper::get_param( 'style_id', 0, 'get', 'absint' );
@@ -213,30 +221,32 @@ class FrmProStylesController extends FrmStylesController {
 		self::load_styler( $style );
 	}
 
-    public static function destroy() {
+	public static function destroy() {
 		$id = FrmAppHelper::simple_get( 'id', 'absint' );
 
-        $frm_style = new FrmStyle();
-        $frm_style->destroy($id);
+		$frm_style = new FrmStyle();
+		$frm_style->destroy($id);
 
-        $message = __( 'Your styling settings have been deleted.', 'formidable-pro' );
+		$message = __( 'Your styling settings have been deleted.', 'formidable-pro' );
 
-        self::edit('default', $message);
-    }
+		self::edit('default', $message);
+	}
 
 	public static function pro_route( $action ) {
-        switch ( $action ) {
-            case 'new_style':
-            case 'duplicate':
-            case 'destroy':
-                add_filter('frm_style_stop_action_route', '__return_true');
+		switch ( $action ) {
+			case 'new_style':
+			case 'duplicate':
+			case 'destroy':
+				add_filter('frm_style_stop_action_route', '__return_true');
 				return self::$action();
-        }
-    }
+		}
+	}
 
 	public static function include_front_css( $args ) {
 		$defaults = $args['defaults'];
 		$important = self::is_important( $defaults );
+
+		$vars = self::css_vars();
 
 		include( FrmProAppHelper::plugin_path() . '/css/pro_fields.css.php' );
 		include( FrmProAppHelper::plugin_path() . '/css/chosen.css.php' );
@@ -275,11 +285,11 @@ class FrmProStylesController extends FrmStylesController {
 	private static function set_toggle_slider_colors( &$settings ) {
 		$settings['toggle_font_size'] = $settings['font_size'];
 		$settings['toggle_on_color']  = $settings['progress_active_bg_color'];
-		$settings['toggle_off_color'] = $settings['border_color'];
+		$settings['toggle_off_color'] = $settings['progress_bg_color'];
 
-		$settings['slider_font_size'] = $settings['field_font_size'];
+		$settings['slider_font_size'] = '24px';
 		$settings['slider_color']     = $settings['progress_active_bg_color'];
-		$settings['slider_bar_color'] = $settings['border_color'];
+		$settings['slider_bar_color'] = $settings['progress_active_bg_color'];
 	}
 
 	/**
@@ -292,14 +302,20 @@ class FrmProStylesController extends FrmStylesController {
 	}
 
 	/**
+	 * This CSS is only loaded with the ajax call.
+	 *
 	 * @since 3.0
 	 */
 	public static function include_pro_fields_ajax_css() {
 		header('Content-type: text/css');
 
-		$frm_style = new FrmStyle();
-		$defaults = $frm_style->get_defaults();
+		$defaults  = self::get_default_style();
 		$important = self::is_important( $defaults );
+
+		$vars = self::css_vars();
+		if ( is_callable( 'FrmStylesHelper::get_css_vars' ) ) {
+			$vars = FrmStylesHelper::get_css_vars( array_keys( $defaults ) );
+		}
 
 		include( FrmProAppHelper::plugin_path() . '/css/pro_fields.css.php' );
 	}
@@ -313,7 +329,37 @@ class FrmProStylesController extends FrmStylesController {
 		$pad_unit = preg_replace( '/[0-9]+/', '', $top_pad ); //px, em, rem...
 		$top_margin = (int) str_replace( $pad_unit, '', $top_pad ) / 2;
 
+		$defaults = self::get_default_style();
+		$vars     = self::css_vars();
+
 		include( FrmProAppHelper::plugin_path() . '/css/single-style.css.php' );
+	}
+
+	/**
+	 * @since 4.05
+	 */
+	private static function get_default_style() {
+		$frm_style = new FrmStyle();
+		$default_style = $frm_style->get_default_style();
+		if ( is_admin() && ! empty( $_POST ) && isset( $_POST['action'] ) && $_POST['action'] === 'frm_change_styling' ) {
+			// Reset to prevent posted values from being used on styler page.
+			$_POST['action'] = '';
+		}
+		return FrmStylesHelper::get_settings_for_output( $default_style );
+	}
+
+	/**
+	 * This is here for version mismatch. It can be removed later.
+	 *
+	 * @since 4.05
+	 */
+	private static function css_vars() {
+		if ( is_callable( 'FrmStylesHelper::get_css_vars' ) ) {
+			return array();
+		}
+
+		$vars = array( 'progress_color', 'progress_bg_color', 'progress_active_bg_color', 'progress_border_size', 'border_color', 'border_radius', 'field_border_width', 'field_border_style', 'field_font_size', 'field_margin', 'text_color', 'field_pad', 'bg_color', 'submit_text_color', 'submit_font_size', 'border_color_error', 'text_color_error', 'bg_color_error', 'description_color', 'slider_font_size', 'slider_bar_color', 'section_border_width', 'section_border_style', 'section_border_color', 'section_font_size', 'section_bg_color', 'section_color', 'section_weight', 'toggle_off_color', 'toggle_on_color', 'toggle_font_size', 'check_weight', 'check_label_color' );
+		return array_unique( $vars );
 	}
 
 	private static function view_folder() {

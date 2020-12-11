@@ -1,3 +1,8 @@
+<?php
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'You are not allowed to call this page directly.' );
+}
+?>
 <tr>
 	<td colspan="2">
 		<a href="javascript:void(0)" id="logic_<?php echo absint( $field['id'] ) ?>" class="frm_add_logic_row frm_add_logic_link <?php

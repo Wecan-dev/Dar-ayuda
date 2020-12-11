@@ -1,3 +1,8 @@
+<?php
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'You are not allowed to call this page directly.' );
+}
+?>
 <p class="frm-conf-box-<?php echo esc_attr( $field['id'] . ( empty( $field['conf_field'] ) ? ' frm_hidden' : '' ) ); ?>">
 	<label for="field_options_conf_input_<?php echo esc_attr( $field['id'] ); ?>">
 		<?php esc_html_e( 'Confirmation Placeholder', 'formidable-pro' ); ?>

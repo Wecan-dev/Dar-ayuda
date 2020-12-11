@@ -1,3 +1,8 @@
+<?php
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'You are not allowed to call this page directly.' );
+}
+?>
 <p>
 	<label><?php esc_html_e( 'Insert Form', 'formidable-pro' ) ?></label>
 	<?php

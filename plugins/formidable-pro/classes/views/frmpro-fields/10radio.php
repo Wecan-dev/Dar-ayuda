@@ -1,4 +1,8 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'You are not allowed to call this page directly.' );
+}
+
 $max = FrmField::get_option( $field, 'maxnum' );
 if ( $max !== '' ) {
 	$min = FrmField::get_option( $field, 'minnum' );
@@ -9,7 +13,8 @@ if ( $max !== '' ) {
 
 if ( is_array($field['options']) ) {
     if ( ! isset($field['value']) ) {
-        $field['value'] = maybe_unserialize($field['default_value']);
+		$field['value'] = $field['default_value'];
+		FrmProAppHelper::unserialize_or_decode( $field['value'] );
     }
 
     foreach ( $field['options'] as $opt_key => $opt ) {

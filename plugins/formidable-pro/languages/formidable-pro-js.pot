@@ -3,6 +3,18 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "X-Generator: babel-plugin-makepot\n"
 
+#: js/src/calculator/block.js:34
+msgid "Display a Calculator Form"
+msgstr ""
+
+#: js/src/calculator/block.js:50
+msgid "This site does not have any calculator forms."
+msgstr ""
+
+#: js/src/calculator/block.js:60
+msgid "Calculator Form"
+msgstr ""
+
 #: js/src/view/block.js:23
 msgid "Display a View"
 msgstr ""

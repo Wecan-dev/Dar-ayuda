@@ -1,3 +1,8 @@
+<?php
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'You are not allowed to call this page directly.' );
+}
+?>
 <div id="frm_logic_submit_<?php echo esc_attr( $meta_name ); ?>" class="frm_logic_row frm_logic_row_submit frm_grid_container">
 <p class="frm3 frm_form_field">
 	<select name="options[submit_conditions][hide_field][]" class=" frm_submit_logic_field_opts"

@@ -1,4 +1,8 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'You are not allowed to call this page directly.' );
+}
+
 foreach ( $field['options'] as $opt_key => $opt_value ) {
 	$checked = ( in_array( $opt_value, $saved_value_array ) ) ? ' checked="checked"' : '';
 	?>

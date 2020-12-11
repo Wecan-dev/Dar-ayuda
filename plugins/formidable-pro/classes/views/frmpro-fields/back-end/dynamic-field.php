@@ -1,3 +1,9 @@
+<?php
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'You are not allowed to call this page directly.' );
+}
+?>
+
 <p class="frm6 frm_form_field">
 	<label><?php esc_html_e( 'Display Type', 'formidable-pro' ); ?></label>
 	<select name="field_options[data_type_<?php echo absint( $field['id'] ); ?>]">

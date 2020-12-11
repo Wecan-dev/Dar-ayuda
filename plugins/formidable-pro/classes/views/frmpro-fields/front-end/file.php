@@ -1,6 +1,12 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'You are not allowed to call this page directly.' );
+}
+
 $is_multiple = FrmField::is_option_true( $field, 'multiple' );
-$media_ids = maybe_unserialize( $field['value'] );
+$is_required = FrmField::is_required( $field );
+$media_ids = $field['value'];
+FrmProAppHelper::unserialize_or_decode( $media_ids );
 if ( $is_multiple ) {
 	$media_ids = array_map( 'trim', array_filter( (array) $media_ids, 'is_numeric' ) );
 } else if ( is_array( $media_ids ) ) {
@@ -21,7 +27,8 @@ if ( FrmField::is_read_only( $field ) ) {
 } else {
     FrmProFileField::setup_dropzone( $field, compact( 'field_name', 'html_id', 'file_name' ) );
 
-	$extra_atts = '';
+	$extra_atts   = '';
+	$required_att = '';
 	$hidden_value = $media_ids;
 
 	if ( $is_multiple ) {
@@ -29,13 +36,18 @@ if ( FrmField::is_read_only( $field ) ) {
 		$extra_atts = ' data-frmfile="' . esc_attr( $field['id'] ) . '" multiple="multiple" ';
 	}
 
+	if ( $is_required ) {
+		$required_message = FrmFieldsHelper::get_error_msg( $field, 'blank' );
+		$required_att     = ' data-reqmsg="' . esc_attr( $required_message ) . '" ';
+	}
+
 	global $frm_vars;
 	$file_settings = $frm_vars['dropzone_loaded'][ $file_name ];
 
 ?>
-<input type="hidden" name="<?php echo esc_attr( $input_name ) ?>" value="<?php echo esc_attr( $hidden_value ) ?>" data-frmfile="<?php echo esc_attr( $field['id'] ) ?>" />
+<input type="hidden" name="<?php echo esc_attr( $input_name ) ?>" <?php echo $required_att; ?> value="<?php echo esc_attr( $hidden_value ) ?>" data-frmfile="<?php echo esc_attr( $field['id'] ) ?>" />
 
-<div class="frm_dropzone frm_<?php echo esc_attr( $file_settings['maxFiles'] == 1 ? 'single' : 'multi' ) ?>_upload frm_clearfix" id="<?php echo esc_attr( $file_name ) ?>_dropzone" aria-labelledby="<?php echo esc_html( $html_id ); ?>_label" role="group">
+<div class="frm_dropzone frm_<?php echo esc_attr( $file_settings['maxFiles'] == 1 ? 'single' : 'multi' ) ?>_upload frm_clearfix" id="<?php echo esc_attr( $file_name ) ?>_dropzone" role="group" <?php echo strip_tags( $aria ); ?>>
 	<div class="fallback">
 		<input type="file" name="<?php echo esc_attr( $file_name . ( $is_multiple ? '[]' : '' ) ) ?>" id="<?php echo esc_attr( $html_id ) ?>" <?php echo $extra_atts; do_action( 'frm_field_input_html', $field ) ?> />
 		<?php foreach ( $file_settings['mockFiles'] as $file ) { ?>
@@ -62,8 +74,8 @@ if ( FrmField::is_read_only( $field ) ) {
 	</div>
 	<div class="dz-message needsclick">
 		<span class="frm_icon_font frm_upload_icon"></span>
-		<span class="frm_upload_text"><?php echo esc_html( $field['drop_msg'] ); ?></span>
-		<span class="frm_compact_text"><?php echo esc_html( $field['choose_msg'] ); ?></span>
+		<span class="frm_upload_text"><button type="button"><?php echo esc_html( $field['drop_msg'] ); ?></button></span>
+		<span class="frm_compact_text"><button type="button"><?php echo esc_html( $field['choose_msg'] ); ?></button></span>
 		<div class="frm_small_text">
 			<?php echo esc_html( sprintf( __( 'Maximum upload size: %sMB', 'formidable-pro' ), $file_settings['maxFilesize'] ) ) ?>
 		</div>

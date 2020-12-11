@@ -1,5 +1,9 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'You are not allowed to call this page directly.' );
+}
+
 class FrmProPageField {
 
 	public static function page_navigation( $atts ) {
@@ -101,7 +105,7 @@ class FrmProPageField {
 		$classes[] = $hide_numbers ? 'frm_no_numbers' : '';
 		$classes[] = $hide_lines ? '' : 'frm_show_lines';
 		$output = '<div class="frm_rootline_group">';
-		$output .= '<ul class="' . esc_attr( implode( $classes, ' ' ) ) . '">';
+		$output .= '<ul class="' . esc_attr( implode( ' ', $classes ) ) . '">';
 
 		foreach ( $args['page_array'] as $page_number => $page ) {
 			$page['class'] .= ' frm_page_' . $page_number;
@@ -167,18 +171,22 @@ class FrmProPageField {
 	}
 
 	private static function add_titles_to_array( $form, &$page_array ) {
-		$page_titles = FrmForm::get_option( array(
-			'form'    => $form,
-			'option'  => 'rootline_titles',
-			'default' => array(),
-		) );
+		$page_titles = FrmForm::get_option(
+			array(
+				'form'    => $form,
+				'option'  => 'rootline_titles',
+				'default' => array(),
+			)
+		);
 
 		foreach ( $page_array as $page_number => $page ) {
-			$page_array[ $page_number ]['aria-label'] = self::get_title_for_page( array(
-				'page'        => $page,
-				'page_number' => $page_number,
-				'page_titles' => $page_titles,
-			) );
+			$page_array[ $page_number ]['aria-label'] = self::get_title_for_page(
+				array(
+					'page'        => $page,
+					'page_number' => $page_number,
+					'page_titles' => $page_titles,
+				)
+			);
 		}
 	}
 
@@ -206,5 +214,33 @@ class FrmProPageField {
 		echo '<style type="text/css">';
 		include( FrmProAppHelper::plugin_path() . '/css/progress.css.php' );
 		echo '</style>';
+	}
+
+	/**
+	 * @since 4.03
+	 *
+	 * @return array
+	 */
+	public static function get_form_pages( $form ) {
+		if ( ! is_object( $form ) ) {
+			$form = FrmForm::getOne( $form );
+		}
+
+		$page_breaks = FrmProFormsHelper::has_field( 'break', $form->id, false );
+		if ( empty( $page_breaks ) ) {
+			return array();
+		}
+
+		$rootline = FrmForm::get_option(
+			array(
+				'form'    => $form,
+				'option'  => 'rootline',
+				'default' => '',
+			)
+		);
+
+		$page_array = self::get_pages_array( $page_breaks, $form );
+
+		return compact( 'rootline', 'page_array' );
 	}
 }
