@@ -99,7 +99,7 @@
           <?php while ($loop->have_posts()) : $loop->the_post(); ?>
         <div class="about-blog__item">
           <a class="about-blog__img" href="<?php the_permalink(); ?>">
-            <img src="<?php echo get_template_directory_uri(); ?>/assets/img/blog/image_1.png">
+            <img src="<?php echo get_the_post_thumbnail_url(); ?>">
           </a>
           <div class="about-blog__body">
             <a class="about-blog__title" href="<?php the_permalink(); ?>">
