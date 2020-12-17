@@ -1,6 +1,5 @@
 <?php
 get_header();
-global $wp_query;
 ?>
 <?php get_header(); ?>
 
@@ -15,9 +14,8 @@ global $wp_query;
   </div>
   <img class="banner-small__img" src="<?php echo get_template_directory_uri(); ?>/assets/img/blog/image.png">
   <div class="banner-small__text">
-    <h2 class="banner-small__title">
-	<?php echo $wp_query->found_posts; ?> Resultados para:
-           "<?php the_search_query(); ?>"
+    <h2 class="banner-small__title"> Resultados para:
+      "<?php the_search_query(); ?>"
     </h2>
   </div>
 </section>
@@ -31,23 +29,14 @@ global $wp_query;
             <span></span>
           </h2>
           <div class="blog-all__form">
-          <form style="display: contents;" role="search" method="get" class="search-form" action="<?php echo home_url( '/' ); ?>">
-            <input type="search" class="search-field" placeholder="Buscar" value="<?php echo get_search_query() ?>" name="s" title="<?php echo esc_attr_x( 'Search for:', 'label' ) ?>" />
-
-            <input type="submit" value="" placeholder="" style="width: auto; background-image: url(<?php echo get_template_directory_uri(); ?>/assets/img/blog/search.png); background-repeat: no-repeat;background-position: right;background-size: contain;" />
-          </form>            
-        <!-- <a href="">
+            <form style="display: contents;" role="search" method="get" class="search-form" action="<?php echo home_url('/'); ?>">
+              <input type="search" class="search-field" placeholder="Buscar" value="<?php echo get_search_query() ?>" name="s" title="<?php echo esc_attr_x('Search for:', 'label') ?>" />
+              <input type="submit" value="" placeholder="" style="width: auto; background-image: url(<?php echo get_template_directory_uri(); ?>/assets/img/blog/search.png); background-repeat: no-repeat;background-position: right;background-size: contain;" />
+            </form>
+            <!-- <a href="">
               <img src="<?php echo get_template_directory_uri(); ?>/assets/img/blog/search.png">
             </a> -->
           </div>
-        </div>
-        <div class="blog-all__card">
-          <h2 class="general-title general-title--start">
-            Nuestro blog
-            <span></span>
-          </h2>
-          <p class="general-description">
-            <?php the_content(); ?> </p>
         </div>
         <div class="blog-all__card">
           <h2 class="general-title general-title--start">
@@ -74,6 +63,7 @@ global $wp_query;
               }
             }
             ?>
+            <?php wp_reset_postdata(); ?>
 
           </ul>
         </div>
@@ -94,54 +84,84 @@ global $wp_query;
                 </p>
               </div>
             </div>
+            <?php wp_reset_postdata(); ?>
+
           <?php endwhile ?>
 
         </div>
       </div>
       <div class="blog-all__content">
-	  <?php if (have_posts()) : the_post(); ?>
-      <?php while (have_posts()) : the_post(); ?>
-        <div class="about-blog__item">
-          <a class="about-blog__img" href="<?php the_permalink(); ?>">
-            <img src="<?php echo get_template_directory_uri(); ?>/assets/img/blog/image_1.png">
-          </a>
-          <div class="about-blog__body">
-            <a class="about-blog__title" href="<?php the_permalink(); ?>">
-            <?php the_title(); ?>
-            </a>
-            <p class="general-description">
-              <?php the_excerpt(30); ?>            
-            </p>
-            <div class="about-blog__meta">
-              <a href="">
-                <img src="<?php echo get_template_directory_uri(); ?>/assets/img/nuestra-empresa/user.png">
-                <?php the_author(); ?>
+        <?php if (have_posts()):
+          $cont = 0;
+        ?>
+
+          <?php while (have_posts()) : the_post(); ?>
+
+            <div class="about-blog__item">
+              <a class="about-blog__img" href="<?php the_permalink(); ?>">
+                <img src="<?php echo get_template_directory_uri(); ?>/assets/img/blog/image_1.png">
               </a>
-              <a href="">
-                <img src="<?php echo get_template_directory_uri(); ?>/assets/img/nuestra-empresa/heart.png">
-                Lorem
-              </a>
-              <a href="">
-                <img src="<?php echo get_template_directory_uri(); ?>/assets/img/nuestra-empresa/chat.png">
-                <?php $numero_de_comentarios = get_comments_number();
-                          echo $numero_de_comentarios; ?>
-              </a>
+              <div class="about-blog__body">
+                <a class="about-blog__title" href="<?php the_permalink(); ?>">
+                  <?php the_title(); ?>
+                </a>
+                <p class="general-description">
+                  <?php the_excerpt(30); ?>
+                </p>
+                <div class="about-blog__meta">
+                  <a href="">
+                    <img src="<?php echo get_template_directory_uri(); ?>/assets/img/nuestra-empresa/user.png">
+                    <?php the_author(); ?>
+                  </a>
+                  <a href="">
+                    <img src="<?php echo get_template_directory_uri(); ?>/assets/img/nuestra-empresa/heart.png">
+                    Lorem
+                  </a>
+                  <a href="">
+                    <img src="<?php echo get_template_directory_uri(); ?>/assets/img/nuestra-empresa/chat.png">
+                    <?php $numero_de_comentarios = get_comments_number();
+                    echo $numero_de_comentarios; ?>
+                  </a>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-        <?php endwhile ?>
-		<?php else : ?>
-    <div style="width: 100%; height: 100vh; display: flex; justify-content: center; align-items: center;" >
-      <div style="text-align: center;">
-        <h1 style="color: #535a61; font-size: 70px;">No hay envases en esta categoría</h1><br>
-        <p class="row ftco-animate justify-content-center pb-5 pt-5"><a href="<?php bloginfo('url'); ?>/index.php/envases"" class="btn btn-primary mr-md-4 py-3 px-4">Ver envases</a></p>
-      </div>
-    </div>
-	<?php endif; ?>
+
+          <?php
+            $cont++;
+          endwhile;  ?>
+
+
+        <?php else : ?>
+          <section class="error-404">
+            <div class=" padding-right-left">
+              <h2 class="error-404__title">
+                LO SENTIMOS
+              </h2>
+              <h2 class="error-404__subtitle">
+                no podemos encontrar resultados de lo que estás buscando
+              </h2>
+              <div class="blog-all__card">
+                <h2 class="general-title general-title--start">
+                  Buscar
+                  <span></span>
+                </h2>
+                <div class="blog-all__form">
+                  <form style="display: contents;" role="search" method="get" class="search-form" action="<?php echo home_url('/'); ?>">
+                    <input type="search" class="search-field" placeholder="Buscar" value="<?php echo get_search_query() ?>" name="s" title="<?php echo esc_attr_x('Search for:', 'label') ?>" />
+
+                    <input type="submit" value="" placeholder="" style="width: auto; background-image: url(<?php echo get_template_directory_uri(); ?>/assets/img/blog/search.png); background-repeat: no-repeat;background-position: right;background-size: contain;" />
+                  </form>
+                  <!-- <a href="">
+              <img src="<?php echo get_template_directory_uri(); ?>/assets/img/blog/search.png">
+            </a> -->
+                </div>
+              </div>
+            </div>
+          </section>
+
+        <?php endif; ?>
       </div>
     </div>
   </div>
 </section>
 <?php get_footer(); ?>
-
-	

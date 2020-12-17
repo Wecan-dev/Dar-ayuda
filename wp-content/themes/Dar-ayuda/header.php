@@ -4,22 +4,23 @@
 <head>
   <meta charset="UTF-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>
-    <?php if (is_home()) {
-      echo bloginfo('name');
-    } elseif (is_category()) {
-      swp_title('', true);
-      echo ' | ';
-      echo bloginfo('name');
-    } elseif (is_single() || is_page()) {
-      single_post_title();
-      echo ' | ';
-      echo bloginfo('name');
-    } else {
-      wp_title('', true);
-    }
-    ?>
-  </title>
+  <title> <?php if (is_home()) {
+            echo bloginfo('name');
+            echo ' | ';
+            echo 'Inicio ';
+          } elseif (is_category()) {
+            single_cat_title();
+            echo ' | ';
+            echo bloginfo('name');
+          } elseif (is_single() || is_page()) {
+            single_post_title();
+            echo ' | ';
+            echo bloginfo('name');
+          } else {
+            wp_title('', true);
+            echo ' | ';
+            echo bloginfo('name');
+          }    ?> </title>
   <?php wp_head(); ?>
   <link crossorigin="anonymous" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" rel="stylesheet">
   <link href="<?php echo get_template_directory_uri(); ?>/assets/css/font-awesome.css" rel="stylesheet">
@@ -31,6 +32,7 @@
   <link href="<?php echo get_template_directory_uri(); ?>/assets/img/favicon.png" rel="shortcut icon">
   <link href="https://fonts.googleapis.com/css?family=Montserrat:100,200,300,400,500,600,700,800,900|Open+Sans:300,400,600,700,800|Poppins:100,200,300,400,500,600,700,800,900&amp;display=swap" rel="stylesheet">
 </head>
+
 <body>
   <header class="fixed-top navbar-fixed-js">
     <div class="pre-navbar">
@@ -84,8 +86,8 @@
               <?php $args = array('post_type' => 'Portafolio', 'order' => 'ASC', 'posts_per_page' => -1); ?>
               <?php $loop = new WP_Query($args); ?>
               <?php while ($loop->have_posts()) : $loop->the_post(); ?>
-              <a class="dropdown-item" href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
-                  <?php wp_reset_postdata(); ?>
+                <a class="dropdown-item" href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
+                <?php wp_reset_postdata(); ?>
               <?php endwhile; ?>
             </div>
           </li>
@@ -94,12 +96,12 @@
               De su interés
             </a>
             <div aria-labelledby="navbarDropdown" class="dropdown-menu">
-            <?php $args = array('post_type' => 'De_su_interes', 'order' => 'ASC', 'posts_per_page' => -1); ?>
+              <?php $args = array('post_type' => 'De_su_interes', 'order' => 'ASC', 'posts_per_page' => -1); ?>
               <?php $loop = new WP_Query($args); ?>
               <?php while ($loop->have_posts()) : $loop->the_post(); ?>
-              <a class="dropdown-item" href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
-                  <?php wp_reset_postdata(); ?>
-              <?php endwhile; ?>            
+                <a class="dropdown-item" href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
+                <?php wp_reset_postdata(); ?>
+              <?php endwhile; ?>
             </div>
           </li>
           <li class="nav-item">

@@ -125,33 +125,35 @@ function rd_duplicate_post_link($actions, $post)
   return $actions;
 }
 
-add_filter('post_row_actions', 'rd_duplicate_post_link', 10, 2);
 
+function exlcuir_mi_custom_type() {
+	global $wp_post_types;
 
+	if ( post_type_exists( 'portafolio' ) ) {
 
-function brdcmb()
+		$wp_post_types['portafolio']->exclude_from_search = true;
+	}
+	
+}
+add_action( 'init', 'exlcuir_mi_custom_type', 99 );
+ 
+function exlcuir_mi_custom_type1() {
+	global $wp_post_types;
+
+	if ( post_type_exists( 'de_su_interes' ) ) {
+
+		$wp_post_types['de_su_interes']->exclude_from_search = true;
+	}
+	
+}
+add_action( 'init', 'exlcuir_mi_custom_type1', 99 );
+add_action( 'pre_get_posts', 'dcms_exclude_specific_pages' );
+function dcms_exclude_specific_pages($query)
 {
-  if (!is_home()) {
-    echo '< a href="';
-    echo get_option('home');
-    echo '"> ';
-    echo 'Home';;
-    echo "< /a> » ";
-    if (is_category() || is_single()) {
-      the_category('title_li=');
-      if (is_single()) {
-        echo " » ";
-        the_title();
-      }
-    } elseif (is_page()) {
-      echo the_title();
-    }
-  }
+	if ( $query->is_search() && $query->is_main_query() )
+		$query->set( 'post__not_in', array( 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 ) );
 }
 
-
-
-// Register Custom Post Type
 function Portafolio() {
 
 	$labels = array(

@@ -26,7 +26,8 @@
                     Escríbenos
                     <span></span>
                 </h2>
-                <form>
+                <?php echo FrmFormsController::get_form_shortcode( array( 'id' => 3, 'title' => false, 'description' => false ) ); ?>
+                <!-- <form>
                     <label>
                         Nombre*
                         <input type="text">
@@ -46,7 +47,7 @@
                     <div class="d-flex justify-content-center">
                         <a class="general-btn__green" href="">Enviar</a>
                     </div>
-                </form>
+                </form> -->
             </div>
             <div class="contact-info__rrss">
                 <h2 class="general-title general-title--start">

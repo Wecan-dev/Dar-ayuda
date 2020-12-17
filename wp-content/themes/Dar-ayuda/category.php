@@ -1,62 +1,165 @@
 <?php
-get_header();
-global $wp_query;
-?>
 
+/**
+ * A Simple Category Template
+ */
 
-<section class="hero-wrap hero-wrap-2" style="background-position: center; background-attachment: fixed; background-image: url('<?php echo get_template_directory_uri(); ?>/assets/images/services.jpg');" data-stellar-background-ratio="0.5">
-    <div class="overlay"></div>
-    <div class="container">
-        <div class="row no-gutters slider-text align-items-end">
-            <div class="col-md-9 ftco-animate pb-5">
-            <p class="breadcrumbs mb-2">
-              <span class="mr-2"><a href="<?php bloginfo('url'); ?>">Inicio <i class="ion-ios-arrow-forward"></i></a></span>
-              <span class="mr-2"><a href="<?php echo bloginfo('url') . '/index.php/envases'; ?>">Nuestros Envases <i class="ion-ios-arrow-forward"></i></a></span>
-            </p>
-                <h1 class="mb-0 bread"><?php echo $wp_query->found_posts; ?> Resultados para:
-           "<?php the_search_query(); ?>" </h1>
-            </div>
+get_header(); ?>
+
+<section class="banner-small">
+  <div class="main-banner__rrss">
+    <a href="" target="_blank">
+      <img src="<?php echo get_template_directory_uri(); ?>/assets/img/fb_2.png">
+    </a>
+    <a href="" target="_blank">
+      <img src="<?php echo get_template_directory_uri(); ?>/assets/img/ig_2.png">
+    </a>
+  </div>
+  <img class="banner-small__img" src="<?php echo get_template_directory_uri(); ?>/assets/img/blog/image.png">
+  <div class="banner-small__text">
+    <h2 class="banner-small__title">
+      Blog
+    </h2>
+  </div>
+</section>
+<section class="blog-all">
+  <div class="padding-top-bottom padding-right-left">
+    <div class="container-grid">
+      <div class="blog-all__sidebar">
+        <div class="blog-all__card">
+          <h2 class="general-title general-title--start">
+            Buscar
+            <span></span>
+          </h2>
+          <div class="blog-all__form">
+            <form style="display: contents;" role="search" method="get" class="search-form" action="<?php echo home_url('/'); ?>">
+              <input type="search" class="search-field" placeholder="Buscar" value="<?php echo get_search_query() ?>" name="s" title="<?php echo esc_attr_x('Search for:', 'label') ?>" />
+
+              <input type="submit" value="" placeholder="" style="width: auto; background-image: url(<?php echo get_template_directory_uri(); ?>/assets/img/blog/search.png); background-repeat: no-repeat;background-position: right;background-size: contain;" />
+            </form>
+            <!-- <a href="">
+              <img src="<?php echo get_template_directory_uri(); ?>/assets/img/blog/search.png">
+            </a> -->
+          </div>
         </div>
-    </div>
-	</section>
-  <?php if (have_posts()) : the_post(); ?>
+        <div class="blog-all__card">
+          <h2 class="general-title general-title--start">
+            Categorías
+            <span></span>
+          </h2>
+          <ul>
 
-    <section class="ftco-section" id="products">
-		<div class="container-fluid px-md-4">
-			<div class="row justify-content-center pb-5">
-				<div class="col-md-7 heading-section text-center ftco-animate">
-					<h2>Búsqueda:  <span><?php the_search_query(); ?></span></h2>
-				</div>
-			</div>
-			<div class="row justify-content-center ">
-      <?php while (have_posts()) : the_post(); ?>
-    <div class="col-md-3 ftco-animate">
-					<div class="work products-img mb-4 img d-flex align-items-end"
-						style="background-image: url(<?php echo get_the_post_thumbnail_url(); ?>);">
-						<a href="<?php the_permalink(); ?>" class="icon image-popup d-flex justify-content-center align-items-center">
-							<span class="fa fa-plus"></span>
-						</a>
-						<div class="desc w-100 px-4">
-							<div class="text w-100 mb-3">
-								<span><?php the_category(); ?></span>
-								<h2><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
-							</div>
+            <?php
+            $cat_argtos = array(
+              'orderby' => 'name',
+              'order' => 'ASC'
+            );
+            $categorias = get_categories($cat_argtos);
+            foreach ($categorias as $categoria) {
+              $args = array(
+                'showposts' => -1,
+                'category__in' => array($categoria->term_id),
+                'caller_get_posts' => 0
+              );
+              $entradas = get_posts($args);
+              if ($entradas) {
+                echo '<li> <a class="general-description" href="' . get_category_link($categoria->term_id) . '" title="' . sprintf(__("Mostrar todas entradas en %s"), $categoria->name) . '" ' . '>' . $categoria->name . '</a> </li>';
+              }
+            }
+            ?>
 
-						</div>
-					</div>
-				</div>
-				<?php endwhile ?>
+          </ul>
+        </div>
+        <div class="blog-all__card">
+          <h2 class="general-title general-title--start">
+            Post recientes
+            <span></span>
+          </h2>
+          <?php $args = array('post_type' => 'post', 'posts_per_page' => 6); ?>
+          <?php $loop = new WP_Query($args); ?>
+          <?php while ($loop->have_posts()) : $loop->the_post(); ?>
+            <div class="blog-all__recent">
+              <img style="width: 67px;height: 67px;object-fit: cover;" src="<?php echo get_the_post_thumbnail_url(); ?>">
+              <div class="blog-all__text">
+                <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
+                <p>
+                  <img src="<?php echo get_template_directory_uri(); ?>/assets/img/blog/icon.png"><?php the_date(); ?>
+                </p>
+              </div>
+            </div>
+          <?php endwhile ?>
 
-			</div>
-		</div>
-	</section>
-  <?php else : ?>
-    <div style="width: 100%; height: 100vh; display: flex; justify-content: center; align-items: center;" >
-      <div style="text-align: center;">
-        <h1 style="color: #535a61; font-size: 70px;">No hay envases en esta categoría</h1><br>
-        <p class="row ftco-animate justify-content-center pb-5 pt-5"><a href="<?php bloginfo('url'); ?>/index.php/envases"" class="btn btn-primary mr-md-4 py-3 px-4">Ver envases</a></p>
+        </div>
+      </div>
+      <div class="blog-all__content">
+        <?php
+        // Check if there are any posts to display
+        if (have_posts()) : ?>
+          <?php while (have_posts()) : the_post(); ?>
+            <div class="about-blog__item">
+              <a class="about-blog__img" href="<?php the_permalink(); ?>">
+                <img src="<?php echo get_the_post_thumbnail_url(); ?>">
+              </a>
+              <div class="about-blog__body">
+                <a class="about-blog__title" href="<?php the_permalink(); ?>">
+                  <?php the_title(); ?>
+                </a>
+                <p class="general-description">
+                  <?php the_excerpt(30); ?>
+                </p>
+                <div class="about-blog__meta">
+                  <a href="">
+                    <img src="<?php echo get_template_directory_uri(); ?>/assets/img/nuestra-empresa/user.png">
+                    <?php the_author(); ?>
+                  </a>
+                  <a href="">
+                    <img src="<?php echo get_template_directory_uri(); ?>/assets/img/nuestra-empresa/heart.png">
+                    Lorem
+                  </a>
+                  <a href="">
+                    <img src="<?php echo get_template_directory_uri(); ?>/assets/img/nuestra-empresa/chat.png">
+                    <?php $numero_de_comentarios = get_comments_number();
+                    echo $numero_de_comentarios; ?>
+                  </a>
+                </div>
+              </div>
+            </div>
+          <?php endwhile;
+        else : ?>
+          <section class="error-404">
+            <div class=" padding-right-left">
+              <h2 class="error-404__title">
+                LO SENTIMOS
+              </h2>
+              <h2 class="error-404__subtitle">
+                no podemos encontrar la categoría que estás buscando
+              </h2>
+              <div class="blog-all__card">
+                <h2 class="general-title general-title--start">
+                  Buscar
+                  <span></span>
+                </h2>
+                <div class="blog-all__form">
+                  <form style="display: contents;" role="search" method="get" class="search-form" action="<?php echo home_url('/'); ?>">
+                    <input type="search" class="search-field" placeholder="Buscar" value="<?php echo get_search_query() ?>" name="s" title="<?php echo esc_attr_x('Search for:', 'label') ?>" />
+
+                    <input type="submit" value="" placeholder="" style="width: auto; background-image: url(<?php echo get_template_directory_uri(); ?>/assets/img/blog/search.png); background-repeat: no-repeat;background-position: right;background-size: contain;" />
+                  </form>
+                  <!-- <a href="">
+              <img src="<?php echo get_template_directory_uri(); ?>/assets/img/blog/search.png">
+            </a> -->
+                </div>
+              </div>
+            </div>
+          </section>
+
+
+        <?php endif; ?>
       </div>
     </div>
-	<?php endif; ?>
+  </div>
+</section>
+
+
 
 <?php get_footer(); ?>
