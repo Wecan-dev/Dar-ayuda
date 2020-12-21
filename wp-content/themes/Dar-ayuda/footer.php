@@ -15,37 +15,53 @@
         </h2>
         <ul class="site-map">
           <li>
-            <a href="">
+            <a href="<?php echo bloginfo('url'); ?>">
               Inicio
             </a>
           </li>
           <li>
-            <a href="nuestra-empresa.html">
+            <a href="<?php echo bloginfo('url') . '/index.php/nuestra-empresa'; ?>">
               Nuestra empresa
             </a>
           </li>
-          <li>
-            <a href="">
+          <li class=" dropdown">
+            <a aria-expanded="false" aria-haspopup="true" class="dropdown-toggle" data-toggle="dropdown" href="#" id="navbarDropdown" role="button">
               Portafolio
             </a>
+            <div aria-labelledby="navbarDropdown" class="dropdown-menu" style="background: #f8f8f8;">
+              <?php $args = array('post_type' => 'portafolio', 'order' => 'ASC', 'posts_per_page' => -1); ?>
+              <?php $loop = new WP_Query($args); ?>
+              <?php while ($loop->have_posts()) : $loop->the_post(); ?>
+                <a class="dropdown-item" href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
+                <?php wp_reset_postdata(); ?>
+              <?php endwhile; ?>
+            </div>
           </li>
-          <li>
-            <a href="">
+          <li class=" dropdown">
+            <a aria-expanded="false" aria-haspopup="true" class="dropdown-toggle" data-toggle="dropdown" href="#" id="navbarDropdown" role="button">
               De su interés
             </a>
+            <div aria-labelledby="navbarDropdown" class="dropdown-menu" style="background: #f8f8f8;">
+              <?php $args = array('post_type' => 'De_su_interes', 'order' => 'ASC', 'posts_per_page' => -1); ?>
+              <?php $loop = new WP_Query($args); ?>
+              <?php while ($loop->have_posts()) : $loop->the_post(); ?>
+                <a class="dropdown-item" href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
+                <?php wp_reset_postdata(); ?>
+              <?php endwhile; ?>
+            </div>
           </li>
           <li>
-            <a href="buscador-de-empleo.html">
+            <a href="<?php echo bloginfo('url') . '/index.php/buscador-de-empleo'; ?>">
               Buscador de empleo
             </a>
           </li>
           <li>
-            <a href="">
+            <a href="<?php echo bloginfo('url') . '/index.php/blog'; ?>">
               Blog
             </a>
           </li>
           <li>
-            <a href="contacto.html">
+            <a href="<?php echo bloginfo('url') . '/index.php/contacto'; ?>">
               Contacto
             </a>
           </li>

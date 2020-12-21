@@ -28,7 +28,7 @@
           <div class="blog-all__form">
           <form style="display: contents;" role="search" method="get" class="search-form" action="<?php echo home_url( '/' ); ?>">
             <input type="search" class="search-field" placeholder="Buscar" value="<?php echo get_search_query() ?>" name="s" title="<?php echo esc_attr_x( 'Search for:', 'label' ) ?>" />
-            <input type="hidden" name="post_type" value="post" />
+            <input type="hidden" name="page" value="post" />
 
             <input type="submit" value="" placeholder="" style="width: auto; background-image: url(<?php echo get_template_directory_uri(); ?>/assets/img/blog/search.png); background-repeat: no-repeat;background-position: right;background-size: contain;" />
           </form>            
@@ -80,7 +80,7 @@
           <?php $loop = new WP_Query($args); ?>
           <?php while ($loop->have_posts()) : $loop->the_post(); ?>
             <div class="blog-all__recent">
-              <img style="width: 67px;height: 67px;object-fit: cover;" src="<?php echo get_the_post_thumbnail_url(); ?>">
+              <img style="width: 67px;height: 67px;object-fit: cover;" src="<?php echo get_the_post_thumbnail_url(); ?><?php echo get_the_post_thumbnail_url(); ?>">
               <div class="blog-all__text">
                 <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
                 <p>

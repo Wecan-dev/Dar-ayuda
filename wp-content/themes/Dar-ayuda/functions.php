@@ -140,13 +140,36 @@ add_action( 'init', 'exlcuir_mi_custom_type', 99 );
 function exlcuir_mi_custom_type1() {
 	global $wp_post_types;
 
+	if ( post_type_exists( 'page' ) ) {
+
+		$wp_post_types['page']->exclude_from_search = true;
+	}
+	
+}
+add_action( 'init', 'exlcuir_mi_custom_type1', 99 );
+ 
+function exlcuir_mi_custom_type2() {
+	global $wp_post_types;
+
 	if ( post_type_exists( 'de_su_interes' ) ) {
 
 		$wp_post_types['de_su_interes']->exclude_from_search = true;
 	}
 	
 }
-add_action( 'init', 'exlcuir_mi_custom_type1', 99 );
+add_action( 'init', 'exlcuir_mi_custom_type2', 99 );
+ 
+function exlcuir_mi_custom_type3() {
+	global $wp_post_types;
+
+	if ( post_type_exists( 'empleos' ) ) {
+
+		$wp_post_types['empleos']->exclude_from_search = true;
+	}
+	
+}
+add_action( 'init', 'exlcuir_mi_custom_type3', 99 );
+
 add_action( 'pre_get_posts', 'dcms_exclude_specific_pages' );
 function dcms_exclude_specific_pages($query)
 {
