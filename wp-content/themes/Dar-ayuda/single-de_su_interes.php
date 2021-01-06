@@ -1,13 +1,7 @@
 <?php get_header(); ?>
 <section class="banner-small">
-  <div class="main-banner__rrss">
-    <a href="" target="_blank">
-      <img src="<?php echo get_template_directory_uri(); ?>/assets/img/fb_2.png">
-    </a>
-    <a href="" target="_blank">
-      <img src="<?php echo get_template_directory_uri(); ?>/assets/img/ig_2.png">
-    </a>
-  </div>
+<?php get_template_part('partials/rr-ss'); ?>
+
   <?php if (have_rows('banner')) : ?>
     <?php while (have_rows('banner')) : the_row(); ?>
       <?php if (get_sub_field('imagen_banner')) : ?>

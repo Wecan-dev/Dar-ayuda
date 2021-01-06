@@ -1,27 +1,21 @@
 <?php get_header(); ?>
 
 <section class="banner-small">
-    <div class="main-banner__rrss">
-        <a href="" target="_blank">
-            <img src="<?php echo get_template_directory_uri(); ?>/assets/img/fb_2.png">
-        </a>
-        <a href="" target="_blank">
-            <img src="<?php echo get_template_directory_uri(); ?>/assets/img/ig_2.png">
-        </a>
-    </div>
+<?php get_template_part('partials/rr-ss'); ?>
+
     <?php if (have_rows('banner')) : ?>
         <?php while (have_rows('banner')) : the_row(); ?>
             <?php if (get_sub_field('imagen_banner')) : ?>
                 <img class="banner-small__img" src="<?php the_sub_field('imagen_banner'); ?>" />
             <?php endif ?>
 
-    <div class="banner-small__text">
-        <h2 class="banner-small__title">
-            <?php the_sub_field('texto_del_banner'); ?>
-        </h2>
-    </div>
-    
-    <?php endwhile; ?>
+            <div class="banner-small__text">
+                <h2 class="banner-small__title">
+                    <?php the_sub_field('texto_del_banner'); ?>
+                </h2>
+            </div>
+
+        <?php endwhile; ?>
     <?php endif; ?>
 </section>
 <section class="portfolio-general">
@@ -60,12 +54,12 @@
                 <?php if (have_rows('informacion')) : ?>
                     <img class="portfolio-general__img" src="<?php echo get_the_post_thumbnail_url(); ?>)">
                     <?php while (have_rows('informacion')) : the_row(); ?>
-                    <?php if (get_sub_field('titulo')) : ?>
-                        <h2 class="general-title general-title--start">
-                            <?php the_sub_field('titulo'); ?>
-                            <span></span>
-                        </h2>
-                    <?php endif; ?>
+                        <?php if (get_sub_field('titulo')) : ?>
+                            <h2 class="general-title general-title--start">
+                                <?php the_sub_field('titulo'); ?>
+                                <span></span>
+                            </h2>
+                        <?php endif; ?>
                         <?php if (have_rows('texto_informativo')) : ?>
                             <?php while (have_rows('texto_informativo')) : the_row(); ?>
                                 <?php if (have_rows('parrafos')) : ?>

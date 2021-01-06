@@ -74,7 +74,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link nav-link-p" data="offcanvas" href="<?php echo bloginfo('url') . '/nuestra-empresa'; ?>">
+            <a class="nav-link nav-link-p" data="offcanvas" href="<?php echo bloginfo('url') . '/index.php/nuestra-empresa'; ?>">
               Nuestra empresa
             </a>
           </li>
@@ -105,17 +105,17 @@
             </div>
           </li>
           <li class="nav-item">
-            <a class="nav-link nav-link-p" data="offcanvas" href="<?php echo bloginfo('url') . '/buscador-de-empleo'; ?>" role="button">
+            <a class="nav-link nav-link-p" data="offcanvas" href="<?php echo bloginfo('url') . '/index.php/buscador-de-empleo'; ?>" role="button">
               Buscador de empleo
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link nav-link-p" data="offcanvas" href="<?php echo bloginfo('url') . '/blog'; ?>" role="button">
+            <a class="nav-link nav-link-p" data="offcanvas" href="<?php echo bloginfo('url') . '/index.php/blog'; ?>" role="button">
               Blog
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link nav-link-p" data="offcanvas" href="<?php echo bloginfo('url') . '/contacto'; ?>">
+            <a class="nav-link nav-link-p" data="offcanvas" href="<?php echo bloginfo('url') . '/index.php/contacto'; ?>">
               Contacto
             </a>
           </li>

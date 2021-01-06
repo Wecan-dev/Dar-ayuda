@@ -1,14 +1,8 @@
 <?php get_header(); ?>
 
 <section class="banner-small">
-  <div class="main-banner__rrss">
-    <a href="" target="_blank">
-      <img src="<?php echo get_template_directory_uri(); ?>/assets/img/fb_2.png">
-    </a>
-    <a href="" target="_blank">
-      <img src="<?php echo get_template_directory_uri(); ?>/assets/img/ig_2.png">
-    </a>
-  </div>
+<?php get_template_part('partials/rr-ss'); ?>
+
   <img class="banner-small__img" src="<?php echo get_template_directory_uri(); ?>/assets/img/blog/image.png">
   <div class="banner-small__text">
     <h2 class="banner-small__title">
@@ -26,12 +20,12 @@
             <span></span>
           </h2>
           <div class="blog-all__form">
-          <form style="display: contents;" role="search" method="get" class="search-form" action="<?php echo home_url( '/' ); ?>">
-            <input type="search" class="search-field" placeholder="Buscar" value="<?php echo get_search_query() ?>" name="s" title="<?php echo esc_attr_x( 'Search for:', 'label' ) ?>" />
-            <input type="hidden" name="page" value="post" />
+            <form style="display: contents;" role="search" method="get" class="search-form" action="<?php echo home_url('/'); ?>">
+              <input type="search" class="search-field" placeholder="Buscar" value="<?php echo get_search_query() ?>" name="s" title="<?php echo esc_attr_x('Search for:', 'label') ?>" />
+              <input type="hidden" name="page" value="post" />
 
-            <input type="submit" value="" placeholder="" style="width: auto; background-image: url(<?php echo get_template_directory_uri(); ?>/assets/img/blog/search.png); background-repeat: no-repeat;background-position: right;background-size: contain;" />
-          </form>            
+              <input type="submit" value="" placeholder="" style="width: auto; background-image: url(<?php echo get_template_directory_uri(); ?>/assets/img/blog/search.png); background-repeat: no-repeat;background-position: right;background-size: contain;" />
+            </form>
 
           </div>
         </div>
@@ -80,7 +74,7 @@
           <?php $loop = new WP_Query($args); ?>
           <?php while ($loop->have_posts()) : $loop->the_post(); ?>
             <div class="blog-all__recent">
-              <img style="width: 67px;height: 67px;object-fit: cover;" src="<?php echo get_the_post_thumbnail_url(); ?><?php echo get_the_post_thumbnail_url(); ?>">
+              <img style="width: 67px;height: 67px;object-fit: cover;" src="<?php echo get_the_post_thumbnail_url(); ?>">
               <div class="blog-all__text">
                 <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
                 <p>
@@ -88,42 +82,43 @@
                 </p>
               </div>
             </div>
+            <?php wp_reset_postdata(); ?>
           <?php endwhile ?>
 
         </div>
       </div>
       <div class="blog-all__content">
-      <?php $args = array('post_type' => 'post', 'posts_per_page' => -1); ?>
-          <?php $loop = new WP_Query($args); ?>
-          <?php while ($loop->have_posts()) : $loop->the_post(); ?>
-        <div class="about-blog__item">
-          <a class="about-blog__img" href="<?php the_permalink(); ?>">
-            <img src="<?php echo get_the_post_thumbnail_url(); ?>">
-          </a>
-          <div class="about-blog__body">
-            <a class="about-blog__title" href="<?php the_permalink(); ?>">
-            <?php the_title(); ?>
+        <?php $args = array('post_type' => 'post', 'posts_per_page' => -1); ?>
+        <?php $loop = new WP_Query($args); ?>
+        <?php while ($loop->have_posts()) : $loop->the_post(); ?>
+          <div class="about-blog__item">
+            <a class="about-blog__img" href="<?php the_permalink(); ?>">
+              <img src="<?php echo get_the_post_thumbnail_url(); ?>">
             </a>
-            <p class="general-description">
-              <?php the_excerpt(30); ?>            
-            </p>
-            <div class="about-blog__meta">
-              <a href="">
-                <img src="<?php echo get_template_directory_uri(); ?>/assets/img/nuestra-empresa/user.png">
-                <?php the_author(); ?>
+            <div class="about-blog__body">
+              <a class="about-blog__title" href="<?php the_permalink(); ?>">
+                <?php the_title(); ?>
               </a>
-              <a href="">
-                <img src="<?php echo get_template_directory_uri(); ?>/assets/img/nuestra-empresa/heart.png">
-                Lorem
-              </a>
-              <a href="">
-                <img src="<?php echo get_template_directory_uri(); ?>/assets/img/nuestra-empresa/chat.png">
-                <?php $numero_de_comentarios = get_comments_number();
+              <p class="general-description">
+                <?php the_excerpt(30); ?>
+              </p>
+              <div class="about-blog__meta">
+                <a href="<?php the_permalink(); ?>">
+                  <img src="<?php echo get_template_directory_uri(); ?>/assets/img/nuestra-empresa/user.png">
+                  <?php the_author(); ?>
+                </a>
+                <a href="<?php the_permalink(); ?>">
+                  <img src="<?php echo get_template_directory_uri(); ?>/assets/img/nuestra-empresa/heart.png">
+                  Lorem
+                </a>
+                <a href="<?php the_permalink(); ?>">
+                  <img src="<?php echo get_template_directory_uri(); ?>/assets/img/nuestra-empresa/chat.png">
+                  <?php $numero_de_comentarios = get_comments_number();
                   echo $numero_de_comentarios; ?>
-              </a>
+                </a>
+              </div>
             </div>
           </div>
-        </div>
         <?php endwhile ?>
       </div>
     </div>

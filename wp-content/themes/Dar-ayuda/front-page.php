@@ -1,14 +1,8 @@
 <?php get_header(); ?>
 <!-- Banner-->
 <section class="main-banner">
-    <div class="main-banner__rrss">
-        <a href="" target="_blank">
-            <img src="<?php echo get_template_directory_uri(); ?>/assets/img/fb_2.png">
-        </a>
-        <a href="" target="_blank">
-            <img src="<?php echo get_template_directory_uri(); ?>/assets/img/ig_2.png">
-        </a>
-    </div>
+<?php get_template_part('partials/rr-ss'); ?>
+
     <div class="main-banner__content">
         <?php if (have_rows('banner')) : ?>
             <?php while (have_rows('banner')) : the_row(); ?>
@@ -108,48 +102,8 @@
     </div>
 </section>
 
-<!-- Register-->
-<section class="main-register">
-    <div class="container-grid">
-        <div class="main-register__img">
-            <img src="<?php echo get_template_directory_uri(); ?>/assets/img/image_2.png">
-        </div>
-        <div class="main-register__text">
-            <img class="main-register__dotted" src="<?php echo get_template_directory_uri(); ?>/assets/img/dotted-box_3.png">
-            <img class="main-register__dotted main-register__dotted--bottom" src="<?php echo get_template_directory_uri(); ?>/assets/img/dotted-box_3.png">
-            <h2 class="main-register__title">
-                Ingresa tu
-                <br>
-                <span>
-                    hoja de vida
-                </span>
-            </h2>
-            <form>
-                <?php echo FrmFormsController::get_form_shortcode(array('id' => 1, 'title' => false, 'description' => false)); ?>
-                <!--     <label>
-                    Nombre*
-                    <input type="text">
-                </label>
-                <label>
-                    Apellido*
-                    <input type="text">
-                </label>
-                <label>
-                    Correo*
-                    <input type="text">
-                </label>
-                <label>
-                    Puesto de trabajo deseado*
-                    <input type="text">
-                </label>
-                <label>
-                    Adjuntar hoja de vida (pdf)*
-                    <input type="file">
-                </label> -->
-            </form>
-        </div>
-    </div>
-</section>
+<?php get_template_part('partials/hoja-de-vida'); ?>
+
 
 <!-- Search-->
 <section class="main-search">

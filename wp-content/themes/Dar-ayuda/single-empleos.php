@@ -1,13 +1,7 @@
 <?php get_header(); ?>
 <section class="banner-small">
-    <div class="main-banner__rrss">
-        <a href="" target="_blank">
-            <img src="<?php echo get_template_directory_uri(); ?>/assets/img/fb_2.png">
-        </a>
-        <a href="" target="_blank">
-            <img src="<?php echo get_template_directory_uri(); ?>/assets/img/ig_2.png">
-        </a>
-    </div>
+<?php get_template_part('partials/rr-ss'); ?>
+
     <img class="banner-small__img" src="<?php echo get_template_directory_uri(); ?>/assets/img/buscador/image.png">
     <div class="banner-small__text">
         <h2 class="banner-small__title">
@@ -97,52 +91,12 @@
                 </div>
                 <div class="container" style="margin-top: 2rem;">
                     <div id="demo" class="collapse">
-                    <?php echo do_shortcode(   get_field( 'formulario' ) ); ?>
-
+                    <?php echo FrmFormsController::get_form_shortcode( array( 'id' => 5, 'title' => false, 'description' => false ) ); ?>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </section>
-<section class="main-register">
-    <div class="container-grid">
-        <div class="main-register__img">
-            <img src="<?php echo get_template_directory_uri(); ?>/assets/img/image_2.png">
-        </div>
-        <div class="main-register__text">
-            <img class="main-register__dotted" src="<?php echo get_template_directory_uri(); ?>/assets/img/dotted-box_3.png">
-            <img class="main-register__dotted main-register__dotted--bottom" src="<?php echo get_template_directory_uri(); ?>/assets/img/dotted-box_3.png">
-            <h2 class="main-register__title">
-                Ingresa tu
-                <br>
-                <span>
-                    hoja de vida
-                </span>
-            </h2>
-            <?php echo FrmFormsController::get_form_shortcode(array('id' => 1, 'title' => false, 'description' => false)); ?>
-    <!--         <form>
-                <label>
-                    Nombre*
-                    <input type="text">
-                </label>
-                <label>
-                    Apellido*
-                    <input type="text">
-                </label>
-                <label>
-                    Correo*
-                    <input type="text">
-                </label>
-                <label>
-                    Puesto de trabajo deseado*
-                    <input type="text">
-                </label>
-                <label>
-                    Adjuntar hoja de vida (pdf)*
-                    <input type="file">
-                </label>
-            </form> -->
-        </div>
-    </div>
-</section><?php get_footer(); ?>
+<?php get_template_part('partials/hoja-de-vida'); ?>
+<?php get_footer(); ?>

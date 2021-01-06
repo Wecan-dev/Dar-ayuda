@@ -1,14 +1,16 @@
 <?php get_header(); ?>
+<?php
+$direction = get_theme_mod('contacto_direction');
+$phone = get_theme_mod('contacto_phone');
+$email = get_theme_mod('contacto_email');
+
+$facebook = get_theme_mod('Redes_sociales_FB');
+$instagram = get_theme_mod('Redes_sociales_IG');
+?>
 
 <section class="banner-small">
-    <div class="main-banner__rrss">
-        <a href="" target="_blank">
-            <img src="<?php echo get_template_directory_uri(); ?>/assets/img/fb_2.png">
-        </a>
-        <a href="" target="_blank">
-            <img src="<?php echo get_template_directory_uri(); ?>/assets/img/ig_2.png">
-        </a>
-    </div>
+<?php get_template_part('partials/rr-ss'); ?>
+
     <img class="banner-small__img" src="<?php echo get_template_directory_uri(); ?>/assets/img/contacto/image.png">
     <div class="banner-small__text">
         <h2 class="banner-small__title">
@@ -26,28 +28,8 @@
                     Escríbenos
                     <span></span>
                 </h2>
-                <?php echo FrmFormsController::get_form_shortcode( array( 'id' => 3, 'title' => false, 'description' => false ) ); ?>
-                <!-- <form>
-                    <label>
-                        Nombre*
-                        <input type="text">
-                    </label>
-                    <label>
-                        Correo*
-                        <input type="text">
-                    </label>
-                    <label>
-                        Teléfono*
-                        <input type="text">
-                    </label>
-                    <label>
-                        Mensaje
-                        <textarea></textarea>
-                    </label>
-                    <div class="d-flex justify-content-center">
-                        <a class="general-btn__green" href="">Enviar</a>
-                    </div>
-                </form> -->
+                <?php echo FrmFormsController::get_form_shortcode(array('id' => 3, 'title' => false, 'description' => false)); ?>
+
             </div>
             <div class="contact-info__rrss">
                 <h2 class="general-title general-title--start">
@@ -57,37 +39,37 @@
                 <ul class="contact-info__list">
                     <li>
                         <img src="<?php echo get_template_directory_uri(); ?>/assets/img/place.png">
-                        <a href="">
+                        <a href="#">
                             <span>
                                 Dirección
                             </span>
-                            Carrera 67 # 78-157
+                            <?php echo $direction; ?>
                         </a>
                     </li>
                     <li>
                         <img src="<?php echo get_template_directory_uri(); ?>/assets/img/phone-call.png">
-                        <a href="">
+                        <a href="tel:<?php echo $phone; ?>">
                             <span>
                                 Teléfono
                             </span>
-                            57 (4) 444 56 78
+                            <?php echo $phone; ?>
                         </a>
                     </li>
                     <li>
                         <img src="<?php echo get_template_directory_uri(); ?>/assets/img/envelope.png">
-                        <a href="">
+                        <a href="mailto:<?php echo $email; ?>">
                             <span>
                                 Correo
                             </span>
-                            info@darayuda.com
+                            <?php echo $email; ?>
                         </a>
                     </li>
                 </ul>
                 <div class="main-footer__rrss">
-                    <a class="rrss__item" href="" target="_blank">
+                    <a class="rrss__item" href="<?php echo $facebook; ?>" target="_blank">
                         <img src="<?php echo get_template_directory_uri(); ?>/assets/img/fb.png">
                     </a>
-                    <a class="rrss__item" href="" target="_blank">
+                    <a class="rrss__item" href="<?php echo $instagram; ?>" target="_blank">
                         <img src="<?php echo get_template_directory_uri(); ?>/assets/img/instagram.png">
                     </a>
                 </div>

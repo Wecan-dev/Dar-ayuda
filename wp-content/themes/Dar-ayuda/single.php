@@ -1,14 +1,8 @@
 <?php get_header(); ?>
 
 <section class="banner-small">
-  <div class="main-banner__rrss">
-    <a href="" target="_blank">
-      <img src="<?php echo get_template_directory_uri(); ?>/assets/img/fb_2.png">
-    </a>
-    <a href="" target="_blank">
-      <img src="<?php echo get_template_directory_uri(); ?>/assets/img/ig_2.png">
-    </a>
-  </div>
+<?php get_template_part('partials/rr-ss'); ?>
+
   <img class="banner-small__img" src="<?php echo get_template_directory_uri(); ?>/assets/img/blog/image.png">
   <div class="banner-small__text">
     <h2 class="banner-small__title">
@@ -26,12 +20,12 @@
             <span></span>
           </h2>
           <div class="blog-all__form">
-          <form style="display: contents;" role="search" method="get" class="search-form" action="<?php echo home_url( '/' ); ?>">
-            <input type="search" class="search-field" placeholder="Buscar" value="<?php echo get_search_query() ?>" name="s" title="<?php echo esc_attr_x( 'Search for:', 'label' ) ?>" />
-            <input type="hidden" name="post" value="post" />
+            <form style="display: contents;" role="search" method="get" class="search-form" action="<?php echo home_url('/'); ?>">
+              <input type="search" class="search-field" placeholder="Buscar" value="<?php echo get_search_query() ?>" name="s" title="<?php echo esc_attr_x('Search for:', 'label') ?>" />
+              <input type="hidden" name="post" value="post" />
 
-            <input type="submit" value="" placeholder="" style="width: auto; background-image: url(<?php echo get_template_directory_uri(); ?>/assets/img/blog/search.png); background-repeat: no-repeat;background-position: right;background-size: contain;" />
-          </form>            
+              <input type="submit" value="" placeholder="" style="width: auto; background-image: url(<?php echo get_template_directory_uri(); ?>/assets/img/blog/search.png); background-repeat: no-repeat;background-position: right;background-size: contain;" />
+            </form>
 
           </div>
         </div>
@@ -41,8 +35,8 @@
             <span></span>
           </h2>
           <p class="general-description">
-            <?php the_excerpt(30);?>
-            </p>
+            <?php the_excerpt(30); ?>
+          </p>
         </div>
         <div class="blog-all__card">
           <h2 class="general-title general-title--start">
@@ -89,26 +83,30 @@
                 </p>
               </div>
             </div>
+            <?php wp_reset_postdata(); ?>
           <?php endwhile ?>
 
         </div>
       </div>
       <div class="blog-all__content">
-          <div class="about-blog__item about-blog__item--single">
-            <a class="about-blog__img">
-                <img src="<?php echo get_the_post_thumbnail_url(); ?>">
-            </a>
-            <div class="about-blog__body">
-              <h2 class="about-blog__title">
+        <div class="about-blog__item about-blog__item--single">
+          <a class="about-blog__img">
+            <img src="<?php echo get_the_post_thumbnail_url(); ?>">
+          </a>
+          <div class="about-blog__body">
+            <h2 class="about-blog__title">
               <?php the_title(); ?>
-              </h2>
-              <p class="general-description">
-              <?php the_content(); ?>                
+            </h2>
+            <p class="general-description">
+              <?php the_content(); ?>
             </p>
-              
-            </div>
           </div>
         </div>
+        <?php  
+        if ( comments_open() || get_comments_number() ) :
+					comments_template();
+				endif;?>
+      </div>
     </div>
   </div>
 </section>

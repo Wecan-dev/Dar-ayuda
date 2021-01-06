@@ -5,16 +5,13 @@
  */
 
 get_header(); ?>
-
+     <?php
+          $facebook = get_theme_mod('Redes_sociales_FB');
+          $instagram = get_theme_mod('Redes_sociales_IG');
+      ?>
 <section class="banner-small">
-  <div class="main-banner__rrss">
-    <a href="" target="_blank">
-      <img src="<?php echo get_template_directory_uri(); ?>/assets/img/fb_2.png">
-    </a>
-    <a href="" target="_blank">
-      <img src="<?php echo get_template_directory_uri(); ?>/assets/img/ig_2.png">
-    </a>
-  </div>
+<?php get_template_part('partials/rr-ss'); ?>
+
   <img class="banner-small__img" src="<?php echo get_template_directory_uri(); ?>/assets/img/blog/image.png">
   <div class="banner-small__text">
     <h2 class="banner-small__title">
@@ -107,15 +104,15 @@ get_header(); ?>
                   <?php the_excerpt(30); ?>
                 </p>
                 <div class="about-blog__meta">
-                  <a href="">
+                  <a href="<?php the_permalink(); ?>">
                     <img src="<?php echo get_template_directory_uri(); ?>/assets/img/nuestra-empresa/user.png">
                     <?php the_author(); ?>
                   </a>
-                  <a href="">
+                  <a href="<?php the_permalink(); ?>">
                     <img src="<?php echo get_template_directory_uri(); ?>/assets/img/nuestra-empresa/heart.png">
                     Lorem
                   </a>
-                  <a href="">
+                  <a href="<?php the_permalink(); ?>">
                     <img src="<?php echo get_template_directory_uri(); ?>/assets/img/nuestra-empresa/chat.png">
                     <?php $numero_de_comentarios = get_comments_number();
                     echo $numero_de_comentarios; ?>
@@ -133,21 +130,7 @@ get_header(); ?>
               <h2 class="error-404__subtitle">
                 no podemos encontrar la categoría que estás buscando
               </h2>
-              <div class="blog-all__card">
-                <h2 class="general-title general-title--start">
-                  Buscar
-                  <span></span>
-                </h2>
-                <div class="blog-all__form">
-                  <form style="display: contents;" role="search" method="get" class="search-form" action="<?php echo home_url('/'); ?>">
-                    <input type="search" class="search-field" placeholder="Buscar" value="<?php echo get_search_query() ?>" name="s" title="<?php echo esc_attr_x('Search for:', 'label') ?>" />
-                    <input type="hidden" name="post" value="post" />
-
-                    <input type="submit" value="" placeholder="" style="width: auto; background-image: url(<?php echo get_template_directory_uri(); ?>/assets/img/blog/search.png); background-repeat: no-repeat;background-position: right;background-size: contain;" />
-                  </form>
-
-                </div>
-              </div>
+        
             </div>
           </section>
 

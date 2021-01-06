@@ -1,14 +1,8 @@
   <?php get_header(); ?>
     <!-- Banner-->
   <section class="banner-small">
-    <div class="main-banner__rrss">
-      <a href="" target="_blank">
-        <img src="<?php echo get_template_directory_uri(); ?>/assets/img/fb_2.png">
-      </a>
-      <a href="" target="_blank">
-        <img src="<?php echo get_template_directory_uri(); ?>/assets/img/ig_2.png">
-      </a>
-    </div>
+  <?php get_template_part('partials/rr-ss'); ?>
+
     <?php if (have_rows('banner')) : ?>
       <?php while (have_rows('banner')) : the_row(); ?>
         <?php if (get_sub_field('img_banner')) : ?>
@@ -210,15 +204,15 @@
                         <?php the_excerpt(30); ?>
                       </p>
                       <div class="about-blog__meta">
-                        <a href="">
+                        <a href="<?php the_permalink(); ?>">
                           <img src="<?php echo get_template_directory_uri(); ?>/assets/img/nuestra-empresa/user.png">
                           <?php the_author(); ?>
                         </a>
-                        <a href="">
+                        <a href="<?php the_permalink(); ?>">
                           <img src="<?php echo get_template_directory_uri(); ?>/assets/img/nuestra-empresa/heart.png">
                           Lorem
                         </a>
-                        <a href="">
+                        <a href="<?php the_permalink(); ?>">
                           <img src="<?php echo get_template_directory_uri(); ?>/assets/img/nuestra-empresa/chat.png">
                           <?php $numero_de_comentarios = get_comments_number();
                           echo $numero_de_comentarios; ?>

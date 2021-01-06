@@ -67,27 +67,35 @@
           </li>
         </ul>
       </div>
+      <?php
+          $direction = get_theme_mod('contacto_direction');
+          $phone = get_theme_mod('contacto_phone');
+          $email = get_theme_mod('contacto_email');
+
+          $facebook = get_theme_mod('Redes_sociales_FB');
+          $instagram = get_theme_mod('Redes_sociales_IG');
+      ?>
       <div class="main-footer__item">
         <h2 class="main-footer__title">
           Datos de Contacto
         </h2>
         <ul class="list-contact">
           <li>
-            <a href="">
+            <a href="#">
               <img src="<?php echo get_template_directory_uri(); ?>/assets/img/place.png">
-              Carrera 51b #78-40
+              <?php echo $direction; ?>
             </a>
           </li>
           <li>
-            <a href="mailto:">
+            <a href="mailto:<?php echo $email; ?>">
               <img src="<?php echo get_template_directory_uri(); ?>/assets/img/envelope.png">
-              Email: info@ekored.co
+              Email: <?php echo $email; ?>
             </a>
           </li>
           <li>
-            <a href="tel:5744443569">
+            <a href="tel:<?php echo $phone; ?>">
               <img src="<?php echo get_template_directory_uri(); ?>/assets/img/phone-call.png">
-              Phone: 57 (4) 444 35 69
+              Phone: <?php echo $phone; ?>
             </a>
           </li>
         </ul>
@@ -97,12 +105,12 @@
           Nuestras Redes
         </h2>
         <div class="main-footer__rrss">
-          <a class="rrss__item" href="" target="_blank">
-            <img src="<?php echo get_template_directory_uri(); ?>/assets/img/fb.png">
-          </a>
-          <a class="rrss__item" href="" target="_blank">
-            <img src="<?php echo get_template_directory_uri(); ?>/assets/img/instagram.png">
-          </a>
+            <a class="rrss__item" href="<?php echo $facebook; ?>" target="_blank">
+                <img src="<?php echo get_template_directory_uri(); ?>/assets/img/fb.png">
+            </a>
+            <a class="rrss__item" href="<?php echo $instagram; ?>" target="_blank">
+                <img src="<?php echo get_template_directory_uri(); ?>/assets/img/instagram.png">
+            </a>
         </div>
       </div>
     </div>
