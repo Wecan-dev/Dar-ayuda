@@ -1562,7 +1562,7 @@ button:focus {
   width: 100%;
 }
 
-.main-about .main-about__description {
+.main-about__description {
   font-size: 14px;
   font-weight: normal;
   font-stretch: normal;
@@ -1572,7 +1572,6 @@ button:focus {
   letter-spacing: normal;
   color: #6d7278;
   border-left: 5px solid #00a451;
-  margin-bottom: 48px;
 }
 
 .main-register .container-grid {
@@ -1927,7 +1926,59 @@ font-family: "Poppins", sans-serif!important;
   background-color: #f7f7f7;
   z-index: 0;
 }
+.about-direction__icon {
+display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-bottom: 20px;
+}
+@media (min-width: 576px){
+.about-direction__modal .modal-dialog {
+	max-width: 353px;
+}
+}
+.about-direction__icon img{
+		width: 73px;
+	height: 73px;
+	object-fit: contain;
+}
+.about-direction__title {
+    font-size: 30px;
+    font-weight: 600;
+    font-stretch: normal;
+	margin-bottom: 20px;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    color: #000000;
+    text-align: center;
+}
 
+.about-direction__modal .modal-content {
+	    border-radius: 10px;
+    box-shadow: 0 4px 14px 0 #dee2e6;
+    background-color: #ffffff;
+    padding: 59px 46px;
+	padding-bottom: 30px;
+    display: flex;
+    align-items: center;
+    transition: .3s;
+    justify-content: center;
+    border-bottom: 14px solid #00a451;
+}
+.about-direction__modal .modal-body {
+	width:100%;
+	    padding: 0;
+}
+.about-direction__modal .close  {
+	position: absolute;
+	right: 15px;
+	top: 15px;
+}
+.about-direction__modal .close span {
+	    font-weight: 200;
+    font-size: 29px;
+}
 .about-direction .general-title {
   margin-bottom: 47px;
 }
@@ -3405,6 +3456,7 @@ font-family: "Poppins", sans-serif!important;
 }
 .blog-comment  .comment-meta a{
 	font-size: 14px;
+	    pointer-events: none;
     font-weight: bold;
     color: #00a451;
 display: inline-block;    font-weight: normal;
@@ -3460,7 +3512,9 @@ display: inline-block;    font-weight: normal;
 .blog-general__form {
   position: relative;
 }
-
+.blog-general__form  .comment-form-author,.blog-general__form  .comment-form-email {
+	width: 100%;
+}
 .blog-general__form input::placeholder,
 .blog-general__form textarea::placeholder {
   font-size: 14px;
@@ -3473,7 +3527,7 @@ display: inline-block;    font-weight: normal;
 }
 
 .blog-general__form input {
-  width: 391px;
+  width: 100%;
   margin-bottom: 23px;
 }
 

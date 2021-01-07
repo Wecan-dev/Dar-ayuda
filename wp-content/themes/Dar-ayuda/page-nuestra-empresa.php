@@ -64,7 +64,7 @@
               <?php if (have_rows('mision')) : ?>
                 <?php while (have_rows('mision')) : the_row(); ?>
                   <div class="about-direction__content">
-                    <a class="main-portfolio__item" href="">
+                    <a  data-toggle="modal" data-target="#exampleModal" class="main-portfolio__item" href="">
                       <?php $icon = get_sub_field('icon'); ?>
                       <?php if ($icon) : ?>
                         <div class="main-portfolio__img">
@@ -79,6 +79,36 @@
                     <?php the_sub_field('descripcion'); ?>
                   </p>
                   </div>
+				
+				<!-- Modal -->
+				<div class="modal fade about-direction__modal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+					<div class="modal-dialog modal-dialog-centered">
+						<div class="modal-content">
+							
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							<div class="modal-body">
+								 <?php $icon = get_sub_field('icon'); ?>
+                      <?php if ($icon) : ?>
+                        <div class="about-direction__icon">
+                          <img src="<?php echo esc_url($icon['url']); ?>" alt="<?php echo esc_attr($icon['alt']); ?>" />
+                        </div>
+                        <div class="about-direction__title">
+                          <?php the_sub_field('title_mision'); ?>
+                        </div>
+							<?php endif; ?>	
+								 <p class="general-description general-description--center">
+                    <?php the_sub_field('descripcion'); ?>
+                  </p>
+								<p class="main-about__description" >
+									<?php the_sub_field('descripcion'); ?>
+								</p>
+							</div>
+						
+						</div>
+					</div>
+				</div>
                 <?php endwhile; ?>
               <?php endif; ?>
               <?php if (have_rows('vision')) : ?>
