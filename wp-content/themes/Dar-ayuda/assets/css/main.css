@@ -3239,6 +3239,335 @@ font-family: "Poppins", sans-serif!important;
   padding-right: 108px;
 }
 
+.blog-comment {
+  margin-top: 49px;
+  margin-bottom: 45px;
+}
+
+.logged-in-as a {
+  color: #000;
+  font-size: 15px;
+}
+
+.comment-form-comment {
+  width: 100%;
+}
+
+.blog-comment .blog-comment__reply {
+  position: absolute;
+  right: 0;
+  top: 39px;
+  background-image: url('../img/blog/reply.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+  width: 16px;
+  height: 16px;
+}
+
+.blog-comment .blog-comment__reply img {
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+}
+
+.blog-comment h2 {
+  font-size: 17px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  margin-bottom: 53px;
+  line-height: normal;
+  letter-spacing: normal;
+    color: #00a451;
+}
+
+.blog-comment .blog-comment__autor {
+  font-size: 16px;
+  font-weight: bold;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  color: #000000;
+  text-transform: uppercase;
+  margin-bottom: 28px;
+}
+
+.blog-comment .blog-comment__date {
+  font-size: 14px;
+  font-weight: bold;
+  color: #d0bd9b;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  margin-bottom: 28px;
+}
+
+.blog-comment .blog-comment__description {
+  font-size: 16px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  color: #000000;
+  margin-bottom: 0;
+}
+
+.blog-comment .blog-comment__text {
+  position: relative;
+}
+
+.blog-comment .blog-comment__avatar {
+
+  width: 88px;
+  height: 88px;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
+.blog-comment .blog-comment__avatar img {
+  width: 76px;
+  height: 76px;
+  box-shadow: 0 2px 11px 0 rgba(0, 0, 0, 0.12);
+  background-color: #ffffff;
+  border-radius: 50%;
+  object-fit: contain;
+}
+
+.blog-comment__list {
+  list-style: none;
+  padding-left: 0;
+}
+
+.blog-comment__list li {
+  border-bottom: 1px solid #dee2e6;
+  padding-top: 38px;
+  position: relative;
+  padding-bottom: 11px;
+
+}
+
+.blog-comment__list .children {
+  list-style: none;
+  padding-left: 0;
+}
+
+.blog-comment__list .children li {
+  border: none;
+  margin-top: 17px;
+}
+
+.comment-reply-title a {
+  color: #000;
+  cursor: default;
+  pointer-events: none;
+}
+
+
+
+
+.blog-general__form form {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.blog-general__form h2 {
+  font-size: 18px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+    color: #00a451; 
+  margin-bottom: 23px;
+}
+
+.blog-comment .comment-author {
+	font-size: 16px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    color: #000000;
+    text-transform: uppercase;
+    margin-bottom: 15px;
+}
+.blog-comment .comment-author .says {
+	display: none;
+}
+.blog-comment  .comment-meta .comment-edit-link {
+	display: none;
+}
+.blog-comment  .comment-meta a{
+	font-size: 14px;
+    font-weight: bold;
+    color: #00a451;
+display: inline-block;    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    margin-bottom: 15px;
+}
+.blog-comment .comment-author cite {
+	font-style: normal!important;
+}
+.blog-general__form .general-btn__rose {
+      padding: 11px 50px;
+	width: auto;
+    border-radius: 23.5px;
+    box-shadow: 4px 10px 23px 0 rgba(0, 164, 81, 0.28);
+    background-color: #00a451;
+    font-size: 18px;
+    font-weight: bold;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    color: #ffffff;
+    transition: .3s;
+    display: inline-block;
+}
+
+.blog-general__form .comment-form-author {
+  order: -2;
+}
+
+.blog-general__form .comment-form-email {
+  order: -1;
+}
+
+.blog-general__form input,
+.blog-general__form textarea {
+  font-size: 14px;
+  font-weight: 500;
+  font-stretch: normal;
+  padding: 18px 26px;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  color: #000000;
+	
+	border-radius: 19px;
+    border: solid 1px #dee2e6;
+}
+
+.blog-general__form {
+  position: relative;
+}
+
+.blog-general__form input::placeholder,
+.blog-general__form textarea::placeholder {
+  font-size: 14px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  color: #000000;
+}
+
+.blog-general__form input {
+  width: 391px;
+  margin-bottom: 23px;
+}
+
+@media (min-width: 0px) and (max-width: 767px) {
+  .blog-general__form input {
+    width: 100%;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  .blog-general__form input {
+    width: 100%;
+  }
+}
+
+@media (min-width: 992px) and (max-width: 1199px) {
+  .blog-general__form input {
+    width: 100%;
+  }
+}
+
+.blog-general__form textarea {
+  height: 314px;
+  width: 100%;
+  margin-bottom: 35px;
+  resize: none;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#cancel-comment-reply-link {
+  font-size: 13px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 1.73px;
+  color: #000000;
+  text-decoration: underline;
+  text-transform: uppercase;
+  position: absolute;
+  right: 0;
+  pointer-events: initial;
+  cursor: pointer;
+}
+
+.blog-comment__list li article {
+  display: grid;
+  grid-template-columns: 88px 1fr;
+  gap: 0 69px;
+}
+
+@media (min-width: 0px) and (max-width: 767px) {
+  .blog-comment__list li {
+    grid-template-columns: 100%;
+  }
+
+  .blog-comment__list li article {
+    grid-template-columns: 100%;
+    gap: 15px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  .blog-comment__list li {
+    grid-template-columns: 100%;
+  }
+}
+
+@media (min-width: 992px) and (max-width: 1199px) {
+  .blog-comment__list li {
+    gap: 20px;
+  }
+}
+
+.blog-comment__list li:first-child {
+  padding-top: 0;
+}
+
 .blog-all .container-grid {
   grid-template-columns: 375px 1fr;
   gap: 65px;
