@@ -185,7 +185,7 @@ class Walker_Comment extends Walker {
 			add_filter( 'comment_text', array( $this, 'filter_comment_text' ), 40, 2 );
 		}
 
-		if ( ( 'pingback' === $comment->comment_type || 'trackback' === $comment->comment_type ) && $args['short_ping'] ) {
+		if ( ( 'pingback' == $comment->comment_type || 'trackback' == $comment->comment_type ) && $args['short_ping'] ) {
 			ob_start();
 			$this->ping( $comment, $depth, $args );
 			$output .= ob_get_clean();
@@ -224,7 +224,7 @@ class Walker_Comment extends Walker {
 			$output .= ob_get_clean();
 			return;
 		}
-		if ( 'div' === $args['style'] ) {
+		if ( 'div' == $args['style'] ) {
 			$output .= "</div><!-- #comment-## -->\n";
 		} else {
 			$output .= "</li><!-- #comment-## -->\n";
@@ -243,7 +243,7 @@ class Walker_Comment extends Walker {
 	 * @param array      $args    An array of arguments.
 	 */
 	protected function ping( $comment, $depth, $args ) {
-		$tag = ( 'div' === $args['style'] ) ? 'div' : 'li';
+		$tag = ( 'div' == $args['style'] ) ? 'div' : 'li';
 		?>
 		<<?php echo $tag; ?> id="comment-<?php comment_ID(); ?>" <?php comment_class( '', $comment ); ?>>
 			<div class="comment-body">
@@ -287,7 +287,7 @@ class Walker_Comment extends Walker {
 	 * @param array      $args    An array of arguments.
 	 */
 	protected function comment( $comment, $depth, $args ) {
-		if ( 'div' === $args['style'] ) {
+		if ( 'div' == $args['style'] ) {
 			$tag       = 'div';
 			$add_below = 'comment';
 		} else {
@@ -305,10 +305,10 @@ class Walker_Comment extends Walker {
 		}
 		?>
 		<<?php echo $tag; ?> <?php comment_class( $this->has_children ? 'parent' : '', $comment ); ?> id="comment-<?php comment_ID(); ?>">
-		<?php if ( 'div' !== $args['style'] ) : ?>
+		<?php if ( 'div' != $args['style'] ) : ?>
 		<div id="div-comment-<?php comment_ID(); ?>" class="comment-body">
 		<?php endif; ?>
-		<div class="comment-author vcard">
+		<div class="comment-author vcard ">
 			<?php
 			if ( 0 != $args['avatar_size'] ) {
 				echo get_avatar( $comment, $args['avatar_size'] );
@@ -373,7 +373,7 @@ class Walker_Comment extends Walker {
 		);
 		?>
 
-		<?php if ( 'div' !== $args['style'] ) : ?>
+		<?php if ( 'div' != $args['style'] ) : ?>
 		</div>
 		<?php endif; ?>
 		<?php
@@ -405,13 +405,22 @@ class Walker_Comment extends Walker {
 		<<?php echo $tag; ?> id="comment-<?php comment_ID(); ?>" <?php comment_class( $this->has_children ? 'parent' : '', $comment ); ?>>
 			<article id="div-comment-<?php comment_ID(); ?>" class="comment-body">
 				<footer class="comment-meta">
-					<div class="comment-author vcard">
+					<div class="comment-author vcard blog-comment__avatar">
 						<?php
 						if ( 0 != $args['avatar_size'] ) {
 							echo get_avatar( $comment, $args['avatar_size'] );
 						}
 						?>
-						<?php
+			
+					</div><!-- .comment-author -->
+
+					
+
+				
+				</footer><!-- .comment-meta -->
+
+				<div class="comment-content">
+				<?php
 						$comment_author = get_comment_author_link( $comment );
 
 						if ( '0' == $comment->comment_approved && ! $show_pending_links ) {
@@ -420,31 +429,29 @@ class Walker_Comment extends Walker {
 
 						printf(
 							/* translators: %s: Comment author link. */
-							__( '%s <span class="says">says:</span>' ),
-							sprintf( '<b class="fn">%s</b>', $comment_author )
+							sprintf( '<p class=" blog-comment__autor fn">%s</p>', $comment_author )
 						);
 						?>
-					</div><!-- .comment-author -->
 
-					<div class="comment-metadata">
-						<a href="<?php echo esc_url( get_comment_link( $comment, $args ) ); ?>">
+				<div class="comment-metadata">
+						<p class="blog-comment__date" href="<?php echo esc_url( get_comment_link( $comment, $args ) ); ?>">
 							<time datetime="<?php comment_time( 'c' ); ?>">
 								<?php
 									/* translators: 1: Comment date, 2: Comment time. */
 									printf( __( '%1$s at %2$s' ), get_comment_date( '', $comment ), get_comment_time() );
 								?>
 							</time>
-						</a>
-						<?php edit_comment_link( __( 'Edit' ), '<span class="edit-link">', '</span>' ); ?>
+					</p>
+						<!-- <?php // edit_comment_link( __( 'Edit' ), '<span class="edit-link">', '</span>' ); ?> -->
 					</div><!-- .comment-metadata -->
-
+					<div  class="blog-comment__description">
+					<?php comment_text(); ?>
 					<?php if ( '0' == $comment->comment_approved ) : ?>
 					<em class="comment-awaiting-moderation"><?php echo $moderation_note; ?></em>
 					<?php endif; ?>
-				</footer><!-- .comment-meta -->
+					</div>
 
-				<div class="comment-content">
-					<?php comment_text(); ?>
+
 				</div><!-- .comment-content -->
 
 				<?php
