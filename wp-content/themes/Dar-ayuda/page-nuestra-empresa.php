@@ -1,7 +1,7 @@
   <?php get_header(); ?>
-    <!-- Banner-->
+  <!-- Banner-->
   <section class="banner-small">
-  <?php get_template_part('partials/rr-ss'); ?>
+    <?php get_template_part('partials/rr-ss'); ?>
 
     <?php if (have_rows('banner')) : ?>
       <?php while (have_rows('banner')) : the_row(); ?>
@@ -64,7 +64,7 @@
               <?php if (have_rows('mision')) : ?>
                 <?php while (have_rows('mision')) : the_row(); ?>
                   <div class="about-direction__content">
-                    <a  data-toggle="modal" data-target="#exampleModal" class="main-portfolio__item" href="">
+                    <a data-toggle="modal" data-target="#exampleModal" class="main-portfolio__item" href="">
                       <?php $icon = get_sub_field('icon'); ?>
                       <?php if ($icon) : ?>
                         <div class="main-portfolio__img">
@@ -79,42 +79,49 @@
                     <?php the_sub_field('descripcion'); ?>
                   </p>
                   </div>
-				
-				<!-- Modal -->
-				<div class="modal fade about-direction__modal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-					<div class="modal-dialog modal-dialog-centered">
-						<div class="modal-content">
-							
-								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-									<span aria-hidden="true">&times;</span>
-								</button>
-							<div class="modal-body">
-								 <?php $icon = get_sub_field('icon'); ?>
-                      <?php if ($icon) : ?>
-                        <div class="about-direction__icon">
-                          <img src="<?php echo esc_url($icon['url']); ?>" alt="<?php echo esc_attr($icon['alt']); ?>" />
+
+                  <!-- Modal -->
+                  <div class="modal fade about-direction__modal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                      <div class="modal-content">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                        <div class="modal-body">
+                          <?php $icon = get_sub_field('icon'); ?>
+                          <?php if ($icon) : ?>
+                            <div class="about-direction__icon">
+                              <img src="<?php echo esc_url($icon['url']); ?>" alt="<?php echo esc_attr($icon['alt']); ?>" />
+                            </div>
+                            <div class="about-direction__title">
+                              <?php the_sub_field('title_mision'); ?>
+                            </div>
+                          <?php endif; ?>
+                          <?php if (have_rows('informacion_modal')) : ?>
+                            <?php while (have_rows('informacion_modal')) : the_row(); ?>
+                              <?php if (get_sub_field('destacado') == 1) : ?>
+                                <p class="main-about__description">
+                                  <?php the_sub_field('texto_modal'); ?>
+                                </p>
+                              <?php else : ?>
+                                <p class="general-description general-description--center">
+                                  <?php the_sub_field('texto_modal'); ?>
+                                </p>
+                              <?php endif; ?>
+                            <?php endwhile; ?>
+                          <?php endif; ?>
                         </div>
-                        <div class="about-direction__title">
-                          <?php the_sub_field('title_mision'); ?>
-                        </div>
-							<?php endif; ?>	
-								 <p class="general-description general-description--center">
-                    <?php the_sub_field('descripcion'); ?>
-                  </p>
-								<p class="main-about__description" >
-									<?php the_sub_field('descripcion'); ?>
-								</p>
-							</div>
-						
-						</div>
-					</div>
-				</div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- Fin Modal -->
                 <?php endwhile; ?>
               <?php endif; ?>
+
               <?php if (have_rows('vision')) : ?>
                 <?php while (have_rows('vision')) : the_row(); ?>
                   <div class="about-direction__content">
-                    <a class="main-portfolio__item" href="">
+                    <a data-toggle="modal" data-target="#exampleModal2" class="main-portfolio__item" href="">
                       <?php $icon_vision = get_sub_field('icon_vision'); ?>
                       <?php if ($icon_vision) : ?>
                         <div class="main-portfolio__img">
@@ -129,12 +136,50 @@
                     <?php the_sub_field('descripcion'); ?>
                   </p>
                   </div>
+                  <!-- Modal -->
+                  <div class="modal fade about-direction__modal" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                      <div class="modal-content">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                        <div class="modal-body">
+                          <?php $icon_vision = get_sub_field('icon_vision'); ?>
+                          <?php if ($icon_vision) : ?>
+                            <div class="about-direction__icon">
+                              <img src="<?php echo esc_url($icon_vision['url']); ?>" alt="<?php echo esc_attr($icon_vision['alt']); ?>" />
+                            </div>
+                            <div class="about-direction__title">
+                              <?php the_sub_field('title_vision'); ?>
+                            </div>
+                          <?php endif; ?>
+                          <?php if (have_rows('informacion_modal')) : ?>
+                            <?php while (have_rows('informacion_modal')) : the_row(); ?>
+                              <?php if (get_sub_field('destacado') == 1) : ?>
+                                <p class="main-about__description">
+                                  <?php the_sub_field('texto_modal'); ?>
+                                </p>
+                              <?php else : ?>
+                                <p class="general-description general-description--center">
+                                  <?php the_sub_field('texto_modal'); ?>
+                                </p>
+                              <?php endif; ?>
+                            <?php endwhile; ?>
+                          <?php endif; ?>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- Fin Modal -->
                 <?php endwhile; ?>
               <?php endif; ?>
+
+
+
               <?php if (have_rows('valores')) : ?>
                 <?php while (have_rows('valores')) : the_row(); ?>
                   <div class="about-direction__content">
-                    <a class="main-portfolio__item" href="">
+                  <a data-toggle="modal" data-target="#exampleModal3" class="main-portfolio__item" href="">
                       <?php $icon_valores = get_sub_field('icon_valores'); ?>
                       <?php if ($icon_valores) : ?>
                         <div class="main-portfolio__img">
@@ -149,9 +194,47 @@
                     <?php the_sub_field('descripcion'); ?>
                   </p>
                   </div>
-                <?php endwhile; ?>
-              <?php endif; ?>
+            
 
+                  <!-- Modal -->
+                  <div class="modal fade about-direction__modal" id="exampleModal3" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                      <div class="modal-content">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                        <div class="modal-body">
+                            <?php $icon_valores = get_sub_field('icon_valores'); ?>
+                          <?php if ($icon_valores) : ?>
+                            <div class="about-direction__icon">
+                              <img src="<?php echo esc_url($icon_valores['url']); ?>" alt="<?php echo esc_attr($icon_valores['alt']); ?>" />
+                            </div>
+                            <div class="about-direction__title">
+                              <?php the_sub_field('title_valores'); ?>
+                            </div>
+                          <?php endif; ?>
+                          <?php if (have_rows('informacion_modal')) : ?>
+                            <?php while (have_rows('informacion_modal')) : the_row(); ?>
+                              <?php if (get_sub_field('destacado') == 1) : ?>
+                                <p class="main-about__description">
+                                  <?php the_sub_field('texto_modal'); ?>
+                                </p>
+                              <?php else : ?>
+                                <p class="general-description general-description--center">
+                                  <?php the_sub_field('texto_modal'); ?>
+                                </p>
+                              <?php endif; ?>
+                            <?php endwhile; ?>
+                        
+                          <?php endif; ?>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- Fin Modal -->
+
+                  <?php endwhile; ?>
+              <?php endif; ?>
             <?php endwhile; ?>
           <?php endif; ?>
             </div>
@@ -263,24 +346,24 @@
     <?php endwhile; ?>
   <?php endif; ?>
   <!-- CTA -->
-  <?php if ( have_rows( 'call_to_action' ) ) : ?>
+  <?php if (have_rows('call_to_action')) : ?>
     <section class="about-news">
-    <img class="about-news__dotted" src="<?php echo get_template_directory_uri(); ?>/assets/img/dotted-box@3x.png">
-    <img class="about-news__dotted about-news__dotted--right" src="<?php echo get_template_directory_uri(); ?>/assets/img/dotted-box@3x.png">
-    <img class="about-news__img" src="<?php echo get_template_directory_uri(); ?>/assets/img/image.png">
-    <div class="about-news__flex">
-	<?php while ( have_rows( 'call_to_action' ) ) : the_row(); ?>
-  <h2>	<?php the_sub_field( 'tittle_cta' ); ?></h2>
-    <?php if ( have_rows( 'button_cta' ) ) : ?>
-			<?php while ( have_rows( 'button_cta' ) ) : the_row(); ?>
-				<?php $url_cta = get_sub_field( 'url_cta' ); ?>
-				<?php if ( $url_cta ) : ?>
-					<a class="main-general__button" href="<?php echo esc_url( $url_cta); ?>"> <?php the_sub_field( 'titulo' ); ?></a>
-				<?php endif; ?>
-			<?php endwhile; ?>
-    <?php endif; ?>
-  <?php endwhile; ?>
-  </div>
-  </section>
-<?php endif; ?>
+      <img class="about-news__dotted" src="<?php echo get_template_directory_uri(); ?>/assets/img/dotted-box@3x.png">
+      <img class="about-news__dotted about-news__dotted--right" src="<?php echo get_template_directory_uri(); ?>/assets/img/dotted-box@3x.png">
+      <img class="about-news__img" src="<?php echo get_template_directory_uri(); ?>/assets/img/image.png">
+      <div class="about-news__flex">
+        <?php while (have_rows('call_to_action')) : the_row(); ?>
+          <h2> <?php the_sub_field('tittle_cta'); ?></h2>
+          <?php if (have_rows('button_cta')) : ?>
+            <?php while (have_rows('button_cta')) : the_row(); ?>
+              <?php $url_cta = get_sub_field('url_cta'); ?>
+              <?php if ($url_cta) : ?>
+                <a class="main-general__button" href="<?php echo esc_url($url_cta); ?>"> <?php the_sub_field('titulo'); ?></a>
+              <?php endif; ?>
+            <?php endwhile; ?>
+          <?php endif; ?>
+        <?php endwhile; ?>
+      </div>
+    </section>
+  <?php endif; ?>
   <?php get_footer(); ?>
