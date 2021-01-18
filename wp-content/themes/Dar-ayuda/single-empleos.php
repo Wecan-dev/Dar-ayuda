@@ -44,7 +44,7 @@
                                     </li>
                                     <li>
                                         <img class="banner-small__img" src="<?php echo get_template_directory_uri(); ?>/assets/img/buscador/money@3x.png">
-                                        <?php the_field('presataciones'); ?>
+                                        <?php the_field('prestaciones'); ?>
                                     </li>
                                 </ul>
                             </div>
