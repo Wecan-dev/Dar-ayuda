@@ -2,7 +2,7 @@
 <section class="banner-small">
 <?php get_template_part('partials/rr-ss'); ?>
 
-  <img class="banner-small__img" src="<?php echo get_template_directory_uri(); ?>/assets/img/buscador/image.png">
+  <img class="banner-small__img" src="<?php echo get_template_directory_uri(); ?>/assets/img/buscador/image.jpg">
   <div class="banner-small__text">
     <h2 class="banner-small__title">
       Buscador de empleo
@@ -12,7 +12,7 @@
 <section class="search-general">
   <div class="padding-right-left padding-top-bottom">
     <h2 class="general-title">
-      Oferta de Empleos
+      Vacantes disponibles
       <span></span>
     </h2>
     <div class="search-general__list">

@@ -250,25 +250,145 @@ function theme_customize_register($wp_customize)
 		'panel' => 'panel2'
 	));
 
-	$wp_customize->add_setting('contacto_direction', array(
+	$wp_customize->add_setting('contacto_direction1', array(
 		'default' => ''
 	));
 
-	$wp_customize->add_control(new WP_Customize_Control($wp_customize, 'contacto_direction_control', array(
-		'label' => 'Dirección',
+	$wp_customize->add_control(new WP_Customize_Control($wp_customize, 'contacto_direction1_control', array(
+		'label' => 'Primera dirección',
 		'section' => 'contacto',
-		'settings' => 'contacto_direction'
+		'settings' => 'contacto_direction1'
+	)));
+	
+      	$wp_customize->add_setting('url_direction', array(
+		'default' => ''
+	));
+
+	$wp_customize->add_control(new WP_Customize_Control($wp_customize, 'url_direction_control', array(
+		'label' => 'Url Primera dirección',
+		'section' => 'contacto',
+		'settings' => 'url_direction'
 	)));
 
 	$wp_customize->add_setting('contacto_phone', array(
+       'default' => ''
+));
+
+$wp_customize->add_control(new WP_Customize_Control($wp_customize, 'contacto_phone_control', array(
+       'label' => 'Teléfono 1',
+       'section' => 'contacto',
+       'settings' => 'contacto_phone',
+)));
+
+
+	
+	
+	$wp_customize->add_setting('contacto_direction2', array(
 		'default' => ''
 	));
 
-	$wp_customize->add_control(new WP_Customize_Control($wp_customize, 'contacto_phone_control', array(
-		'label' => 'Teléfono',
+	$wp_customize->add_control(new WP_Customize_Control($wp_customize, 'contacto_direction2_control', array(
+		'label' => 'Segunda dirección',
 		'section' => 'contacto',
-		'settings' => 'contacto_phone',
+		'settings' => 'contacto_direction2'
 	)));
+
+	
+      	$wp_customize->add_setting('url_direction2', array(
+		'default' => ''
+	));
+
+	$wp_customize->add_control(new WP_Customize_Control($wp_customize, 'url_direction2_control', array(
+		'label' => 'Url Segunda dirección',
+		'section' => 'contacto',
+		'settings' => 'url_direction2'
+	)));
+
+	
+	$wp_customize->add_setting('contacto_phone2', array(
+		   'default' => ''
+	));
+
+	$wp_customize->add_control(new WP_Customize_Control($wp_customize, 'contacto_phone2_control', array(
+		   'label' => 'Teléfono 2',
+		   'section' => 'contacto',
+		   'settings' => 'contacto_phone2',
+	)));
+
+
+	$wp_customize->add_setting('contacto_direction3', array(
+		'default' => ''
+	));
+
+	$wp_customize->add_control(new WP_Customize_Control($wp_customize, 'contacto_direction3_control', array(
+		'label' => 'Tercera dirección',
+		'section' => 'contacto',
+		'settings' => 'contacto_direction3'
+	)));
+	
+	
+       $wp_customize->add_setting('url_direction3', array(
+		'default' => ''
+	));
+
+	$wp_customize->add_control(new WP_Customize_Control($wp_customize, 'url_direction3_control', array(
+		'label' => 'Url Tercera dirección',
+		'section' => 'contacto',
+		'settings' => 'url_direction3'
+	)));
+	
+	
+
+
+	$wp_customize->add_setting('contacto_phone3', array(
+		   'default' => ''
+	));
+
+	$wp_customize->add_control(new WP_Customize_Control($wp_customize, 'contacto_phone3_control', array(
+		   'label' => 'Teléfono 3',
+		   'section' => 'contacto',
+		   'settings' => 'contacto_phone3',
+	)));
+
+
+
+	$wp_customize->add_setting('contacto_direction4', array(
+		'default' => ''
+	));
+
+	$wp_customize->add_control(new WP_Customize_Control($wp_customize, 'contacto_direction4_control', array(
+		'label' => 'Cuarta dirección',
+		'section' => 'contacto',
+		'settings' => 'contacto_direction4'
+	)));
+
+	
+
+
+         $wp_customize->add_setting('url_direction4', array(
+		'default' => ''
+	));
+
+	$wp_customize->add_control(new WP_Customize_Control($wp_customize, 'url_direction4_control', array(
+		'label' => 'Url Cuarta dirección',
+		'section' => 'contacto',
+		'settings' => 'url_direction4'
+	)));
+	
+	
+
+	$wp_customize->add_setting('contacto_phone4', array(
+		   'default' => ''
+	));
+
+	$wp_customize->add_control(new WP_Customize_Control($wp_customize, 'contacto_phone4_control', array(
+		   'label' => 'Teléfono 3',
+		   'section' => 'contacto',
+		   'settings' => 'contacto_phone4',
+	)));
+
+	
+	
 	$wp_customize->add_setting('contacto_email', array(
 		'default' => ''
 	));
@@ -306,7 +426,15 @@ function theme_customize_register($wp_customize)
 		'settings' => 'Redes_sociales_IG',
 	)));
 	
+$wp_customize->add_setting('Redes_sociales_TW', array(
+		'default' => ''
+	));
 
+	$wp_customize->add_control(new WP_Customize_Control($wp_customize, 'Redes_sociales_TW_control', array(
+		'label' => 'Instagram',
+		'section' => 'Redes_sociales',
+		'settings' => 'Redes_sociales_TW',
+	)));
 }
 add_action('customize_register', 'theme_customize_register');
 
@@ -489,3 +617,4 @@ function Empleos()
 	register_post_type('empleos', $args);
 }
 add_action('init', 'Empleos', 0);
+

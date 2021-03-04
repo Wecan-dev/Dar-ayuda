@@ -6,12 +6,12 @@
           <img src="<?php echo get_template_directory_uri(); ?>/assets/img/logo.png">
         </div>
         <p class="main-footer__description">
-          Lorem ipsum dolor sit amet consectetur adipiscing elit donec facilisi magna natoque, per.
+          Nuestra experiencia sabe dar respuesta a sus necesidades.
         </p>
       </div>
       <div class="main-footer__item">
         <h2 class="main-footer__title">
-          Company
+          Empresa
         </h2>
         <ul class="site-map">
           <li>
@@ -55,11 +55,11 @@
               Buscador de empleo
             </a>
           </li>
-          <li>
-            <a href="<?php echo bloginfo('url') . '/index.php/blog'; ?>">
+          <!--<li>
+            <a href="<?php// echo bloginfo('url') . '/index.php/blog'; ?>">
               Blog
             </a>
-          </li>
+          </li>-->
           <li>
             <a href="<?php echo bloginfo('url') . '/index.php/contacto'; ?>">
               Contacto
@@ -68,12 +68,14 @@
         </ul>
       </div>
       <?php
-          $direction = get_theme_mod('contacto_direction');
+          $direction1 = get_theme_mod('contacto_direction1');
+                 
           $phone = get_theme_mod('contacto_phone');
           $email = get_theme_mod('contacto_email');
 
           $facebook = get_theme_mod('Redes_sociales_FB');
           $instagram = get_theme_mod('Redes_sociales_IG');
+		$twitter = get_theme_mod('Redes_sociales_TW');
       ?>
       <div class="main-footer__item">
         <h2 class="main-footer__title">
@@ -81,11 +83,10 @@
         </h2>
         <ul class="list-contact">
           <li>
-            <a href="#">
               <img src="<?php echo get_template_directory_uri(); ?>/assets/img/place.png">
-              <?php echo $direction; ?>
-            </a>
-          </li>
+              Dirección:<br>
+              <?php echo $direction1; ?> <br>
+                       
           <li>
             <a href="mailto:<?php echo $email; ?>">
               <img src="<?php echo get_template_directory_uri(); ?>/assets/img/envelope.png">
@@ -93,11 +94,12 @@
             </a>
           </li>
           <li>
-            <a href="tel:<?php echo $phone; ?>">
+			  <a href="tel:<?php echo $phone; ?>" >
+			  
               <img src="<?php echo get_template_directory_uri(); ?>/assets/img/phone-call.png">
-              Phone: <?php echo $phone; ?>
-            </a>
-          </li>
+              Teléfono: <?php echo $phone; ?>
+          </a>
+				  </li>
         </ul>
       </div>
       <div class="main-footer__item">
@@ -111,6 +113,7 @@
             <a class="rrss__item" href="<?php echo $instagram; ?>" target="_blank">
                 <img src="<?php echo get_template_directory_uri(); ?>/assets/img/instagram.png">
             </a>
+
         </div>
       </div>
     </div>
@@ -127,9 +130,17 @@
   </div>
 </div>
 <div class="main-whatsapp">
-  <a href=" ">
-    <img alt="icon chat" src="<?php echo get_template_directory_uri(); ?>/assets/img/whatsapp@3x.png">
-  </a>
+	
+	<?php if ( wp_is_mobile() ) : ?>
+					<a target="_blank" href="https://api.whatsapp.com/send?phone=<?php echo $phone; ?>">
+					<img alt="icon chat" src="<?php echo get_template_directory_uri(); ?>/assets/img/whatsapp@3x.png">
+				  </a>
+				<?php else : ?>
+				  <a  target="_blank" href="https://web.whatsapp.com/send?phone=<?php echo $phone; ?>">
+								
+<img alt="icon chat" src="<?php echo get_template_directory_uri(); ?>/assets/img/whatsapp@3x.png">
+				  </a>
+				<?php endif; ?>
 </div>
 <script src="<?php echo get_template_directory_uri(); ?>/assets/js/jquery.min.js"></script>
 <script crossorigin="anonymous" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>

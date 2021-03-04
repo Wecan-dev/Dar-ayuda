@@ -12,7 +12,7 @@
 <section class="search-general search-content">
     <div class="padding-right-left padding-top-bottom">
         <h2 class="general-title">
-            Oferta de Empleos
+           Vacantes disponibles
             <span></span>
         </h2>
         <div class="container-grid">
@@ -23,7 +23,7 @@
                     <a class="search-general__item" href="<?php the_permalink(); ?>">
                         <div class="search-general__body">
                             <div class="search-general__img">
-                                <img src="<?php echo get_template_directory_uri(); ?>/assets/img/buscador/image_1.png">
+                                <img src="<?php echo get_the_post_thumbnail_url(); ?>">
                                 <div>
                                     <h2 class="search-general__title">
                                         <?php the_title(); ?>
@@ -56,7 +56,7 @@
             </div>
             <div class="search-single">
                 <div class="search-general__img">
-                    <img src="<?php echo get_template_directory_uri(); ?>/assets/img/buscador/image_1.png">
+                    <img src="<?php echo get_the_post_thumbnail_url(); ?>">
                     <div>
                         <h2 class="search-general__title">
                             <?php the_title(); ?>
@@ -86,11 +86,9 @@
                 <p class="general-description">
                     <?php the_content(); ?>
                 </p>
-                <div class="d-flex justify-content-center">
-                    <button style="border: none;" type="button" class="general-btn__green" data-toggle="collapse" data-target="#demo">Aplicar</button>
-                </div>
-                <div class="container" style="margin-top: 2rem;">
-                    <div id="demo" class="collapse">
+              
+                <div class="main-register" style="margin-top: 2rem;">
+                    <div id="" >
                     <?php echo FrmFormsController::get_form_shortcode( array( 'id' => 5, 'title' => false, 'description' => false ) ); ?>
                     </div>
                 </div>

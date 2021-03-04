@@ -257,9 +257,7 @@
               <p class="general-description">
                 <?php the_sub_field('content_section'); ?>
               </p>
-              <p class="general-description">
-                Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500.
-              </p>
+              
               <?php if (have_rows('important_items')) : ?>
                 <ul class="about-politics__list">
                   <?php while (have_rows('important_items')) : the_row(); ?>
@@ -284,7 +282,7 @@
   <!-- BLog -->
 
 
-  <?php if (have_rows('Editorial')) : ?>
+  <?php if (get_fields('Editorial')) : ?>
     <?php while (have_rows('Editorial')) : the_row(); ?>
       <section class="about-blog">
         <div class="padding-top-bottom padding-right-left">
@@ -346,7 +344,7 @@
     <?php endwhile; ?>
   <?php endif; ?>
   <!-- CTA -->
-  <?php if (have_rows('call_to_action')) : ?>
+  <?php if (get_fields('call_to_action')) : ?>
     <section class="about-news">
       <img class="about-news__dotted" src="<?php echo get_template_directory_uri(); ?>/assets/img/dotted-box@3x.png">
       <img class="about-news__dotted about-news__dotted--right" src="<?php echo get_template_directory_uri(); ?>/assets/img/dotted-box@3x.png">

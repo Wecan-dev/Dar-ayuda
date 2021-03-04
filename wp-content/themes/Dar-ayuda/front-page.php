@@ -47,7 +47,7 @@
             </div>
             <div class="main-about__text">
                 <div class="general-titlexs">
-                    Bienvenidos a
+                  Conoce
                 </div>
                 <h2 class="general-title general-title--start">
                     Quienes somos
@@ -69,7 +69,7 @@
 <section class="main-portfolio">
     <div class="padding-right-left padding-top-bottom">
         <div class="general-title">
-            Nuestro portafolio
+            Nuestro Servicios
             <span></span>
         </div>
         <p class="general-description general-description--center">

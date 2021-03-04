@@ -73,7 +73,7 @@ $(".hamburger").on("click", function () {
   $(this).toggleClass("is-active");
 });
 
-
+$('.frm_upload_text button').text('Selecionar archivo');
 
 // Font
 $(document).ready(function () {

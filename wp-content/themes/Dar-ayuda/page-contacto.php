@@ -1,7 +1,21 @@
 <?php get_header(); ?>
 <?php
-$direction = get_theme_mod('contacto_direction');
+$direction1 = get_theme_mod('contacto_direction1');
+$direction2 = get_theme_mod('contacto_direction2');
+$direction3 = get_theme_mod('contacto_direction3');
+$direction4 = get_theme_mod('contacto_direction4');
+
+$urldirection1 = get_theme_mod('urldirection1');
+$urldirection2 = get_theme_mod('urldirection2');
+$urldirection3 = get_theme_mod('urldirection3');
+$urldirection4 = get_theme_mod('urldirection4');
+
 $phone = get_theme_mod('contacto_phone');
+$phone2 = get_theme_mod('contacto_phone2');
+$phone3 = get_theme_mod('contacto_phone3');
+$phone4 = get_theme_mod('contacto_phone4');
+
+
 $email = get_theme_mod('contacto_email');
 
 $facebook = get_theme_mod('Redes_sociales_FB');
@@ -37,30 +51,80 @@ $instagram = get_theme_mod('Redes_sociales_IG');
                     <span></span>
                 </h2>
                 <ul class="contact-info__list">
+					<div class="contact-title__box" >
+						 <img src="<?php echo get_template_directory_uri(); ?>/assets/img/place.png">
+						<h2 class="contact-title" >
+							Direcciónes
+						</h2>
+					</div>
                     <li>
-                        <img src="<?php echo get_template_directory_uri(); ?>/assets/img/place.png">
-                        <a href="#">
-                            <span>
-                                Dirección
-                            </span>
-                            <?php echo $direction; ?>
-                        </a>
+                      
+					
+						<strong><p>Medellín</p>	</strong>
+							   <?php echo $direction1; ?>
+						</li>
+					<li>
+					
+						<strong><p>Bogotá</p>	</strong>
+							   <?php echo $direction2; ?>
+
+					
+						           </li>
+						<li>
+				
+						<strong><p>Cali</p>	</strong>
+							   <?php echo $direction3; ?>
+
+				
+							           </li>
+							<li>
+				
+						<strong><p>Pereira</p></strong>
+							   <?php echo $direction4; ?>
+
+				
+         
                     </li>
                     <li>
-                        <img src="<?php echo get_template_directory_uri(); ?>/assets/img/phone-call.png">
-                        <a href="tel:<?php echo $phone; ?>">
-                            <span>
+                       
+                   <div class="contact-title__box" >
+					    <img src="<?php echo get_template_directory_uri(); ?>/assets/img/phone-call.png">
+                  	<h2 class="contact-title" >
                                 Teléfono
-                            </span>
-                            <?php echo $phone; ?>
-                        </a>
-                    </li>
-                    <li>
-                        <img src="<?php echo get_template_directory_uri(); ?>/assets/img/envelope.png">
-                        <a href="mailto:<?php echo $email; ?>">
-                            <span>
+                            </h2>
+					   </div>
+							<li>
+									<strong><p>Medellín</p>	</strong>
+								   <?php echo $phone; ?>
+							</li>
+					
+								<li>
+								
+							<strong><p>Bogotá</p>	</strong>
+								   <?php echo $phone2; ?>
+							</li>		
+							<li>
+									
+							<strong><p>Cali</p>	</strong>
+								   <?php echo $phone3; ?>
+							</li>
+							<li>
+							
+							<strong><p>Pereira</p></strong>
+								   <?php echo $phone4; ?>
+							</li>
+
+					     
+                   <div class="contact-title__box" >
+			           <img src="<?php echo get_template_directory_uri(); ?>/assets/img/envelope.png">
+                  	<h2 class="contact-title" >
                                 Correo
-                            </span>
+                            </h2>
+					   </div>
+
+                    <li>
+             
+                        <a href="mailto:<?php echo $email; ?>">
                             <?php echo $email; ?>
                         </a>
                     </li>

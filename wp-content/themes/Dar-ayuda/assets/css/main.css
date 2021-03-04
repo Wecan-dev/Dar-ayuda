@@ -754,7 +754,7 @@ button:focus {
 }
 
 .pre-navbar__btn {
-  width: 120px;
+  width: 180px;
   height: 35px;
   padding: 7px 20px 8px;
   border-radius: 18px;
@@ -780,10 +780,10 @@ button:focus {
 @media (min-width: 0px) and (max-width: 767px) {
   .pre-navbar__btn {
     width: initial;
-    height: initial;
-    padding: 3px 14px 3px;
-    font-size: 13px;
+    height: initial;padding: 3px;
+    font-size: 12px;
     font-weight: 500;
+	      border-radius: 7px;
   }
 }
 
@@ -1661,10 +1661,10 @@ button:focus {
   font-style: italic;
   color: #00a451;
 }
-.main-register .frm_dropzone {
+.main-register .frm_dropzone , .frm_dropzone {
 	background-color: transparent!important;
 }
-.main-register form label, .main-register .frm_required, .main-register .frm_primary_label {
+.main-register form label, .main-register .frm_required, .main-register .frm_primary_label , form label, .frm_required, .frm_primary_label {
   font-size: 16px!important;
   font-weight: 500!important;
 	font-family: "Poppins", sans-serif;
@@ -1676,7 +1676,7 @@ button:focus {
   margin-bottom: 6px;
   display: flex!important;
 }
-.main-register .frm_required {
+.main-register .frm_required,.frm_required {
 	margin-bottom: 0!important;
 	font-family: "Poppins", sans-serif;
 	font-weight: bold!important;
@@ -1686,11 +1686,11 @@ button:focus {
   display: none;
 }
 
-.main-register  #frm_field_3_container label::before {
+.main-register  #frm_field_3_container label::before, frm_field_33_container label::before {
   background-image: url("../img/email.png");
 }
 
-.main-register form label::before {
+.main-register form label::before,form label::before{
   position: absolute;
   content: "";
   background-image: url("../img/user_2.png");
@@ -1703,22 +1703,22 @@ button:focus {
   left: 16px;
 }
 .main-register 
-	.frm_dropzone .frm_upload_icon:before {
+	.frm_dropzone .frm_upload_icon:before,.frm_dropzone .frm_upload_icon:before {
     font-size: 13px!important;
 		display:none!important;
 }
 
-.main-register  .frm_upload_text button {
+.main-register  .frm_upload_text button,.frm_upload_text button {
 	font-size: 15px!important;
 	font-family: "Poppins", sans-serif;
 } 
-.main-register .dz-message {
+.main-register .dz-message, .dz-message {
     padding: 9px 20px;
     border-radius: 25.5px;
     border: solid 1px #dee2e6;
     background-color: #fdfdfd;
 }
-.main-register .dz-message button {
+.main-register .dz-message button, .dz-message button{
 	
 font-family: "Poppins", sans-serif!important;
 	  font-size: 14px!important;
@@ -1730,18 +1730,18 @@ font-family: "Poppins", sans-serif!important;
   text-align: center;
   color: #6d7278!important;
 }
-.main-register   .frm_dropzone.frm_single_upload {
+.main-register   .frm_dropzone.frm_single_upload,.frm_dropzone.frm_single_upload {
     max-width: 100%;
 	width: 216px;
     min-height: auto;
 }
-.main-register  .frm_small_text {
+.main-register  .frm_small_text,.frm_small_text {
 	font-size: 11px!important;
 	display:none!important;
 		
 }
 
-.main-register .frm_button_submit {
+.main-register .frm_button_submit,.frm_button_submit {
 	    padding: 14px 31px 13px 32px!important;
     border-radius: 30.5px!important;
     background-color: #00a451!important;
@@ -1758,15 +1758,15 @@ font-family: "Poppins", sans-serif!important;
   color: #ffffff!important;
 }
 
-.main-register .frm_submit {
+.main-register .frm_submit ,.frm_submit {
 	display: flex;
     justify-content: center;
 }
 
-.main-register .dz-message {
+.main-register .dz-message ,.dz-message {
 	margin-bottom: 0!important;
 }
-.main-register form input {
+.main-register form input, input[type='text'],input[type='email'] {
   font-size: 14px!important;
   font-weight: 500!important;
   margin-top: 6px;
@@ -1783,16 +1783,17 @@ font-family: "Poppins", sans-serif!important;
   border: solid 1px #dee2e6!important;
   background-color: #fdfdfd!important;
   position: relative;
+	width: 100%;
 }
 
-.main-register form input[type=file] {
+.main-register form input[type=file], form input[type=file] {
   padding: 0;
   background: none;
   border: none;
   border-radius: 0;
 }
 
-.main-register .frm_form_field {
+.main-register .frm_form_field, .frm_form_field {
 	position: relative;
 }
 
@@ -2079,11 +2080,15 @@ display: flex;
     gap: 40px;
   }
 }
-
+.about-politics .about-politics__img {
+	
+	width: 100%;
+    height: 500px;
+}
 .about-politics .about-politics__img img {
-  height: 100%;
-  object-fit: cover;
-  width: 100%;
+    height: 100%;
+    object-fit: cover;
+    width: 100%;
 }
 
 .about-politics__list {
@@ -2111,6 +2116,7 @@ display: flex;
   left: 0;
   top: 5px;
 }
+.about-politics__list li:last-child:before{ display:none; }
 
 .banner-small {
   height: 462px;
@@ -2127,6 +2133,13 @@ display: flex;
     bottom: 16px;
     right: 16px;
   }
+	.about-politics .about-politics__img{
+		height: auto;
+	}
+	.about-politics .about-politics__img img {
+		height: auto; 
+		object-fit: contain;
+	}
 }
 
 @media (min-width: 0px) and (max-width: 767px) {
@@ -2141,6 +2154,8 @@ display: flex;
   z-index: -1;
   height: 100%;
   top: 0;
+	width: 100%;
+	object-fit: cover;
 }
 
 .banner-small .banner-small__img img {
@@ -2882,7 +2897,7 @@ display: flex;
     letter-spacing: normal;
     color: #000000!important;
     margin-bottom: 24px;
-    flex-direction: column;
+    
     font-family: "Poppins", sans-serif!important;
 }
 
@@ -3001,7 +3016,7 @@ display: flex;
 
 .contact-info .contact-info__list {
   list-style: none;
-  padding-left: 21px;
+  padding-left: 0;
 }
 
 @media (min-width: 0px) and (max-width: 767px) {
@@ -3017,8 +3032,9 @@ display: flex;
 }
 
 .contact-info .contact-info__list li {
-  display: flex;
-  margin-bottom: 59px;
+    flex-direction: column;
+    margin-bottom: 14px;
+	display: flex;
 }
 
 .contact-info .contact-info__list a {
@@ -3061,10 +3077,15 @@ display: flex;
     height: 30px;
   }
 }
-
-.contact-info .contact-info__list span {
+.contact-info .contact-title__box {
+	display: flex;
+	align-items: center;
+	margin-bottom: 15px;
+}
+.contact-info .contact-info__list .contact-title {
   font-size: 24px;
   font-weight: 600;
+	margin-bottom: 0;
   font-stretch: normal;
   font-style: normal;
   line-height: normal;
@@ -3173,6 +3194,9 @@ display: flex;
   .portfolio-general .main-portfolio__item {
     margin-bottom: 37px;
   }
+	.portfolio-general__content {
+		order: -1;	
+	}
 }
 
 .portfolio-general .general-description {

@@ -37,10 +37,10 @@
   <header class="fixed-top navbar-fixed-js">
     <div class="pre-navbar">
       <div class="pre-navbar__flex">
-        <a class="pre-navbar__btn" href="">Empleados</a>
-        <a class="pre-navbar__btn" href="">Empresas</a>
+        <a target="_blank" class="pre-navbar__btn" href="http://190.7.156.170/NGMidasoft/login/01">Empleados</a>
+        <a target="_blank" class="pre-navbar__btn" href="http://190.7.156.170/NGMidasoft/login/01">Empresas</a>
       </div>
-      <a class="pre-navbar__btn" href="">Regístrate</a>
+      <a target="_blank" class="pre-navbar__btn" href="http://190.7.156.170/NGMs/categoriasvacantes">Consulta vacantes</a>
     </div>
     <nav class="navbar navbar-expand-lg">
       <div class="main-brand__top">
@@ -91,9 +91,9 @@
               <?php endwhile; ?>
             </div>
           </li>
-          <li class="nav-item dropdown">
+         <li class="nav-item dropdown">
             <a aria-expanded="false" aria-haspopup="true" class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="navbarDropdown" role="button">
-              De su interés
+              Actualidad Laboral
             </a>
             <div aria-labelledby="navbarDropdown" class="dropdown-menu">
               <?php $args = array('post_type' => 'De_su_interes', 'order' => 'ASC', 'posts_per_page' => -1); ?>
@@ -109,11 +109,11 @@
               Buscador de empleo
             </a>
           </li>
-          <li class="nav-item">
+          <!--<li class="nav-item">
             <a class="nav-link nav-link-p" data="offcanvas" href="<?php echo bloginfo('url') . '/index.php/blog'; ?>" role="button">
               Blog
             </a>
-          </li>
+          </li>-->
           <li class="nav-item">
             <a class="nav-link nav-link-p" data="offcanvas" href="<?php echo bloginfo('url') . '/index.php/contacto'; ?>">
               Contacto
