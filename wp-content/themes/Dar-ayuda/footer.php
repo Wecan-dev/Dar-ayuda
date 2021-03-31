@@ -72,7 +72,7 @@
                  
           $phone = get_theme_mod('contacto_phone');
           $email = get_theme_mod('contacto_email');
-
+		$ws = get_theme_mod('contacto_ws');
           $facebook = get_theme_mod('Redes_sociales_FB');
           $instagram = get_theme_mod('Redes_sociales_IG');
 		$twitter = get_theme_mod('Redes_sociales_TW');
@@ -131,15 +131,21 @@
 </div>
 <div class="main-whatsapp">
 	
+	
 	<?php if ( wp_is_mobile() ) : ?>
-					<a target="_blank" href="https://api.whatsapp.com/send?phone=<?php echo $phone; ?>">
+	    <?php if (get_theme_mod('contacto_ws')!=NULL) {?>
+             <a target="_blank" href="https://api.whatsapp.com/send?phone=<?php echo $ws; ?>">
 					<img alt="icon chat" src="<?php echo get_template_directory_uri(); ?>/assets/img/whatsapp@3x.png">
 				  </a>
+                <?php } ?>  
+					
 				<?php else : ?>
-				  <a  target="_blank" href="https://web.whatsapp.com/send?phone=<?php echo $phone; ?>">
+	<?php if (get_theme_mod('contacto_ws')!=NULL) {?>
+				  <a  target="_blank" href="https://web.whatsapp.com/send?phone=<?php echo $ws; ?>">
 								
 <img alt="icon chat" src="<?php echo get_template_directory_uri(); ?>/assets/img/whatsapp@3x.png">
 				  </a>
+	          <?php } ?>  
 				<?php endif; ?>
 </div>
 <script src="<?php echo get_template_directory_uri(); ?>/assets/js/jquery.min.js"></script>

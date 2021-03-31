@@ -4,22 +4,28 @@
 <head>
   <meta charset="UTF-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
+	<meta name="keywords" content="empleo, vacantes, dar ayuda, dar, temporal, temporales, trabajo, ofertas de empleo, empleos temporales, trabajo temporal, operario, mensajero, bodega, cajero, conductor, secretaria, auxiliar"/>
+	<meta name="description" content="Dar Ayuda Temporal S.A. es una compañía con una trayectoria de más de 40 años, dedicada a seleccionar y contratar trabajadores en misión, al servicio de empresas usarías."/>
+	
   <title> <?php if (is_home()) {
-            echo bloginfo('name');
+                       echo 'Inicio ';
+
             echo ' | ';
-            echo 'Inicio ';
+	 echo bloginfo('name');
           } elseif (is_category()) {
             single_cat_title();
             echo ' | ';
             echo bloginfo('name');
           } elseif (is_single() || is_page()) {
-            single_post_title();
-            echo ' | ';
             echo bloginfo('name');
-          } else {
-            wp_title('', true);
+         
             echo ' | ';
-            echo bloginfo('name');
+   single_post_title();         
+} else {
+	      echo bloginfo('name');
+           
+            echo ' | ';
+       wp_title('', true);
           }    ?> </title>
   <?php wp_head(); ?>
   <link crossorigin="anonymous" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" rel="stylesheet">
@@ -37,10 +43,11 @@
   <header class="fixed-top navbar-fixed-js">
     <div class="pre-navbar">
       <div class="pre-navbar__flex">
-        <a target="_blank" class="pre-navbar__btn" href="http://190.7.156.170/NGMidasoft/login/01">Empleados</a>
-        <a target="_blank" class="pre-navbar__btn" href="http://190.7.156.170/NGMidasoft/login/01">Empresas</a>
+        <a target="_blank" class="pre-navbar__btn" href="http://190.7.156.170:5443/NGMidasoft/login/01">Empleados</a>
+        <a target="_blank" class="pre-navbar__btn" href="http://190.7.156.170:5443/NGMidasoft/login/01">Empresas</a>
       </div>
-      <a target="_blank" class="pre-navbar__btn" href="http://190.7.156.170/NGMs/categoriasvacantes">Consulta vacantes</a>
+      <a target="_blank" class="pre-navbar__btn" href="http://190.7.156.170:5443/NGms/categoriasvacantes">Consulta vacantes</a>
+		
     </div>
     <nav class="navbar navbar-expand-lg">
       <div class="main-brand__top">
@@ -53,13 +60,13 @@
       <div class="main-brand__fixed">
         <div class="main-brand">
           <a class="navbar-brand" href="<?php echo bloginfo('url'); ?>">
-            <img alt="Logo Ekored" id="iso" src="<?php echo get_template_directory_uri(); ?>/assets/img/logo_2.png">
+            <img alt="" id="iso" src="<?php echo get_template_directory_uri(); ?>/assets/img/logo_2.png">
           </a>
         </div>
       </div>
       <div class="main-brand brand-responsive">
         <a class="navbar-brand" href="<?php echo bloginfo('url'); ?>">
-          <img alt="Logo Ekored" id="iso" src="<?php echo get_template_directory_uri(); ?>/assets/img/logo.png">
+          <img alt="" id="iso" src="<?php echo get_template_directory_uri(); ?>/assets/img/logo.png">
         </a>
         <button class="navbar-toggler p-2 border-0 hamburger hamburger--elastic ml-autos" data-toggle="offcanvas" type="button">
           <span class="hamburger-box"></span>

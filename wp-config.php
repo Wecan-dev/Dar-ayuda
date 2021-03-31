@@ -37,8 +37,6 @@ define( 'DB_CHARSET', 'utf8mb4' );
 /** The Database Collate type. Don't change this if in doubt. */
 define( 'DB_COLLATE', '' );
 
-define('FS_METHOD', 'direct')
-
 /**#@+
  * Authentication Unique Keys and Salts.
  *
@@ -48,14 +46,14 @@ define('FS_METHOD', 'direct')
  *
  * @since 2.6.0
  */
-define( 'AUTH_KEY',         ';r=ihjAK+G+BgboYmRE18x]s]~fiW:m-IzZgGNq`JpyDb)#*&EK`IvS8g{WJs_]`' );
-define( 'SECURE_AUTH_KEY',  '0RIy8^m$a3uboLYgJ_5IMeus~W_SDV/yyuj%l7CG1d@NW?X)5 izILWx{PBN,*$4' );
-define( 'LOGGED_IN_KEY',    'OTBd)im)e=Sd93,~^ziSBxw1$Q!u_fY8?S5q<Rs<?(lG,rsLJU}q+7;Gn h>Df)J' );
-define( 'NONCE_KEY',        ' yxe%n!46)Lt+`a[(Z9Fq:V0>vQbY N{8(H5^>UR8%]ahgg^hZzBA|2)huI?4W20' );
-define( 'AUTH_SALT',        '<)u.;a/!(u80~dA5*1%Bd.aRq#hyi_x1Ptc]sjVA.RP>v=s3 !SN<@jZU`r=fazq' );
-define( 'SECURE_AUTH_SALT', 'YV(_qHP3,{6IJYI5IoBO Ji|.<n7s>4u^vkeR/mZko7MgfwC;_nftQ-CQ)@;M[lC' );
-define( 'LOGGED_IN_SALT',   '=wmv.xjQ2oz?/K^CVdwSK1nO<1(Zy=zCzOe|>ni6}GpKFDk+[h,3Z5]uz*&lweIX' );
-define( 'NONCE_SALT',       'FLal#$W]h5mT#Ea#`Eb`z8/-YyYRc>C:<6|aA5YBHuB;|=NML-NG@*:Tm00O]xQ*' );
+define( 'AUTH_KEY',         'X&7qwfbU4c[a%I[YF&i5B#uqriAZq=I~wmIitPJkOT{tiN,S/=xbp*S1duy4~^5 ' );
+define( 'SECURE_AUTH_KEY',  '-+kN<S$D5C!.J?#]*$Ne&L>yd{S>rjS6XsS-OtICmY2lZ!n4H7=$UUq,@k|>3zQU' );
+define( 'LOGGED_IN_KEY',    'U,<A@Ww)hR^|SthWLn((P/p:7X~MLKKT~ZI`WQ`6fWvQ=e2OvH{9b{G:yVuNM[=(' );
+define( 'NONCE_KEY',        'rh^!9/,oQv~))Hle N1F+pK=h`+A[>|,E@hUC>k*V3]Go42WCNWUv-/WF`Ge#8B%' );
+define( 'AUTH_SALT',        'RiV2]/{A:*gb!_cUw6&ojWjiQ^Ka$KGDD/.$aVOH8N[G@<rk-YO6(9|9QwRzD@ih' );
+define( 'SECURE_AUTH_SALT', 'K!UPh:s[GSzEF**W$OMDo!086|E{`[rKz{F?O$ 8 6=5wmMY$/+L2[.wUHxEnn,b' );
+define( 'LOGGED_IN_SALT',   'k/]?5BD^+#fxM_l}%XHA/%QLg@#Wnr~l~+e+*+ny?9:]P+K_oeD)oPTucn0O3zm;' );
+define( 'NONCE_SALT',       ':`r-*AS|Ess~HR>JF@mXh*4h|xPi3}1S29C_9#,9ZIeu] |H7P&x`rb~bST,p)gY' );
 
 /**#@-*/
 
@@ -79,7 +77,7 @@ $table_prefix = 'wp_';
  *
  * @link https://wordpress.org/support/article/debugging-in-wordpress/
  */
-define( 'WP_DEBUG', true );
+define( 'WP_DEBUG', false );
 
 /* That's all, stop editing! Happy publishing. */
 

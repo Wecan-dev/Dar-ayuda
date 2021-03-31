@@ -269,6 +269,17 @@ function theme_customize_register($wp_customize)
 		'section' => 'contacto',
 		'settings' => 'url_direction'
 	)));
+	
+	      	$wp_customize->add_setting('contacto_ws', array(
+		'default' => ''
+	));
+
+	$wp_customize->add_control(new WP_Customize_Control($wp_customize, 'contacto_ws_control', array(
+		'label' => 'Número de WhatsApp',
+		'section' => 'contacto',
+		'settings' => 'contacto_ws'
+	)));
+	
 
 	$wp_customize->add_setting('contacto_phone', array(
        'default' => ''

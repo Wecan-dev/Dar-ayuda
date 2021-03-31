@@ -50,7 +50,7 @@
                   Conoce
                 </div>
                 <h2 class="general-title general-title--start">
-                    Quienes somos
+                    Quiénes somos
                     <span></span>
                 </h2>
                 <p class="general-description">

@@ -1342,7 +1342,7 @@ button:focus {
 }
 
 .main-services .container-grid {
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
   gap: 56px 71px;
 }
 
@@ -2033,6 +2033,10 @@ display: flex;
   top: -43px;
 }
 
+.about-politics__text .general-description {
+	    text-align: justify;
+}
+
 @media (min-width: 0px) and (max-width: 767px) {
   .about-politics .about-politics__dotted {
     display: none;
@@ -2116,7 +2120,6 @@ display: flex;
   left: 0;
   top: 5px;
 }
-.about-politics__list li:last-child:before{ display:none; }
 
 .banner-small {
   height: 462px;
