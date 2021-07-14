@@ -27,9 +27,12 @@
             <?php the_title(); ?>
             <span></span>
         </h2>
-        <p class="general-description general-description--center">
+		<div class="portfolio-flex" >
+			   <p class="general-description general-description--center">
             <?php the_field('texto_descriptivo'); ?>
         </p>
+		</div>
+     
         <div class="container-grid">
             <div class="portfolio-general__sidebar">
                 <?php $args = array('post_type' => 'Portafolio', 'order' => 'ASC', 'posts_per_page' => -1); ?>

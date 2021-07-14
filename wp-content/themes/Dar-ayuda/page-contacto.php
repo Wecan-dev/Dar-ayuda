@@ -51,69 +51,39 @@ $instagram = get_theme_mod('Redes_sociales_IG');
                     <span></span>
                 </h2>
                 <ul class="contact-info__list">
-					<div class="contact-title__box" >
-						 <img src="<?php echo get_template_directory_uri(); ?>/assets/img/place.png">
-						<h2 class="contact-title" >
-							Direcciónes
-						</h2>
-					</div>
+				
                     <li>
                       
 					
 						<strong><p>Medellín</p>	</strong>
-							   <?php echo $direction1; ?>
+							   <?php echo $direction1; ?> <br>
+						<?php echo $phone; ?>
 						</li>
 					<li>
 					
 						<strong><p>Bogotá</p>	</strong>
 							   <?php echo $direction2; ?>
-
+<br> <?php echo $phone2; ?>
 					
 						           </li>
 						<li>
 				
 						<strong><p>Cali</p>	</strong>
 							   <?php echo $direction3; ?>
-
+<br> <?php echo $phone3; ?>
 				
 							           </li>
 							<li>
 				
 						<strong><p>Pereira</p></strong>
 							   <?php echo $direction4; ?>
-
+<br>  <?php echo $phone4; ?>
 				
          
                     </li>
                     <li>
                        
-                   <div class="contact-title__box" >
-					    <img src="<?php echo get_template_directory_uri(); ?>/assets/img/phone-call.png">
-                  	<h2 class="contact-title" >
-                                Teléfono
-                            </h2>
-					   </div>
-							<li>
-									<strong><p>Medellín</p>	</strong>
-								   <?php echo $phone; ?>
-							</li>
-					
-								<li>
-								
-							<strong><p>Bogotá</p>	</strong>
-								   <?php echo $phone2; ?>
-							</li>		
-							<li>
-									
-							<strong><p>Cali</p>	</strong>
-								   <?php echo $phone3; ?>
-							</li>
-							<li>
-							
-							<strong><p>Pereira</p></strong>
-								   <?php echo $phone4; ?>
-							</li>
-
+                   
 					     
                    <div class="contact-title__box" >
 			           <img src="<?php echo get_template_directory_uri(); ?>/assets/img/envelope.png">

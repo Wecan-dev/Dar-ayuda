@@ -37,19 +37,14 @@
               <?php endwhile; ?>
             </div>
           </li>
-          <li class=" dropdown">
-            <a aria-expanded="false" aria-haspopup="true" class="dropdown-toggle" data-toggle="dropdown" href="#" id="navbarDropdown" role="button">
-              De su interés
-            </a>
-            <div aria-labelledby="navbarDropdown" class="dropdown-menu" style="background: #f8f8f8;">
+            <li>
               <?php $args = array('post_type' => 'De_su_interes', 'order' => 'ASC', 'posts_per_page' => -1); ?>
               <?php $loop = new WP_Query($args); ?>
               <?php while ($loop->have_posts()) : $loop->the_post(); ?>
-                <a class="dropdown-item" href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
+                <a class="" href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
                 <?php wp_reset_postdata(); ?>
               <?php endwhile; ?>
-            </div>
-          </li>
+            </li>
           <li>
             <a href="<?php echo bloginfo('url') . '/index.php/buscador-de-empleo'; ?>">
               Buscador de empleo
@@ -158,6 +153,50 @@
 <script src="<?php echo get_template_directory_uri(); ?>/assets/js/main.js"></script>
 <?php wp_footer(); ?>
 
+<script>
+
+$(document).ready(function($) {  
+
+// Ancho del ul
+function width(li, ul) {
+  var ulw = 0;
+  $(li).each(function(){
+    w = $(this).width();
+    ulw = ulw + w + 20;
+  });
+  $(ul).css('width', ulw);
+}
+width('.marquesina ul li', '.marquesina ul');
+  
+// Set interval  
+function marquesina(li, ul) {
+  var first = $(li).first().width();
+  $(ul).animate({
+    'marginLeft' : '-' + first}, {
+      duration: 7000,
+      complete: function() {
+        $(this).css('marginLeft', '0');
+        one = $(li).first().detach();
+        $(li).last().parent().append(one);
+      }
+  });
+}
+
+myInter = setInterval(function() { 
+    marquesina('.marquesina ul li', '.marquesina ul'); 
+}, 100);
+  
+// Stop on hover and then resume
+$('.marquesina').hover(function(){
+  clearInterval(myInter);
+  }, function() {
+    myInter = setInterval(function() { 
+    marquesina('.marquesina ul li', '.marquesina ul'); 
+}, 100);
+  });
+  
+});
+</script>
 </body>
 
 </html>

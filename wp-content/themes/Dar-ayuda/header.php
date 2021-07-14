@@ -38,22 +38,89 @@
   <link href="<?php echo get_template_directory_uri(); ?>/assets/img/favicon.png" rel="shortcut icon">
   <link href="https://fonts.googleapis.com/css?family=Montserrat:100,200,300,400,500,600,700,800,900|Open+Sans:300,400,600,700,800|Poppins:100,200,300,400,500,600,700,800,900&amp;display=swap" rel="stylesheet">
 </head>
+<style>
+* {box-sizing: border-box;}
 
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+ul li {
+  line-height: 35px;
+				font-size: .8em;
+				display: inline-block;
+	
+}
+	.fixed .marquesina{
+		display: none;
+	}
+
+.marquesina {
+  height: 35px;
+  overflow: hidden;
+  padding: 0 1em;
+	
+    background: #1c3348;
+    border-bottom: 1px solid rgb(255 255 255 / 46%);
+
+}
+
+.colgado {
+  text-transform: uppercase; 
+  font-size: 14px;
+  color: white;
+font-weight: 600;
+					display: inline;
+}
+
+a {
+					text-decoration: none;
+					display: inline;
+}
+
+li:after {
+  content: url(http://cero.lared21.com/wp-content/themes/lared21/images/arr.gif);
+  padding: 0 1em;
+}	
+	.none-marquesina{
+		opacity:0;
+	}
+	
+	</style>
 <body>
   <header class="fixed-top navbar-fixed-js">
+	  	<div class="marquesina">
+				<ul>
+          <li><span class="colgado">Salario Mínimo Mensual: $ 908,526.00</span><span class="none-marquesina">loremloremwertyuioiuytrewertyui</span></li>
+          <li><span class="colgado">Salario por día: $ 30,284.20</span><span class="none-marquesina">loremloremwertyuioiuytrewertyui</span></li>
+          <li><span class="colgado">Auxilio de transporte: $ 106,454</span><span class="none-marquesina">loremloremwertyuioiuytrewertyui</span></li>
+          <li><span class="colgado">Tasa de desempleo: 14,2%</span><span class="none-marquesina">loremloremwertyuioiuytrewertyui</span></li>
+          <li><span class="colgado">UVT: $36.308</span><span class="none-marquesina">loremloremwertyuioiuytrewertyui</span></li>
+          
+        </ul>			
+  </div>
     <div class="pre-navbar">
+		
       <div class="pre-navbar__flex">
         <a target="_blank" class="pre-navbar__btn" href="http://190.7.156.170:5443/NGMidasoft/login/01">Empleados</a>
         <a target="_blank" class="pre-navbar__btn" href="http://190.7.156.170:5443/NGMidasoft/login/01">Empresas</a>
       </div>
+		
+		
+		<div class="pre-navbar__flex">
       <a target="_blank" class="pre-navbar__btn" href="http://190.7.156.170:5443/NGms/categoriasvacantes">Consulta vacantes</a>
+		  <a target="_blank" class="pre-navbar__btn" href="http://190.7.156.170:5443/NGms/categoriasvacantes">Ingresa hoja de vida</a>
+		
+		   </div>
 		
     </div>
     <nav class="navbar navbar-expand-lg">
       <div class="main-brand__top">
         <div class="main-brand">
           <a class="navbar-brand" href="<?php echo bloginfo('url'); ?>">
-            <img alt="Logo Ekored" id="iso" src="<?php echo get_template_directory_uri(); ?>/assets/img/logo_2.png">
+            <img alt="Logo Dar ayuda" id="iso" src="<?php echo get_template_directory_uri(); ?>/assets/img/logo_2.png">
           </a>
         </div>
       </div>
@@ -98,24 +165,18 @@
               <?php endwhile; ?>
             </div>
           </li>
-         <li class="nav-item dropdown">
-            <a aria-expanded="false" aria-haspopup="true" class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="navbarDropdown" role="button">
-              Actualidad Laboral
-            </a>
-            <div aria-labelledby="navbarDropdown" class="dropdown-menu">
-              <?php $args = array('post_type' => 'De_su_interes', 'order' => 'ASC', 'posts_per_page' => -1); ?>
-              <?php $loop = new WP_Query($args); ?>
-              <?php while ($loop->have_posts()) : $loop->the_post(); ?>
-                <a class="dropdown-item" href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
-                <?php wp_reset_postdata(); ?>
-              <?php endwhile; ?>
-            </div>
-          </li>
-          <li class="nav-item">
+			   <li class="nav-item">
             <a class="nav-link nav-link-p" data="offcanvas" href="<?php echo bloginfo('url') . '/index.php/buscador-de-empleo'; ?>" role="button">
               Buscador de empleo
             </a>
           </li>
+         <li class="nav-item ">
+            <a aria-expanded="false" aria-haspopup="true" class="nav-link" href="http://159.89.229.55/Dar-ayuda/de_su_interes/nueva-actualidad/" >
+              Actualidad Laboral
+            </a>
+            
+          </li>
+       
           <!--<li class="nav-item">
             <a class="nav-link nav-link-p" data="offcanvas" href="<?php echo bloginfo('url') . '/index.php/blog'; ?>" role="button">
               Blog

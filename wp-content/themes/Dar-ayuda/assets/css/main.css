@@ -754,7 +754,7 @@ button:focus {
 }
 
 .pre-navbar__btn {
-  width: 180px;
+  width: 190px;
   height: 35px;
   padding: 7px 20px 8px;
   border-radius: 18px;
@@ -1270,6 +1270,7 @@ button:focus {
 
 .main-portfolio__item {
   border-radius: 10px;
+	    height: 100%;
   box-shadow: 0 4px 14px 0 #dee2e6;
   background-color: #ffffff;
   padding: 41px 17px 34px 17px;
@@ -1293,6 +1294,13 @@ button:focus {
   }
 }
 
+.portfolio-flex {
+	display: flex;
+	justify-content: center;
+}
+.portfolio-flex .general-description{ 
+    width: 86%;
+}
 .main-portfolio__item:hover {
   border-bottom: 7px solid #00a451;
   transition: .3s;
@@ -1320,6 +1328,7 @@ button:focus {
 
 .main-services__flex {
   display: flex;
+	    margin-bottom: 35px;
   justify-content: center;
 }
 
@@ -1342,8 +1351,8 @@ button:focus {
 }
 
 .main-services .container-grid {
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  gap: 56px 71px;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    gap: 56px 23px;
 }
 
 @media (min-width: 0px) and (max-width: 767px) {
@@ -1527,6 +1536,9 @@ button:focus {
   position: relative;
 }
 
+.main-about .general-description, .main-about__description, .about-history__text .general-description{
+	text-align: justify;
+}
 .main-about .padding-top-bottom {
   padding-bottom: 0;
 }
@@ -1566,6 +1578,8 @@ button:focus {
   font-size: 14px;
   font-weight: normal;
   font-stretch: normal;
+	    text-align: inherit;
+
   padding-left: 10px;
   font-style: normal;
   line-height: normal;
@@ -2104,6 +2118,7 @@ display: flex;
 .about-politics__list li {
   position: relative;
   padding-left: 24px;
+	    font-size: 14px;
   display: flex;
   margin-bottom: 19px;
   align-items: flex-start;
@@ -2452,6 +2467,14 @@ display: flex;
 
 .interest-general {
   position: relative;
+}
+
+.interest-general .about-politics__list li::before{
+	display: none;
+}
+
+.interest-general .about-politics__list li {
+	padding-left: 0;
 }
 
 .interest-general .padding-top-bottom {
@@ -3021,7 +3044,13 @@ display: flex;
   list-style: none;
   padding-left: 0;
 }
+.contact-info__list li::after {
+	display: none!important;
+}
 
+.contact-info__list li p {
+	margin-bottom: 0;
+}
 @media (min-width: 0px) and (max-width: 767px) {
   .contact-info .contact-info__list {
     padding-left: 0;
@@ -3204,6 +3233,7 @@ display: flex;
 
 .portfolio-general .general-description {
   margin-bottom: 27px;
+	    text-align: justify;
 }
 
 .portfolio-general .portfolio-general__list {
@@ -3234,6 +3264,8 @@ display: flex;
   font-size: 14px;
   font-weight: normal;
   font-stretch: normal;
+	text-align: justify;
+	
   font-style: normal;
   line-height: normal;
   letter-spacing: normal;
@@ -3891,6 +3923,7 @@ display: inline-block;    font-weight: normal;
 .about-blog__item--single .interest-general__remember {
   margin-top: 0;
 }
+
 
 .search-content .container-grid {
   grid-template-columns: 321px 1fr;

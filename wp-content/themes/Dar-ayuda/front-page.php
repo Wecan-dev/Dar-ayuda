@@ -3,6 +3,7 @@
 <section class="main-banner">
 <?php get_template_part('partials/rr-ss'); ?>
 
+	
     <div class="main-banner__content">
         <?php if (have_rows('banner')) : ?>
             <?php while (have_rows('banner')) : the_row(); ?>
@@ -14,15 +15,17 @@
                         <p class="main-banner__subtitle">
                             <?php the_sub_field('subtitulo_del_banner'); ?>
                         </p>
-                        <?php if (have_rows('boton')) : ?>
-                            <?php while (have_rows('boton')) : the_row(); ?>
-
-                                <?php $link_del_boton = get_sub_field('link_del_boton'); ?>
-                                <?php if ($link_del_boton) : ?>
-                                    <a class="main-general__button" href="<?php echo esc_url($link_del_boton); ?>"><?php the_sub_field('titulo_del_boton'); ?></a>
-                                <?php endif; ?>
-                            <?php endwhile; ?>
-                        <?php endif; ?>
+						
+						<?php if ( have_rows( 'boton' ) ) : ?>
+							<?php while ( have_rows( 'boton' ) ) : the_row(); ?>
+								
+								<?php $link_del_boton = get_sub_field( 'link_del_boton' ); ?>
+								<?php if ( $link_del_boton ) : ?>
+									<a  class="main-general__button" href="<?php echo esc_url( $link_del_boton['url'] ); ?>" target="<?php echo esc_attr( $link_del_boton['target'] ); ?>"><?php the_sub_field('titulo_del_boton'); ?></a>
+								<?php endif; ?>
+							<?php endwhile; ?>
+						<?php endif; ?>
+					
                     </div>
                     <div class="main-banner__img">
                         <?php if (get_sub_field('imagen_del_banner')) : ?>
@@ -147,8 +150,10 @@
                     <?php while (have_rows('servicios')) : the_row(); ?>
                         <?php $imagen = get_sub_field('imagen'); ?>
                         <?php $link_del_servicio = get_sub_field('link_del_servicio'); ?>
-                        <?php if ($link_del_servicio) : ?>
-                            <a class="main-portfolio__item" href="<?php echo esc_url($link_del_servicio); ?>">
+                       <?php if (get_sub_field('link_del_servicio') != NULL){?>
+                <a href="<?php get_sub_field('link_del_servicio'); ?>" >           
+				<div class="main-portfolio__item">
+								
                                 <div class="main-portfolio__img">
                                     <?php if ($imagen) : ?>
                                         <img src="<?php echo esc_url($imagen['url']); ?>">
@@ -157,9 +162,11 @@
                                 <div class="main-portfolio__title">
                                     <?php the_sub_field('texto_del_servicio'); ?>
                                 </div>
-                            </a>
-                        <?php else : ?>
-                            <div class="main-portfolio__item">
+									
+                            </div>
+								</a>
+				   <?php } else { ?> 
+          <div class="main-portfolio__item">
                                 <div class="main-portfolio__img">
                                     <?php if ($imagen) : ?>
                                         <img src="<?php echo esc_url($imagen['url']); ?>">
@@ -169,11 +176,18 @@
                                     <?php the_sub_field('texto_del_servicio'); ?>
                                 </div>
                             </div>
-                        <?php endif; ?>
+				
+				  <?php } ?>
                     <?php endwhile; ?>
                 <?php endif; ?>
             </div>
         </div>
+		<div  class=" mt-3 d-flex justify-content-center" >
+			<a class="general-btn__green" target="_blank" href="http://190.7.156.170:5443/NGMidasoft/login/01" >
+				Ver más
+			</a>
+		</div>
+		
     </div>
 </section>
 

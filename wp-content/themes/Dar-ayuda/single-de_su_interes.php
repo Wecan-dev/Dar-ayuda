@@ -15,14 +15,19 @@
     <?php endwhile; ?>
   <?php endif; ?>
 </section>
-<section class="interest-general">
+<section class="interest-general about-history">
   <img class="interest-general__dotted" src="<?php echo get_template_directory_uri(); ?>/assets/img/dotted-box_2.png">
   <div class="padding-top-bottom padding-right-left">
     <h2 class="general-title">
       <?php the_title(); ?>
       <span></span>
     </h2>
-    <img class="interest-general__img" src="<?php echo get_the_post_thumbnail_url(); ?>">
+	  <div class="container-grid" >
+		
+
+   <div class="interest-text" >
+	   
+		
     <?php if (have_rows('informacion')) : ?>
       <?php while (have_rows('informacion')) : the_row(); ?>
         <?php if (have_rows('titulo')) : ?>
@@ -65,6 +70,11 @@
           <?php endif; ?>
         <?php endwhile; ?>
       <?php endif; ?>
+			    </div>
+	    <div class="insterest-img" >
+			  <img class="interest-general__img" src="<?php echo get_the_post_thumbnail_url(); ?>">
+		  </div> 
+			  	  </div>
   </div>
 </section>
 <?php get_footer(); ?>
