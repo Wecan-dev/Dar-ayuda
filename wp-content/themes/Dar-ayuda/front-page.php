@@ -105,9 +105,18 @@
     </div>
 </section>
 
-<?php get_template_part('partials/hoja-de-vida'); ?>
+<?php // get_template_part('partials/hoja-de-vida'); ?>
 
+<style>
+	body > section.main-search > div > p > a{
+		color: white;
+		border-bottom: 1px solid;
+	}
+		body > section.main-search > div > p{
+		margin-top: 20px;
+	}
 
+</style>
 <!-- Search-->
 <section class="main-search">
     <img class="main-search__bg" src="<?php echo get_template_directory_uri(); ?>/assets/img/image.png">
@@ -116,20 +125,22 @@
     <div class="padding-top-bottom padding-right-left">
         <h2><?php the_field('titulo_cta'); ?></h2>
         <h2><?php the_field('subtitulo_cta'); ?></h2>
-        <p class="general-description general-description--center general-description--white">
+       
+        <div class="d-flex justify-content-center">
+			<?php if ( have_rows( 'boton_cta' ) ) : ?>
+	<?php while ( have_rows( 'boton_cta' ) ) : the_row(); ?>
+	
+		<?php $boton_url = get_sub_field( 'boton_url' ); ?>
+		<?php if ( $boton_url ) : ?>
+			<a class="main-general__button"  href="<?php echo esc_url( $boton_url['url'] ); ?>" target="<?php echo esc_attr( $boton_url['target'] ); ?>"><?php the_sub_field('texto_boton'); ?></a>
+		<?php endif; ?>
+	<?php endwhile; ?>
+<?php endif; ?>
+           
+        </div>
+		 <p class="general-description general-description--center general-description--white">
             <?php the_field('descripcion_cta'); ?>
         </p>
-        <div class="d-flex justify-content-center">
-            <?php if (have_rows('boton_cta')) : ?>
-                <?php while (have_rows('boton_cta')) : the_row(); ?>
-
-                    <?php $boton_url = get_sub_field('boton_url'); ?>
-                    <?php if ($boton_url) : ?>
-                        <a class="main-general__button" href="<?php echo esc_url($boton_url); ?>"><?php the_sub_field('texto_boton'); ?></a>
-                    <?php endif; ?>
-                <?php endwhile; ?>
-            <?php endif; ?>
-        </div>
     </div>
 </section>
 

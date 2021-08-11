@@ -39,6 +39,24 @@
   <link href="https://fonts.googleapis.com/css?family=Montserrat:100,200,300,400,500,600,700,800,900|Open+Sans:300,400,600,700,800|Poppins:100,200,300,400,500,600,700,800,900&amp;display=swap" rel="stylesheet">
 </head>
 <style>
+	.portfolio-general .general-description {
+    margin-bottom: 27px;
+    text-align: center;
+}
+	
+	body > section.portfolio-general > div > div.container-grid > div.portfolio-general__content > div > ul > li:nth-child(11):before{
+		content: none;
+	}
+	
+	body > section.interest-general.about-history > div > div > div.interest-text > .about-politics__list{
+		text-align: justify;
+	}
+	.main-portfolio__item {
+    
+    height: auto;
+
+}
+	
 * {box-sizing: border-box;}
 
 ul {
@@ -105,7 +123,7 @@ li:after {
 		
       <div class="pre-navbar__flex">
         <a target="_blank" class="pre-navbar__btn" href="http://190.7.156.170:5443/NGMidasoft/login/01">Empleados</a>
-        <a target="_blank" class="pre-navbar__btn" href="http://190.7.156.170:5443/NGMidasoft/login/01">Empresas</a>
+        <a target="_blank" class="pre-navbar__btn" data-toggle="modal" data-target="#exampleModal" href="#">Empresas</a>
       </div>
 		
 		
@@ -171,7 +189,7 @@ li:after {
             </a>
           </li>
          <li class="nav-item ">
-            <a aria-expanded="false" aria-haspopup="true" class="nav-link" href="http://159.89.229.55/Dar-ayuda/de_su_interes/nueva-actualidad/" >
+            <a aria-expanded="false" aria-haspopup="true" class="nav-link" href="<?php echo bloginfo('url');?>/de_su_interes/nueva-actualidad/" >
               Actualidad Laboral
             </a>
             

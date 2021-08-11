@@ -143,6 +143,23 @@
 	          <?php } ?>  
 				<?php endif; ?>
 </div>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+    
+      <div class="modal-body">
+        <img class="img-fluid" style="    width: 100%;" src="http://147.182.135.75/Dar-ayuda/wp-content/uploads/2021/07/Bannerweb.jpg">
+      </div>
+     
+    </div>
+  </div>
+</div>
+
+
 <script src="<?php echo get_template_directory_uri(); ?>/assets/js/jquery.min.js"></script>
 <script crossorigin="anonymous" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 <script crossorigin="anonymous" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
